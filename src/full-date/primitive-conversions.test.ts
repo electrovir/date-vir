@@ -1,6 +1,7 @@
 import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
 import {timezones, utcTimezone} from '../timezone/timezones';
-import {createFullDate} from './create-full-date';
+import {createFullDate, toNewTimezone} from './create-full-date';
+import {formatPresets} from './format-presets';
 import {
     exampleFullDate,
     exampleIsoString,
@@ -23,6 +24,14 @@ describe(toHtmlInputString.name, () => {
             it: 'creates date strings in UTC',
             inputs: [
                 createFullDate('2023-06-05T14:19:00.870Z', utcTimezone),
+                HtmlInputElementTypeEnum.Date,
+            ],
+            expect: '2023-06-05',
+        },
+        {
+            it: 'creates date strings in shifted timezones',
+            inputs: [
+                toNewTimezone(exampleFullDate, timezones['America/Chicago']),
                 HtmlInputElementTypeEnum.Date,
             ],
             expect: '2023-06-05',
@@ -128,6 +137,17 @@ describe(toLocaleString.name, () => {
                 {locale: 'fr'},
             ],
             expect: '05/06/2023',
+        },
+        {
+            it: 'formats a string with some more options',
+            inputs: [
+                toNewTimezone(exampleFullDate, timezones['America/Chicago']),
+                {
+                    ...formatPresets.DatetimeFull,
+                    locale: 'en-us',
+                },
+            ],
+            expect: 'June 5, 2023 at 9:19 AM CDT',
         },
         {
             it: 'formats a string with the user locale',

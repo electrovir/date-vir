@@ -34,6 +34,14 @@ export function createFullDate(
     return parseLuxonDateTime(dateTime);
 }
 
+/**
+ * Creates and returns a new FullDate object with its values shifted to be the same original time
+ * but represented in a new timezone.
+ */
+export function toNewTimezone(fullDate: FullDate, timezone: Timezone) {
+    return createFullDate(fullDate, timezone);
+}
+
 function convertDateLikeToLuxonDateTime(
     dateLike: DateLike,
     timezone: Timezone,

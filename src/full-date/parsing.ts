@@ -6,7 +6,7 @@ import {FullDate} from './full-date-shape';
 import {parseLuxonDateTime} from './luxon-date-time-conversion';
 
 /**
- * Parses a given dateString using the given formatString and sets the given timezone.
+ * Parses any strangely formatted dateString using the given formatString and timezone.
  *
  * This is much more flexible than createFullDate but createFullDate should be preferred in
  * situations where it works.
@@ -14,7 +14,7 @@ import {parseLuxonDateTime} from './luxon-date-time-conversion';
  * The formatString input is passed to Luxon. All format options are listed here:
  * https://moment.github.io/luxon/#/parsing?id=table-of-tokens
  */
-export function parseString({
+export function parseStrangeString({
     dateString,
     formatString,
     timezone,
@@ -46,9 +46,13 @@ export function parseString({
  * HTMLInputElement. Handles both type="date" and type="time" <input> elements.
  */
 export function parseInputElementValue(
-    elementOrValue: HTMLInputElement | string,
+    elementOrValue: HTMLInputElement | string | null | undefined,
     timezone: Timezone,
 ): FullDate {
+    if (!elementOrValue) {
+        throw new Error('Cannot parse an empty element.');
+    }
+
     const value: string = isRuntimeTypeOf(elementOrValue, 'string')
         ? elementOrValue
         : elementOrValue.value;

@@ -4,7 +4,7 @@ import {assert, fixture as renderFixture} from '@open-wc/testing';
 import {html} from 'element-vir';
 import {timezones} from '../timezone/timezones';
 import {exampleFullDate} from './full-date.test-helper';
-import {parseInputElementValue, parseString} from './parsing';
+import {parseInputElementValue, parseStrangeString} from './parsing';
 import {HtmlInputElementTypeEnum} from './primitive-conversions';
 
 describe(parseInputElementValue.name, () => {
@@ -27,6 +27,14 @@ describe(parseInputElementValue.name, () => {
 
                 timezone: timezones['Africa/Bissau'],
             },
+        },
+        {
+            it: 'errors on a missing input element',
+            inputs: [
+                undefined,
+                timezones['Africa/Bujumbura'],
+            ],
+            throws: Error,
         },
     ]);
 
@@ -106,8 +114,8 @@ describe(parseInputElementValue.name, () => {
     });
 });
 
-describe(parseString.name, () => {
-    itCases(parseString, [
+describe(parseStrangeString.name, () => {
+    itCases(parseStrangeString, [
         {
             it: 'parses arbitrary string format',
             input: {

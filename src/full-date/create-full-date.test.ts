@@ -8,6 +8,7 @@ import {
     createFullDateInUserTimezone,
     createUtcFullDate,
     getNowFullDate,
+    toNewTimezone,
 } from './create-full-date';
 import {fullDateShape} from './full-date-shape';
 import {
@@ -180,6 +181,16 @@ describe(createFullDate.name, () => {
             throws: 'Failed to parse date input',
         },
     ]);
+});
+
+describe(toNewTimezone.name, () => {
+    it('adjusts a timezone without modifying the original', () => {
+        const myDate = createFullDate(exampleIsoString, timezones['Etc/GMT+3']);
+
+        const shiftedDate = toNewTimezone(myDate, utcTimezone);
+
+        assert.notDeepEqual(shiftedDate, myDate);
+    });
 });
 
 describe(getNowFullDate.name, () => {

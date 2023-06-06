@@ -35,11 +35,14 @@ export function toLocaleString(
         | (Intl.DateTimeFormatOptions & PartialAndUndefined<{locale: string}>)
         | undefined,
 ): string {
-    return toLuxonDateTime(fullDate)
-        .setZone(utcTimezone)
-        .toLocaleString(formatOptions, {
+    return toLuxonDateTime(fullDate).toLocaleString(
+        {
+            ...formatOptions,
+        },
+        {
             locale: formatOptions?.locale ?? userLocale,
-        });
+        },
+    );
 }
 
 /**
@@ -54,9 +57,7 @@ export function toFormattedString(
     format: string,
     localeOverride: string = userLocale,
 ): string {
-    return toLuxonDateTime(fullDate)
-        .setZone(utcTimezone)
-        .toFormat(format, {locale: localeOverride});
+    return toLuxonDateTime(fullDate).toFormat(format, {locale: localeOverride});
 }
 
 /**
