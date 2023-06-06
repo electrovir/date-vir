@@ -29,12 +29,20 @@ describe(parseInputElementValue.name, () => {
             },
         },
         {
-            it: 'errors on a missing input element',
+            it: 'returns undefined on a missing input element',
             inputs: [
                 undefined,
                 timezones['Africa/Bujumbura'],
             ],
-            throws: Error,
+            expect: undefined,
+        },
+        {
+            it: 'returns undefined with an invalid input',
+            inputs: [
+                'not a date',
+                timezones['Africa/Bujumbura'],
+            ],
+            expect: undefined,
         },
     ]);
 
@@ -54,7 +62,7 @@ describe(parseInputElementValue.name, () => {
         const inputElement = await setInputElementTest(HtmlInputElementTypeEnum.Time, '06:09');
 
         assert.deepStrictEqual(
-            pickObjectKeys(parseInputElementValue(inputElement, timezones['Africa/Accra']), [
+            pickObjectKeys(parseInputElementValue(inputElement, timezones['Africa/Accra'])!, [
                 'hour',
                 'minute',
                 'second',
@@ -75,7 +83,7 @@ describe(parseInputElementValue.name, () => {
         const inputElement = await setInputElementTest(HtmlInputElementTypeEnum.Time, '06:09:45');
 
         assert.deepStrictEqual(
-            pickObjectKeys(parseInputElementValue(inputElement, timezones['Africa/Accra']), [
+            pickObjectKeys(parseInputElementValue(inputElement, timezones['Africa/Accra'])!, [
                 'hour',
                 'minute',
                 'second',
@@ -97,7 +105,7 @@ describe(parseInputElementValue.name, () => {
         const inputElement = await setInputElementTest(HtmlInputElementTypeEnum.Date, '2023-05-04');
 
         assert.deepStrictEqual(
-            pickObjectKeys(parseInputElementValue(inputElement, timezones['Africa/Accra']), [
+            pickObjectKeys(parseInputElementValue(inputElement, timezones['Africa/Accra'])!, [
                 'year',
                 'month',
                 'day',

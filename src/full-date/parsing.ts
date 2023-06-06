@@ -48,14 +48,18 @@ export function parseStrangeString({
 export function parseInputElementValue(
     elementOrValue: HTMLInputElement | string | null | undefined,
     timezone: Timezone,
-): FullDate {
+): FullDate | undefined {
     if (!elementOrValue) {
-        throw new Error('Cannot parse an empty element.');
+        return undefined;
     }
 
     const value: string = isRuntimeTypeOf(elementOrValue, 'string')
         ? elementOrValue
         : elementOrValue.value;
 
-    return createFullDate(value, timezone);
+    try {
+        return createFullDate(value, timezone);
+    } catch (error) {
+        return undefined;
+    }
 }
