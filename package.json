@@ -1,6 +1,6 @@
 {
     "name": "date-vir",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Easy and explicit dates and times",
     "keywords": [
         "date",
@@ -40,6 +40,7 @@
     },
     "dependencies": {
         "@augment-vir/common": "^14.2.2",
+        "@types/luxon": "^3.3.0",
         "luxon": "^3.3.0",
         "object-shape-tester": "^0.2.7"
     },
@@ -47,7 +48,6 @@
         "@augment-vir/browser-testing": "^14.2.2",
         "@open-wc/testing": "^3.1.8",
         "@types/chai": "^4.3.5",
-        "@types/luxon": "^3.3.0",
         "@types/mocha": "^10.0.1",
         "@web/dev-server-esbuild": "^0.4.1",
         "@web/test-runner": "^0.16.1",

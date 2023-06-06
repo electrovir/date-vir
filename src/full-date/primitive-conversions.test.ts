@@ -1,4 +1,5 @@
 import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
+import {assert} from '@open-wc/testing';
 import {timezones, utcTimezone} from '../timezone/timezones';
 import {createFullDate, toNewTimezone} from './create-full-date';
 import {formatPresets} from './format-presets';
@@ -139,17 +140,6 @@ describe(toLocaleString.name, () => {
             expect: '05/06/2023',
         },
         {
-            it: 'formats a string with some more options',
-            inputs: [
-                toNewTimezone(exampleFullDate, timezones['America/Chicago']),
-                {
-                    ...formatPresets.DatetimeFull,
-                    locale: 'en-us',
-                },
-            ],
-            expect: 'June 5, 2023 at 9:19 AM CDT',
-        },
-        {
             it: 'formats a string with the user locale',
             inputs: [
                 exampleFullDate,
@@ -157,6 +147,25 @@ describe(toLocaleString.name, () => {
             throws: undefined,
         },
     ]);
+
+    it('formats with some more options', () => {
+        const result = toLocaleString(
+            toNewTimezone(exampleFullDate, timezones['America/Chicago']),
+            {
+                ...formatPresets.DatetimeFull,
+                locale: 'en-us',
+            },
+        );
+
+        assert.include(
+            [
+                /** Different options the depend on the browser and operating system */
+                'June 5, 2023 at 9:19 AM CDT',
+                'June 5, 2023, 9:19 AM CDT',
+            ],
+            result,
+        );
+    });
 });
 
 describe(toFormattedString.name, () => {
