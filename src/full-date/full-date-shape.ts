@@ -8,9 +8,7 @@ export enum FullDatePartEnum {
     Time = 'time',
 }
 
-export type WithTimezone = {timezone: Timezone};
-
-export const timeOnlyShape = defineShape({
+export const timePartShape = defineShape({
     /** Hour of the day in 24 time: 0-23 */
     hour: 14,
     /** Minute of the hour: 0-59 */
@@ -23,10 +21,9 @@ export const timeOnlyShape = defineShape({
     timezone: utcTimezone,
 });
 
-type TimeOnlyPart = Overwrite<(typeof timeOnlyShape)['runTimeType'], WithTimezone>;
-export type TimePart = RequiredBy<Partial<FullDate>, keyof TimeOnlyPart>;
+export type TimePart = RequiredBy<Partial<FullDate>, keyof (typeof timePartShape)['runTimeType']>;
 
-export const dateOnlyShape = defineShape({
+export const datePartShape = defineShape({
     /**
      * The full, four digit year.
      *
@@ -42,13 +39,12 @@ export const dateOnlyShape = defineShape({
     timezone: utcTimezone,
 });
 
-type DateOnlyPart = Overwrite<(typeof dateOnlyShape)['runTimeType'], WithTimezone>;
-export type DatePart = RequiredBy<Partial<FullDate>, keyof DateOnlyPart>;
+export type DatePart = RequiredBy<Partial<FullDate>, keyof (typeof datePartShape)['runTimeType']>;
 
-export const fullDateShape = defineShape(and(dateOnlyShape, timeOnlyShape));
+export const fullDateShape = defineShape(and(datePartShape, timePartShape));
 
 /**
  * A easily serializable (it fits into plain JSON) object that completely defines how a date is to
  * be represented with minimal data.
  */
-export type FullDate = Overwrite<(typeof fullDateShape)['runTimeType'], WithTimezone>;
+export type FullDate = Overwrite<(typeof fullDateShape)['runTimeType'], {timezone: Timezone}>;

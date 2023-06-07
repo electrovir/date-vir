@@ -1,7 +1,15 @@
-import {itCases} from '@augment-vir/browser-testing';
+import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
+import {getObjectTypedKeys, omitObjectKeys} from '@augment-vir/common';
 import {userTimezone, utcTimezone} from '../timezone/timezones';
 import {combineDateParts} from './combine-dates';
-import {FullDatePartEnum} from './full-date-shape';
+import {
+    DatePart,
+    FullDate,
+    FullDatePartEnum,
+    TimePart,
+    datePartShape,
+    timePartShape,
+} from './full-date-shape';
 import {exampleFullDate} from './full-date.test-helper';
 
 describe(combineDateParts.name, () => {
@@ -13,6 +21,36 @@ describe(combineDateParts.name, () => {
                 [FullDatePartEnum.Time]: exampleFullDate,
             },
             expect: exampleFullDate,
+        },
+        {
+            it: 'handles undefined date part',
+            input: {
+                [FullDatePartEnum.Time]: exampleFullDate,
+            },
+            expect: omitObjectKeys(
+                exampleFullDate,
+                getObjectTypedKeys(datePartShape.defaultValue).filter(
+                    (
+                        key,
+                    ): key is Exclude<keyof (typeof datePartShape)['runTimeType'], 'timezone'> =>
+                        key !== 'timezone',
+                ),
+            ),
+        },
+        {
+            it: 'handles undefined time part',
+            input: {
+                [FullDatePartEnum.Date]: exampleFullDate,
+            },
+            expect: omitObjectKeys(
+                exampleFullDate,
+                getObjectTypedKeys(timePartShape.defaultValue).filter(
+                    (
+                        key,
+                    ): key is Exclude<keyof (typeof timePartShape)['runTimeType'], 'timezone'> =>
+                        key !== 'timezone',
+                ),
+            ),
         },
         {
             it: 'merges two date parts',
@@ -28,7 +66,7 @@ describe(combineDateParts.name, () => {
                     year: 2023,
                     month: 8,
                     day: 9,
-                    timezone: utcTimezone,
+                    timezone: userTimezone,
                 },
             },
             expect: {
@@ -65,7 +103,7 @@ describe(combineDateParts.name, () => {
                     year: 2022,
                     month: 1,
                     day: 21,
-                    timezone: utcTimezone,
+                    timezone: userTimezone,
                 },
             },
             expect: {
@@ -79,5 +117,71 @@ describe(combineDateParts.name, () => {
                 timezone: userTimezone,
             },
         },
+        {
+            it: 'errors if timezones are different',
+            input: {
+                [FullDatePartEnum.Time]: {
+                    hour: 12,
+                    minute: 32,
+                    second: 52,
+                    millisecond: 100,
+
+                    year: 2023,
+                    month: 8,
+                    day: 9,
+                    timezone: utcTimezone,
+                },
+                [FullDatePartEnum.Date]: {
+                    hour: 7,
+                    minute: 56,
+                    second: 46,
+                    millisecond: 987,
+
+                    year: 2022,
+                    month: 1,
+                    day: 21,
+                    timezone: userTimezone,
+                },
+            },
+            throws: Error,
+        },
     ]);
+
+    it('has proper types', () => {
+        assertTypeOf(combineDateParts({})).toEqualTypeOf<undefined>();
+        assertTypeOf(
+            combineDateParts({
+                date: exampleFullDate,
+            }),
+        ).toEqualTypeOf<DatePart>();
+        assertTypeOf(
+            combineDateParts({
+                time: exampleFullDate,
+            }),
+        ).toEqualTypeOf<TimePart>();
+        assertTypeOf(
+            combineDateParts({
+                date: exampleFullDate,
+                time: exampleFullDate,
+            }),
+        ).toEqualTypeOf<FullDate>();
+        assertTypeOf(
+            combineDateParts({
+                date: exampleFullDate,
+                time: exampleFullDate as FullDate | undefined,
+            }),
+        ).toEqualTypeOf<FullDate | DatePart>();
+        assertTypeOf(
+            combineDateParts({
+                date: exampleFullDate as FullDate | undefined,
+                time: exampleFullDate,
+            }),
+        ).toEqualTypeOf<FullDate | TimePart>();
+        assertTypeOf(
+            combineDateParts({
+                date: exampleFullDate as FullDate | undefined,
+                time: exampleFullDate as FullDate | undefined,
+            }),
+        ).toEqualTypeOf<FullDate | TimePart | DatePart | undefined>();
+    });
 });

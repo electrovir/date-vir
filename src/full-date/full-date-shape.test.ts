@@ -4,9 +4,9 @@ import {
     DatePart,
     FullDate,
     TimePart,
-    dateOnlyShape,
+    datePartShape,
     fullDateShape,
-    timeOnlyShape,
+    timePartShape,
 } from './full-date-shape';
 
 describe('TimeOnly', () => {
@@ -19,7 +19,7 @@ describe('TimeOnly', () => {
             timezone: utcTimezone,
         };
 
-        assertValidShape(exampleTime, timeOnlyShape);
+        assertValidShape(exampleTime, timePartShape);
     });
 });
 
@@ -32,7 +32,7 @@ describe('TimeOnly', () => {
             timezone: utcTimezone,
         };
 
-        assertValidShape(exampleDate, dateOnlyShape);
+        assertValidShape(exampleDate, datePartShape);
     });
 });
 
