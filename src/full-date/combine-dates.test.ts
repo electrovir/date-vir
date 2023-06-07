@@ -1,7 +1,7 @@
 import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
 import {getObjectTypedKeys, omitObjectKeys} from '@augment-vir/common';
-import {userTimezone, utcTimezone} from '../timezone/timezones';
-import {combineDateParts} from './combine-dates';
+import {userTimezone} from '../timezone/timezones';
+import {MaybeDatePart, combineDateParts} from './combine-dates';
 import {
     DatePart,
     FullDate,
@@ -10,7 +10,7 @@ import {
     datePartShape,
     timePartShape,
 } from './full-date-shape';
-import {exampleFullDate} from './full-date.test-helper';
+import {exampleFullDate, nonUserTimezone} from './full-date.test-helper';
 
 describe(combineDateParts.name, () => {
     itCases(combineDateParts, [
@@ -129,7 +129,7 @@ describe(combineDateParts.name, () => {
                     year: 2023,
                     month: 8,
                     day: 9,
-                    timezone: utcTimezone,
+                    timezone: nonUserTimezone,
                 },
                 [FullDatePartEnum.Date]: {
                     hour: 7,
@@ -143,7 +143,7 @@ describe(combineDateParts.name, () => {
                     timezone: userTimezone,
                 },
             },
-            throws: Error,
+            throws: 'Time and date parts have mismatching timezones',
         },
     ]);
 
@@ -182,6 +182,6 @@ describe(combineDateParts.name, () => {
                 date: exampleFullDate as FullDate | undefined,
                 time: exampleFullDate as FullDate | undefined,
             }),
-        ).toEqualTypeOf<FullDate | TimePart | DatePart | undefined>();
+        ).toEqualTypeOf<MaybeDatePart>();
     });
 });

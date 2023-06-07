@@ -1,11 +1,19 @@
-import {DatePart, FullDate, FullDatePartEnum, TimePart} from './full-date-shape';
+import {isValidShape} from 'object-shape-tester';
+import {
+    DatePart,
+    FullDate,
+    FullDatePartEnum,
+    TimePart,
+    datePartShape,
+    timePartShape,
+} from './full-date-shape';
 
 type MaybeDateParts = Partial<{
-    [FullDatePartEnum.Date]: DatePart | undefined;
-    [FullDatePartEnum.Time]: TimePart | undefined;
+    [FullDatePartEnum.Date]: DatePart | undefined | Partial<FullDate>;
+    [FullDatePartEnum.Time]: TimePart | undefined | Partial<FullDate>;
 }>;
 
-export type MaybeDatePart = FullDate | DatePart | TimePart | undefined;
+export type MaybeDatePart = FullDate | Partial<FullDate> | DatePart | TimePart | undefined;
 
 /**
  * Combine two parts of a FullDate objects into a filled-in FullDate. Note that the timezones must
@@ -26,19 +34,21 @@ export function combineDateParts(maybeDateParts: {
 }): DatePart;
 export function combineDateParts(maybeDateParts: {
     [FullDatePartEnum.Date]: DatePart;
-    [FullDatePartEnum.Time]?: TimePart | undefined;
+    [FullDatePartEnum.Time]?: TimePart | undefined | Partial<FullDate>;
 }): FullDate | DatePart;
 export function combineDateParts(maybeDateParts: {
     [FullDatePartEnum.Date]?: undefined;
     [FullDatePartEnum.Time]: TimePart;
 }): TimePart;
 export function combineDateParts(maybeDateParts: {
-    [FullDatePartEnum.Date]?: DatePart | undefined;
+    [FullDatePartEnum.Date]?: DatePart | undefined | Partial<FullDate>;
     [FullDatePartEnum.Time]: TimePart;
 }): FullDate | TimePart;
 export function combineDateParts(maybeDateParts: MaybeDateParts): MaybeDatePart;
 export function combineDateParts(maybeDateParts: MaybeDateParts): MaybeDatePart {
-    const timePart: TimePart | undefined = maybeDateParts.time
+    const timePart: TimePart | undefined = isValidShape(maybeDateParts.time, timePartShape, {
+        allowExtraKeys: true,
+    })
         ? {
               hour: maybeDateParts.time.hour,
               minute: maybeDateParts.time.minute,
@@ -47,7 +57,10 @@ export function combineDateParts(maybeDateParts: MaybeDateParts): MaybeDatePart 
               timezone: maybeDateParts.time.timezone,
           }
         : undefined;
-    const datePart: DatePart | undefined = maybeDateParts.date
+
+    const datePart: DatePart | undefined = isValidShape(maybeDateParts.date, datePartShape, {
+        allowExtraKeys: true,
+    })
         ? {
               year: maybeDateParts.date.year,
               month: maybeDateParts.date.month,
