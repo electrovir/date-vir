@@ -191,6 +191,14 @@ describe(toNewTimezone.name, () => {
 
         assert.notDeepEqual(shiftedDate, myDate);
     });
+
+    it('does nothing if the given date is already in the given timezone', () => {
+        const myDate = createFullDate(exampleIsoString, exampleFullDate.timezone);
+
+        const shiftedDate = toNewTimezone(myDate, utcTimezone);
+
+        assert.deepStrictEqual(shiftedDate, myDate);
+    });
 });
 
 describe(getNowFullDate.name, () => {

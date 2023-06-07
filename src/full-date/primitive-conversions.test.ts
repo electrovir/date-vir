@@ -1,8 +1,11 @@
 import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
+import {RequiredBy} from '@augment-vir/common';
 import {assert} from '@open-wc/testing';
+import {SetOptional} from 'type-fest';
 import {timezones, utcTimezone} from '../timezone/timezones';
 import {createFullDate, toNewTimezone} from './create-full-date';
 import {formatPresets} from './format-presets';
+import {DatePart, FullDate, FullDatePartEnum} from './full-date-shape';
 import {
     exampleFullDate,
     exampleIsoString,
@@ -10,7 +13,6 @@ import {
     nonUtcTimezone,
 } from './full-date.test-helper';
 import {
-    HtmlInputElementTypeEnum,
     toFormattedString,
     toHtmlInputString,
     toIsoString,
@@ -25,7 +27,7 @@ describe(toHtmlInputString.name, () => {
             it: 'creates date strings in UTC',
             inputs: [
                 createFullDate('2023-06-05T14:19:00.870Z', utcTimezone),
-                HtmlInputElementTypeEnum.Date,
+                FullDatePartEnum.Date,
             ],
             expect: '2023-06-05',
         },
@@ -33,7 +35,7 @@ describe(toHtmlInputString.name, () => {
             it: 'creates date strings in shifted timezones',
             inputs: [
                 toNewTimezone(exampleFullDate, timezones['America/Chicago']),
-                HtmlInputElementTypeEnum.Date,
+                FullDatePartEnum.Date,
             ],
             expect: '2023-06-05',
         },
@@ -45,7 +47,7 @@ describe(toHtmlInputString.name, () => {
                     // this timezone will create a date that is a day later
                     timezones['Etc/GMT-11'],
                 ),
-                HtmlInputElementTypeEnum.Date,
+                FullDatePartEnum.Date,
             ],
             expect: '2023-06-06',
         },
@@ -53,15 +55,132 @@ describe(toHtmlInputString.name, () => {
             it: 'creates time strings in UTC',
             inputs: [
                 createFullDate('2023-06-05T14:19:00.870Z', utcTimezone),
-                HtmlInputElementTypeEnum.Time,
+                FullDatePartEnum.Time,
             ],
             expect: '14:19',
+        },
+        {
+            it: 'creates a time string from a time part',
+            inputs: [
+                {
+                    hour: 13,
+                    minute: 26,
+                },
+                FullDatePartEnum.Time,
+            ],
+            expect: '13:26',
+        },
+        {
+            it: 'creates a time string with seconds from a time part',
+            inputs: [
+                {
+                    hour: 13,
+                    minute: 26,
+                    second: 6,
+                },
+                FullDatePartEnum.Time,
+                true,
+            ],
+            expect: '13:26:06',
+        },
+        {
+            it: 'creates a date string with a date part',
+            inputs: [
+                {
+                    year: 2023,
+                    month: 10,
+                    day: 24,
+                },
+                FullDatePartEnum.Date,
+            ],
+            expect: '2023-10-24',
+        },
+        {
+            it: 'errors if date is missing day',
+            inputs: [
+                {
+                    year: 2023,
+                    month: 10,
+                } as SetOptional<DatePart,
+                    'timezone'>,
+                FullDatePartEnum.Date,
+            ],
+            throws: Error,
+        },
+        {
+            it: 'errors if date is missing month',
+            inputs: [
+                {
+                    year: 2023,
+                    day: 24,
+                } as SetOptional<DatePart,
+                    'timezone'>,
+                FullDatePartEnum.Date,
+            ],
+            throws: Error,
+        },
+        {
+            it: 'errors if date is missing year',
+            inputs: [
+                {
+                    month: 10,
+                    day: 24,
+                } as SetOptional<DatePart,
+                    'timezone'>,
+                FullDatePartEnum.Date,
+            ],
+            throws: Error,
+        },
+        {
+            it: 'errors if includeSeconds time is missing second',
+            inputs: [
+                {
+                    hour: 12,
+                    minute: 53,
+                } as RequiredBy<
+                    Partial<FullDate>,
+                    | 'hour'
+                    | 'minute'
+                    | 'second'
+                >,
+                FullDatePartEnum.Time,
+                true,
+            ],
+            throws: Error,
+        },
+        {
+            it: 'errors if time is missing minute',
+            inputs: [
+                {
+                    hour: 12,
+                } as RequiredBy<
+                    Partial<FullDate>,
+                    | 'hour'
+                    | 'minute'
+                >,
+                FullDatePartEnum.Time,
+            ],
+            throws: Error,
+        },
+        {
+            it: 'errors if time is missing hour',
+            inputs: [
+                {
+                    minute: 53,
+                } as RequiredBy<
+                    Partial<FullDate>,
+                    | 'hour'
+                    | 'minute'
+                >,
+                FullDatePartEnum.Time,
+            ],
+            throws: Error,
         },
         {
             it: 'creates time strings in UTC with seconds',
             inputs: [
                 createFullDate('2023-06-05T14:19:03.870Z', utcTimezone),
-                HtmlInputElementTypeEnum.Time,
+                FullDatePartEnum.Time,
                 true,
             ],
             expect: '14:19:03',
@@ -82,7 +201,7 @@ describe(toHtmlInputString.name, () => {
                     // this timezone will create a date that is a day later
                     timezones['Etc/GMT-11'],
                 ),
-                HtmlInputElementTypeEnum.Time,
+                FullDatePartEnum.Time,
                 true,
             ],
             expect: '01:19:03',
@@ -91,38 +210,27 @@ describe(toHtmlInputString.name, () => {
 
     it('has proper types', () => {
         assertTypeOf(
-            toHtmlInputString(exampleFullDate, HtmlInputElementTypeEnum.Date),
+            toHtmlInputString(exampleFullDate, FullDatePartEnum.Date),
         ).toEqualTypeOf<JustDateString>();
         assertTypeOf(
-            toHtmlInputString(exampleFullDate, HtmlInputElementTypeEnum.Time),
+            toHtmlInputString(exampleFullDate, FullDatePartEnum.Time),
         ).toEqualTypeOf<JustTimeString>();
         assertTypeOf(
-            toHtmlInputString(exampleFullDate, HtmlInputElementTypeEnum.Time, true),
+            toHtmlInputString(exampleFullDate, FullDatePartEnum.Time, true),
         ).toEqualTypeOf<JustTimeWithSecondsString>();
         assertTypeOf(
-            toHtmlInputString(
-                exampleFullDate,
-                HtmlInputElementTypeEnum.Time,
-                true as boolean | undefined,
-            ),
+            toHtmlInputString(exampleFullDate, FullDatePartEnum.Time, true as boolean | undefined),
         ).toEqualTypeOf<JustTimeWithSecondsString | JustTimeString>();
         assertTypeOf(
-            toHtmlInputString(
-                exampleFullDate,
-                HtmlInputElementTypeEnum.Date as HtmlInputElementTypeEnum,
-            ),
+            toHtmlInputString(exampleFullDate, FullDatePartEnum.Date as FullDatePartEnum),
         ).toEqualTypeOf<JustDateString | JustTimeString>();
         assertTypeOf(
-            toHtmlInputString(
-                exampleFullDate,
-                HtmlInputElementTypeEnum.Date as HtmlInputElementTypeEnum,
-                true,
-            ),
+            toHtmlInputString(exampleFullDate, FullDatePartEnum.Date as FullDatePartEnum, true),
         ).toEqualTypeOf<JustDateString | JustTimeWithSecondsString>();
         assertTypeOf(
             toHtmlInputString(
                 exampleFullDate,
-                HtmlInputElementTypeEnum.Date as HtmlInputElementTypeEnum,
+                FullDatePartEnum.Date as FullDatePartEnum,
                 false as boolean | undefined,
             ),
         ).toEqualTypeOf<JustDateString | JustTimeWithSecondsString | JustTimeString>();

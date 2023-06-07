@@ -1,7 +1,12 @@
-import {Overwrite} from '@augment-vir/common';
+import {Overwrite, RequiredBy} from '@augment-vir/common';
 import {and, defineShape} from 'object-shape-tester';
 import {Timezone} from '../timezone/timezone-names';
 import {utcTimezone} from '../timezone/timezones';
+
+export enum FullDatePartEnum {
+    Date = 'date',
+    Time = 'time',
+}
 
 export type WithTimezone = {timezone: Timezone};
 
@@ -18,7 +23,8 @@ export const timeOnlyShape = defineShape({
     timezone: utcTimezone,
 });
 
-export type TimeOnly = Overwrite<(typeof timeOnlyShape)['runTimeType'], WithTimezone>;
+type TimeOnlyPart = Overwrite<(typeof timeOnlyShape)['runTimeType'], WithTimezone>;
+export type TimePart = RequiredBy<Partial<FullDate>, keyof TimeOnlyPart>;
 
 export const dateOnlyShape = defineShape({
     /**
@@ -36,7 +42,8 @@ export const dateOnlyShape = defineShape({
     timezone: utcTimezone,
 });
 
-export type DateOnly = Overwrite<(typeof dateOnlyShape)['runTimeType'], WithTimezone>;
+type DateOnlyPart = Overwrite<(typeof dateOnlyShape)['runTimeType'], WithTimezone>;
+export type DatePart = RequiredBy<Partial<FullDate>, keyof DateOnlyPart>;
 
 export const fullDateShape = defineShape(and(dateOnlyShape, timeOnlyShape));
 

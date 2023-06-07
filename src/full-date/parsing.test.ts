@@ -3,9 +3,9 @@ import {pickObjectKeys} from '@augment-vir/common';
 import {assert, fixture as renderFixture} from '@open-wc/testing';
 import {html} from 'element-vir';
 import {timezones} from '../timezone/timezones';
+import {FullDatePartEnum} from './full-date-shape';
 import {exampleFullDate} from './full-date.test-helper';
 import {parseInputElementValue, parseStrangeString} from './parsing';
-import {HtmlInputElementTypeEnum} from './primitive-conversions';
 
 describe(parseInputElementValue.name, () => {
     itCases(parseInputElementValue, [
@@ -46,7 +46,7 @@ describe(parseInputElementValue.name, () => {
         },
     ]);
 
-    async function setInputElementTest(type: HtmlInputElementTypeEnum, value: string) {
+    async function setupInputElementTest(type: FullDatePartEnum, value: string) {
         const inputElement = await renderFixture(
             html`
                 <input type=${type} value=${value} />
@@ -59,7 +59,7 @@ describe(parseInputElementValue.name, () => {
     }
 
     it('reads from user input times', async () => {
-        const inputElement = await setInputElementTest(HtmlInputElementTypeEnum.Time, '06:09');
+        const inputElement = await setupInputElementTest(FullDatePartEnum.Time, '06:09');
 
         assert.deepStrictEqual(
             pickObjectKeys(parseInputElementValue(inputElement, timezones['Africa/Accra'])!, [
@@ -80,7 +80,7 @@ describe(parseInputElementValue.name, () => {
         );
     });
     it('reads from user input times with seconds', async () => {
-        const inputElement = await setInputElementTest(HtmlInputElementTypeEnum.Time, '06:09:45');
+        const inputElement = await setupInputElementTest(FullDatePartEnum.Time, '06:09:45');
 
         assert.deepStrictEqual(
             pickObjectKeys(parseInputElementValue(inputElement, timezones['Africa/Accra'])!, [
@@ -102,7 +102,7 @@ describe(parseInputElementValue.name, () => {
     });
 
     it('reads from user input dates', async () => {
-        const inputElement = await setInputElementTest(HtmlInputElementTypeEnum.Date, '2023-05-04');
+        const inputElement = await setupInputElementTest(FullDatePartEnum.Date, '2023-05-04');
 
         assert.deepStrictEqual(
             pickObjectKeys(parseInputElementValue(inputElement, timezones['Africa/Accra'])!, [

@@ -1,5 +1,5 @@
 import {
-    HtmlInputElementTypeEnum,
+    FullDatePartEnum,
     createFullDate,
     formatPresets,
     timezones,
@@ -35,4 +35,4 @@ toLocaleString(myFullDate, formatPresets.DatetimeFull); // returns 'June 5, 2023
  * Formats the given FullDate to a string so that it is ready to be assigned to the value attribute
  * of an <input type="date" /> element.
  */
-toHtmlInputString(myFullDate, HtmlInputElementTypeEnum.Date); // returns '2023-06-05'
+toHtmlInputString(myFullDate, FullDatePartEnum.Date); // returns '2023-06-05'

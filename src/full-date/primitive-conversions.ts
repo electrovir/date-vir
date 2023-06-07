@@ -1,7 +1,8 @@
-import {PartialAndUndefined, getEnumTypedValues} from '@augment-vir/common';
+import {PartialAndUndefined, RequiredBy, getEnumTypedValues} from '@augment-vir/common';
+import {SetOptional} from 'type-fest';
 import {userLocale} from '../locales';
 import {utcTimezone} from '../timezone/timezones';
-import {FullDate} from './full-date-shape';
+import {DatePart, FullDate, FullDatePartEnum} from './full-date-shape';
 import {toLuxonDateTime} from './luxon-date-time-conversion';
 import {
     JustDateString,
@@ -60,70 +61,87 @@ export function toFormattedString(
     return toLuxonDateTime(fullDate).toFormat(format, {locale: localeOverride});
 }
 
-/**
- * The different options for the "type" attribute in an <input> element that require specific
- * formatting relevant to dates.
- */
-export enum HtmlInputElementTypeEnum {
-    Date = 'date',
-    Time = 'time',
-}
+type OnlyDatePart = SetOptional<DatePart, 'timezone'>;
+type HourMinutePart = RequiredBy<Partial<FullDate>, 'hour' | 'minute'>;
+type HourMinuteSecondPart = RequiredBy<Partial<FullDate>, 'hour' | 'minute' | 'second'>;
 
 /**
  * Converts a FullDate object into a string that is understood by type="date" or type="time"
  * HTMLInputElement instances. Can optionally include seconds as well for type="time".
  *
- * This does NO timezone operations, the literal stored date and time are simply concatenated into a
- * string. If you wish to convert time zones, first call createFullDate and give it a different time
- * zone.
+ * This function ignores the timezone, the literal stored date and time numbers are simply
+ * concatenated into a string. If you wish to convert time zones, first call toNewTimezone on your
+ * FullDate object.
  */
 export function toHtmlInputString(
-    fullDate: FullDate,
-    inputType: HtmlInputElementTypeEnum.Date,
+    fullDate: OnlyDatePart,
+    inputType: FullDatePartEnum.Date,
 ): JustDateString;
 export function toHtmlInputString(
-    fullDate: FullDate,
-    inputType: HtmlInputElementTypeEnum.Time,
+    fullDate: HourMinutePart,
+    inputType: FullDatePartEnum.Time,
     includeSeconds?: false | undefined,
 ): JustTimeString;
 export function toHtmlInputString(
-    fullDate: FullDate,
-    inputType: HtmlInputElementTypeEnum.Time,
+    fullDate: HourMinuteSecondPart,
+    inputType: FullDatePartEnum.Time,
     includeSeconds: true,
 ): JustTimeWithSecondsString;
 export function toHtmlInputString(
-    fullDate: FullDate,
-    inputType: HtmlInputElementTypeEnum.Time,
+    fullDate: HourMinutePart | HourMinuteSecondPart,
+    inputType: FullDatePartEnum.Time,
     includeSeconds?: boolean | undefined,
 ): JustTimeWithSecondsString | JustTimeString;
 export function toHtmlInputString(
-    fullDate: FullDate,
-    inputType: HtmlInputElementTypeEnum,
+    fullDate: HourMinuteSecondPart | OnlyDatePart,
+    inputType: FullDatePartEnum,
     includeSeconds: true,
 ): JustDateString | JustTimeWithSecondsString;
 export function toHtmlInputString(
-    fullDate: FullDate,
-    inputType: HtmlInputElementTypeEnum,
+    fullDate: HourMinutePart | OnlyDatePart,
+    inputType: FullDatePartEnum,
     includeSeconds?: false | undefined,
 ): JustDateString | JustTimeString;
 export function toHtmlInputString(
-    fullDate: FullDate,
-    inputType: HtmlInputElementTypeEnum,
+    fullDate: HourMinutePart | HourMinuteSecondPart | OnlyDatePart,
+    inputType: FullDatePartEnum,
     includeSeconds?: boolean | undefined,
 ): JustDateString | JustTimeWithSecondsString | JustTimeString;
 export function toHtmlInputString(
-    fullDate: FullDate,
-    inputType: HtmlInputElementTypeEnum,
+    fullDate: HourMinutePart | HourMinuteSecondPart | OnlyDatePart,
+    inputType: FullDatePartEnum,
     includeSeconds?: boolean | undefined,
 ): JustDateString | JustTimeWithSecondsString | JustTimeString {
-    if (inputType === HtmlInputElementTypeEnum.Date) {
+    if (inputType === FullDatePartEnum.Date) {
+        if (fullDate.year == undefined) {
+            throw new Error(`Tried to create date string but no year was provided.`);
+        }
+        if (fullDate.month == undefined) {
+            throw new Error(`Tried to create date string but no month was provided.`);
+        }
+        if (fullDate.day == undefined) {
+            throw new Error(`Tried to create date string but no day was provided.`);
+        }
+
         const dateParts = [
             fullDate.year,
             String(fullDate.month).padStart(2, '0'),
             String(fullDate.day).padStart(2, '0'),
         ] as const;
         return dateParts.join('-') as JustDateString;
-    } else if (inputType === HtmlInputElementTypeEnum.Time) {
+    } else if (inputType === FullDatePartEnum.Time) {
+        if (includeSeconds && fullDate.second == undefined) {
+            throw new Error(
+                'Tried to include seconds in the time string but no seconds were provided.',
+            );
+        }
+        if (fullDate.hour == undefined) {
+            throw new Error(`Tried to create time string but no hour was provided.`);
+        }
+        if (fullDate.minute == undefined) {
+            throw new Error(`Tried to create time string but no minutes were provided.`);
+        }
+
         const timeParts = [
             String(fullDate.hour).padStart(2, '0'),
             String(fullDate.minute).padStart(2, '0'),
@@ -133,8 +151,8 @@ export function toHtmlInputString(
         return timeParts.join(':') as JustTimeWithSecondsString | JustTimeString;
     } else {
         throw new Error(
-            `Unexpected inputTyped: '${inputType}'. Expected usage of HtmlInputElementTypeEnum or one of ${getEnumTypedValues(
-                HtmlInputElementTypeEnum,
+            `Unexpected inputTyped: '${inputType}'. Expected usage of FullDatePartEnum or one of ${getEnumTypedValues(
+                FullDatePartEnum,
             ).join(', ')}.`,
         );
     }

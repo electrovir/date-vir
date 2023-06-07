@@ -1,9 +1,9 @@
 import {assertValidShape} from 'object-shape-tester';
 import {utcTimezone} from '../timezone/timezones';
 import {
-    DateOnly,
+    DatePart,
     FullDate,
-    TimeOnly,
+    TimePart,
     dateOnlyShape,
     fullDateShape,
     timeOnlyShape,
@@ -11,7 +11,7 @@ import {
 
 describe('TimeOnly', () => {
     it('accepts valid time units', () => {
-        const exampleTime: TimeOnly = {
+        const exampleTime: TimePart = {
             hour: 1,
             minute: 42,
             second: 31,
@@ -25,7 +25,7 @@ describe('TimeOnly', () => {
 
 describe('TimeOnly', () => {
     it('accepts valid date units', () => {
-        const exampleDate: DateOnly = {
+        const exampleDate: DatePart = {
             year: 1,
             month: 1,
             day: 1,

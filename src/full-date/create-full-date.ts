@@ -39,6 +39,10 @@ export function createFullDate(
  * but represented in a new timezone.
  */
 export function toNewTimezone(fullDate: FullDate, timezone: Timezone) {
+    if (fullDate.timezone === timezone) {
+        return fullDate;
+    }
+
     return createFullDate(fullDate, timezone);
 }
 
