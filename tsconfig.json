@@ -3,7 +3,8 @@
     "compilerOptions": {
         "outDir": "./dist/esm",
         "declarationDir": "./dist/esm",
-        "rootDir": "./src"
+        "rootDir": "./src",
+        "module": "ES2020"
     },
     "exclude": [
         "./configs",
