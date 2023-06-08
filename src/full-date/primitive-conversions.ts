@@ -29,6 +29,14 @@ export function toIsoString(fullDate: FullDate): UtcIsoString {
     return isoString as UtcIsoString;
 }
 
+/**
+ * Chromium has a weird behavior where the "NARROW NO-BREAK SPACE" character (code 8239) is used
+ * instead of a space (code 32) before AM/PM.
+ */
+function fixChromiumSpace(original: string): string {
+    return original.replace(new RegExp(String.fromCharCode(8239), 'g'), ' ');
+}
+
 /** Converts the given FullDate into a string in the user's locale, or the given localeOverride. */
 export function toLocaleString(
     fullDate: FullDate,
@@ -36,7 +44,7 @@ export function toLocaleString(
         | (Intl.DateTimeFormatOptions & PartialAndUndefined<{locale: string}>)
         | undefined,
 ): string {
-    return toLuxonDateTime(fullDate).toLocaleString(
+    const localeString = toLuxonDateTime(fullDate).toLocaleString(
         {
             ...formatOptions,
         },
@@ -44,6 +52,8 @@ export function toLocaleString(
             locale: formatOptions?.locale ?? userLocale,
         },
     );
+
+    return fixChromiumSpace(localeString);
 }
 
 /**
@@ -58,7 +68,11 @@ export function toFormattedString(
     format: string,
     localeOverride: string = userLocale,
 ): string {
-    return toLuxonDateTime(fullDate).toFormat(format, {locale: localeOverride});
+    const formattedString = toLuxonDateTime(fullDate)
+        .toFormat(format, {locale: localeOverride})
+        .replace(/ /g, ' ');
+
+    return fixChromiumSpace(formattedString);
 }
 
 type OnlyDatePart = SetOptional<DatePart, 'timezone'>;
