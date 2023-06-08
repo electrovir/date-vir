@@ -124,9 +124,9 @@ export function toHtmlInputString(
         }
 
         const dateParts = [
-            fullDate.year,
-            String(fullDate.month).padStart(2, '0'),
-            String(fullDate.day).padStart(2, '0'),
+            String(Math.abs(fullDate.year)).padStart(4, '0'),
+            String(Math.abs(fullDate.month)).padStart(2, '0'),
+            String(Math.abs(fullDate.day)).padStart(2, '0'),
         ] as const;
         return dateParts.join('-') as JustDateString;
     } else if (inputType === FullDatePartEnum.Time) {
@@ -143,9 +143,9 @@ export function toHtmlInputString(
         }
 
         const timeParts = [
-            String(fullDate.hour).padStart(2, '0'),
-            String(fullDate.minute).padStart(2, '0'),
-            includeSeconds ? String(fullDate.second).padStart(2, '0') : undefined,
+            String(Math.abs(fullDate.hour)).padStart(2, '0'),
+            String(Math.abs(fullDate.minute)).padStart(2, '0'),
+            includeSeconds ? String(Math.abs(fullDate.second ?? 0)).padStart(2, '0') : undefined,
         ].filter((entry) => entry != undefined);
 
         return timeParts.join(':') as JustTimeWithSecondsString | JustTimeString;

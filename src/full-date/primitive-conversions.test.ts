@@ -96,6 +96,18 @@ describe(toHtmlInputString.name, () => {
             expect: '2023-10-24',
         },
         {
+            it: 'pads short years',
+            inputs: [
+                {
+                    year: 2023,
+                    month: 10,
+                    day: 24,
+                },
+                FullDatePartEnum.Date,
+            ],
+            expect: '2023-10-24',
+        },
+        {
             it: 'errors if date is missing day',
             inputs: [
                 {
