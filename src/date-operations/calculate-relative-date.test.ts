@@ -1,6 +1,6 @@
 import {itCases} from '@augment-vir/browser-testing';
+import {exampleFullDate} from '../full-date/full-date.test-helper';
 import {calculateRelativeDate} from './calculate-relative-date';
-import {exampleFullDate} from './full-date.test-helper';
 
 describe(calculateRelativeDate.name, () => {
     itCases(calculateRelativeDate, [

@@ -6,7 +6,7 @@ import {
     TimePart,
     datePartShape,
     timePartShape,
-} from './full-date-shape';
+} from '../full-date/full-date-shape';
 
 type MaybeDateParts = Partial<{
     [FullDatePartEnum.Date]: DatePart | undefined | Partial<FullDate>;

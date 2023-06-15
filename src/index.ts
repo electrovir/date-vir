@@ -1,5 +1,5 @@
-export * from './full-date/calculate-relative-date';
-export * from './full-date/combine-dates';
+export * from './date-operations/calculate-relative-date';
+export * from './date-operations/combine-dates';
 export * from './full-date/create-full-date';
 export * from './full-date/date-like';
 export * from './full-date/format-presets';

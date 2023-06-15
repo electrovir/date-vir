@@ -1,7 +1,5 @@
 import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
 import {getObjectTypedKeys, omitObjectKeys} from '@augment-vir/common';
-import {userTimezone} from '../timezone/timezones';
-import {MaybeDatePart, combineDateParts} from './combine-dates';
 import {
     DatePart,
     FullDate,
@@ -9,8 +7,10 @@ import {
     TimePart,
     datePartShape,
     timePartShape,
-} from './full-date-shape';
-import {exampleFullDate, nonUserTimezone} from './full-date.test-helper';
+} from '../full-date/full-date-shape';
+import {exampleFullDate, nonUserTimezone} from '../full-date/full-date.test-helper';
+import {userTimezone} from '../timezone/timezones';
+import {MaybeDatePart, combineDateParts} from './combine-dates';
 
 describe(combineDateParts.name, () => {
     itCases(combineDateParts, [
