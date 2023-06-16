@@ -6,6 +6,7 @@ export * from './full-date/date-like';
 export * from './full-date/format-presets';
 export * from './full-date/full-date-shape';
 export * from './full-date/is-valid-full-date';
+export * from './full-date/js-date-conversion';
 export * from './full-date/luxon-date-time-conversion';
 export * from './full-date/parsing';
 export * from './full-date/primitive-conversions';
