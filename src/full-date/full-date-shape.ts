@@ -18,7 +18,7 @@ export const timePartShape = defineShape({
     /** Millisecond of the second: 0-999 */
     millisecond: 870,
     /** The timezone that this date/time is meant for / originated from. */
-    timezone: utcTimezone,
+    timezone: utcTimezone as Timezone,
 });
 
 export type TimePart = RequiredBy<Partial<FullDate>, keyof (typeof timePartShape)['runTimeType']>;
@@ -36,7 +36,7 @@ export const datePartShape = defineShape({
     /** A day of the month: 1-31 depending on the month */
     day: 5,
     /** The timezone that this date/time is meant for / originated from. */
-    timezone: utcTimezone,
+    timezone: utcTimezone as Timezone,
 });
 
 export type DatePart = RequiredBy<Partial<FullDate>, keyof (typeof datePartShape)['runTimeType']>;

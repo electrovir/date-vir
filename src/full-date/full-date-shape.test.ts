@@ -1,5 +1,5 @@
-import {assertValidShape} from 'object-shape-tester';
-import {utcTimezone} from '../timezone/timezones';
+import {assertValidShape, defineShape} from 'object-shape-tester';
+import {userTimezone, utcTimezone} from '../timezone/timezones';
 import {
     DatePart,
     FullDate,
@@ -46,9 +46,32 @@ describe('FullDate', () => {
             minute: 1,
             second: 1,
             millisecond: 1,
-            timezone: utcTimezone,
+            timezone: userTimezone,
         };
 
         assertValidShape(exampleDate, fullDateShape);
+    });
+
+    it('is composable', () => {
+        const myShape = defineShape({
+            a: '',
+            b: fullDateShape,
+        });
+
+        const exampleMyInstance: typeof myShape.runTimeType = {
+            a: 'hi',
+            b: {
+                year: 1,
+                month: 1,
+                day: 1,
+                hour: 1,
+                minute: 1,
+                second: 1,
+                millisecond: 1,
+                timezone: userTimezone,
+            },
+        };
+
+        assertValidShape(exampleMyInstance, myShape);
     });
 });
