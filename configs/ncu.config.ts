@@ -1,4 +1,5 @@
 import {RunOptions} from 'npm-check-updates';
+import {baseNcuConfig} from 'virmator/dist/compiled-base-configs/base-ncu';
 
 export const ncuConfig: RunOptions = {
     color: true,
@@ -6,8 +7,7 @@ export const ncuConfig: RunOptions = {
     root: true,
     // exclude these
     reject: [
-        // TypeScript 5.1.x is really messed up
-        'typescript',
+        ...baseNcuConfig.reject,
     ],
     // include only these
     filter: [],
