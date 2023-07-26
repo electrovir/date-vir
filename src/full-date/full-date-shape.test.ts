@@ -1,4 +1,5 @@
-import {assertValidShape, defineShape} from 'object-shape-tester';
+import {assertValidShape, defineShape, exact} from 'object-shape-tester';
+import {ReadonlyDeep} from 'type-fest';
 import {userTimezone, utcTimezone} from '../timezone/timezones';
 import {
     DatePart,
@@ -50,6 +51,24 @@ describe('FullDate', () => {
         };
 
         assertValidShape(exampleDate, fullDateShape);
+    });
+
+    it('is assignable to readonly versions of itself', () => {
+        const myShape = defineShape({
+            deployLocation: exact('github'),
+            gitBranch: {
+                branchName: '',
+                branchUrl: '',
+                commitDate: fullDateShape,
+                headCommitMessageLines: [''],
+                headSha: '',
+                commitUrl: '',
+            },
+        });
+
+        function acceptDate(date: ReadonlyDeep<FullDate>) {}
+
+        acceptDate(myShape.defaultValue.gitBranch.commitDate);
     });
 
     it('is composable', () => {
