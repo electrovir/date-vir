@@ -19,7 +19,13 @@ import {
     toLocaleString,
     toTimestamp,
 } from './primitive-conversions';
-import {JustDateString, JustTimeString, JustTimeWithSecondsString} from './string-format-types';
+import {
+    DateTimeString,
+    DateTimeWithSeconds,
+    JustDateString,
+    JustTimeString,
+    JustTimeWithSecondsString,
+} from './string-format-types';
 
 describe(toHtmlInputString.name, () => {
     itCases(toHtmlInputString, [
@@ -218,9 +224,32 @@ describe(toHtmlInputString.name, () => {
             ],
             expect: '01:19:03',
         },
+        {
+            it: 'creates a datetime string without seconds',
+            inputs: [
+                createFullDate('2023-06-05T14:19:03.870Z', utcTimezone),
+                FullDatePartEnum.DateTime,
+            ],
+            expect: '2023-06-05T14:19',
+        },
+        {
+            it: 'creates a datetime string with seconds',
+            inputs: [
+                createFullDate('2023-06-05T14:19:03.870Z', utcTimezone),
+                FullDatePartEnum.DateTime,
+                true,
+            ],
+            expect: '2023-06-05T14:19:03',
+        },
     ]);
 
     it('has proper types', () => {
+        assertTypeOf(
+            toHtmlInputString(exampleFullDate, FullDatePartEnum.DateTime),
+        ).toEqualTypeOf<DateTimeString>();
+        assertTypeOf(
+            toHtmlInputString(exampleFullDate, FullDatePartEnum.DateTime, true),
+        ).toEqualTypeOf<DateTimeWithSeconds>();
         assertTypeOf(
             toHtmlInputString(exampleFullDate, FullDatePartEnum.Date),
         ).toEqualTypeOf<JustDateString>();
@@ -245,7 +274,13 @@ describe(toHtmlInputString.name, () => {
                 FullDatePartEnum.Date as FullDatePartEnum,
                 false as boolean | undefined,
             ),
-        ).toEqualTypeOf<JustDateString | JustTimeWithSecondsString | JustTimeString>();
+        ).toEqualTypeOf<
+            | JustDateString
+            | JustTimeWithSecondsString
+            | JustTimeString
+            | DateTimeWithSeconds
+            | DateTimeString
+        >();
     });
 });
 

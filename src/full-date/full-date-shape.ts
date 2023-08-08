@@ -3,9 +3,14 @@ import {and, defineShape} from 'object-shape-tester';
 import {Timezone} from '../timezone/timezone-names';
 import {utcTimezone} from '../timezone/timezones';
 
+/**
+ * Represents various parts of a FullDate. Each value is also a valid "type" attribute for an
+ * <input> HTML element.
+ */
 export enum FullDatePartEnum {
     Date = 'date',
     Time = 'time',
+    DateTime = 'datetime-local',
 }
 
 export const timePartShape = defineShape({
@@ -48,3 +53,7 @@ export const fullDateShape = defineShape(and(datePartShape, timePartShape));
  * be represented with minimal data.
  */
 export type FullDate = Overwrite<(typeof fullDateShape)['runTimeType'], {timezone: Timezone}>;
+
+export type OnlyDatePart = Omit<DatePart, 'timezone'>;
+export type OnlyHourMinutePart = Pick<Partial<FullDate>, 'hour' | 'minute'>;
+export type OnlyHourMinuteSecondPart = Pick<Partial<FullDate>, 'hour' | 'minute' | 'second'>;

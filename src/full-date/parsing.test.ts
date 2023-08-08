@@ -120,6 +120,25 @@ describe(parseInputElementValue.name, () => {
             },
         );
     });
+
+    it('reads from user input datetime values', async () => {
+        const inputElement = await setupInputElementTest(
+            FullDatePartEnum.DateTime,
+            '2023-05-04T05:06',
+        );
+
+        assert.deepStrictEqual(parseInputElementValue(inputElement, timezones['Africa/Accra']), {
+            year: 2023,
+            month: 5,
+            day: 4,
+            hour: 5,
+            minute: 6,
+            millisecond: 0,
+            second: 0,
+
+            timezone: timezones['Africa/Accra'],
+        });
+    });
 });
 
 describe(parseStrangeString.name, () => {
