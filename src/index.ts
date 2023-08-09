@@ -3,6 +3,7 @@ export * from './date-operations/combine-dates';
 export * from './date-operations/diff-dates';
 export * from './full-date/create-full-date';
 export * from './full-date/date-like';
+export * from './full-date/date-transforms';
 export * from './full-date/format-presets';
 export * from './full-date/full-date-shape';
 export * from './full-date/is-valid-full-date';
