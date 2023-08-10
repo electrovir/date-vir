@@ -27,7 +27,7 @@ export function toLuxonDateTime(fullDateInput: FullDate): DateTime {
  * could be helpful if you need it. Usually you should prefer using the createFullDate function
  * instead.
  */
-export function parseLuxonDateTime(dateTimeInput: DateTime): FullDate {
+export function parseLuxonDateTime(dateTimeInput: DateTime, forcedTimezone?: Timezone): FullDate {
     if (!dateTimeInput.isValid) {
         throw new Error(`Invalid input: '${dateTimeInput.toISO()}'`);
     }
@@ -40,6 +40,6 @@ export function parseLuxonDateTime(dateTimeInput: DateTime): FullDate {
         minute: dateTimeInput.minute,
         second: dateTimeInput.second,
         millisecond: dateTimeInput.millisecond,
-        timezone: dateTimeInput.zoneName as Timezone,
+        timezone: forcedTimezone ?? (dateTimeInput.zoneName as Timezone),
     };
 }

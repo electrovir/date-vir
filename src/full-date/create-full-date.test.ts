@@ -52,6 +52,23 @@ describe(createFullDate.name, () => {
             expect: exampleFullDate,
         },
         {
+            it: 'handles a weird formatted date',
+            inputs: [
+                'March 1 2023',
+                utcTimezone,
+            ],
+            expect: {
+                year: 2023,
+                month: 3,
+                day: 1,
+                hour: 0,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+                timezone: utcTimezone,
+            },
+        },
+        {
             it: 'handles a full ISO string with Z for a different time zone',
             inputs: [
                 exampleIsoString,
@@ -159,7 +176,7 @@ describe(createFullDate.name, () => {
                 'foobar',
                 timezones['Australia/Brisbane'],
             ],
-            throws: 'Failed to parse date string',
+            throws: "Failed to parse date input 'foobar'",
         },
         {
             it: 'rejects an invalid date string',

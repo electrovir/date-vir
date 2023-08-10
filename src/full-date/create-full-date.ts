@@ -7,11 +7,11 @@ import {FullDate} from './full-date-shape';
 import {isValidFullDate} from './is-valid-full-date';
 import {parseLuxonDateTime, toLuxonDateTime} from './luxon-date-time-conversion';
 
-export function createFullDateInUserTimezone(dateLike: DateLike): FullDate {
+export function createFullDateInUserTimezone(dateLike: Readonly<DateLike>): FullDate {
     return createFullDate(dateLike, userTimezone);
 }
 
-export function createUtcFullDate(dateLike: DateLike): FullDate {
+export function createUtcFullDate(dateLike: Readonly<DateLike>): FullDate {
     return createFullDate(dateLike, utcTimezone);
 }
 
@@ -21,7 +21,7 @@ export function createUtcFullDate(dateLike: DateLike): FullDate {
  */
 export function createFullDate(
     /** The original date representation to be converted into a FullDate. */
-    dateLike: DateLike,
+    dateLike: Readonly<DateLike>,
     /** The timezone that this date/time is meant for / originated from. */
     timezone: Timezone,
 ): FullDate {
@@ -31,14 +31,14 @@ export function createFullDate(
         throw new Error(`Failed to parse date input '${dateLike}'`);
     }
 
-    return parseLuxonDateTime(dateTime);
+    return parseLuxonDateTime(dateTime, timezone);
 }
 
 /**
  * Creates and returns a new FullDate object with its values shifted to be the same original time
  * but represented in a new timezone.
  */
-export function toNewTimezone(fullDate: FullDate, timezone: Timezone) {
+export function toNewTimezone(fullDate: Readonly<FullDate>, timezone: Timezone) {
     if (fullDate.timezone === timezone) {
         return fullDate;
     }
@@ -46,8 +46,18 @@ export function toNewTimezone(fullDate: FullDate, timezone: Timezone) {
     return createFullDate(fullDate, timezone);
 }
 
+function lastDitchConversion(dateLike: Readonly<DateLike>): DateTime | undefined {
+    /** As any cast for last ditch effort to convert the dateLike into a date. */
+    const dateTime = DateTime.fromJSDate(new Date(dateLike as any));
+    if (dateTime.isValid) {
+        return dateTime;
+    } else {
+        return undefined;
+    }
+}
+
 function convertDateLikeToLuxonDateTime(
-    dateLike: DateLike,
+    dateLike: Readonly<DateLike>,
     timezone: Timezone,
 ): DateTime | undefined {
     if (isValidFullDate(dateLike)) {
@@ -62,9 +72,7 @@ function convertDateLikeToLuxonDateTime(
         const dateTime = DateTime.fromISO(dateLike, {zone: timezone});
 
         if (!dateTime.isValid) {
-            throw new Error(
-                `Failed to parse date string '${dateLike}': unexpected string format. Please use parseStringToFullDate instead to have more control over the parsing format.`,
-            );
+            return lastDitchConversion(dateLike);
         }
 
         return dateTime;
@@ -73,7 +81,7 @@ function convertDateLikeToLuxonDateTime(
         return dateTime.setZone(timezone);
     }
 
-    return undefined;
+    return lastDitchConversion(dateLike);
 }
 
 export function getNowFullDate(timezone: Timezone): FullDate {
