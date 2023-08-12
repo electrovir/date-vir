@@ -26,7 +26,10 @@ export const timePartShape = defineShape({
     timezone: utcTimezone as Timezone,
 });
 
-export type TimePart = RequiredBy<Partial<FullDate>, keyof (typeof timePartShape)['runTimeType']>;
+export type TimePart<SpecificTimezone extends Timezone = Timezone> = RequiredBy<
+    Partial<FullDate<SpecificTimezone>>,
+    keyof (typeof timePartShape)['runTimeType']
+>;
 
 export const datePartShape = defineShape({
     /**
@@ -44,7 +47,10 @@ export const datePartShape = defineShape({
     timezone: utcTimezone as Timezone,
 });
 
-export type DatePart = RequiredBy<Partial<FullDate>, keyof (typeof datePartShape)['runTimeType']>;
+export type DatePart<SpecificTimezone extends Timezone = Timezone> = RequiredBy<
+    Partial<FullDate<SpecificTimezone>>,
+    keyof (typeof datePartShape)['runTimeType']
+>;
 
 export const fullDateShape = defineShape(and(datePartShape, timePartShape));
 
@@ -52,7 +58,10 @@ export const fullDateShape = defineShape(and(datePartShape, timePartShape));
  * A easily serializable (it fits into plain JSON) object that completely defines how a date is to
  * be represented with minimal data.
  */
-export type FullDate = Overwrite<(typeof fullDateShape)['runTimeType'], {timezone: Timezone}>;
+export type FullDate<SpecificTimezone extends Timezone = Timezone> = Overwrite<
+    (typeof fullDateShape)['runTimeType'],
+    {timezone: SpecificTimezone}
+>;
 
 export type OnlyDatePart = Omit<DatePart, 'timezone'>;
 export type OnlyHourMinutePart = Pick<Partial<FullDate>, 'hour' | 'minute'>;

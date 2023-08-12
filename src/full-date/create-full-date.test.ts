@@ -10,7 +10,7 @@ import {
     getNowFullDate,
     toNewTimezone,
 } from './create-full-date';
-import {fullDateShape} from './full-date-shape';
+import {FullDate, fullDateShape} from './full-date-shape';
 import {
     exampleFullDate,
     exampleIsoString,
@@ -206,7 +206,7 @@ describe(toNewTimezone.name, () => {
 
         const shiftedDate = toNewTimezone(myDate, utcTimezone);
 
-        assert.notDeepEqual(shiftedDate, myDate);
+        assert.notDeepEqual<FullDate>(shiftedDate, myDate);
     });
 
     it('does nothing if the given date is already in the given timezone', () => {

@@ -24,6 +24,8 @@ export type DiffDuration<DurationKeys extends MaybeTuple<DiffUnit>> =
               DurationKeys extends AtLeastTuple<infer InnerValue, 1> ? InnerValue : DurationKeys
           >;
 
+export type Duration<DurationKeys extends MaybeTuple<DiffUnit>> = DiffDuration<DurationKeys>;
+
 export function diffDates<const DurationKeys extends MaybeTuple<DiffUnit> = MaybeTuple<DiffUnit>>(
     fullDateA: FullDate,
     fullDateB: FullDate,

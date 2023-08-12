@@ -45,10 +45,10 @@ export function parseStrangeString({
  * Read either an HTMLInputElement's value directly, or the value string retrieved from an
  * HTMLInputElement. Handles both type="date" and type="time" <input> elements.
  */
-export function parseInputElementValue(
+export function parseInputElementValue<const SpecificTimezone extends Timezone = Timezone>(
     elementOrValue: HTMLInputElement | string | null | undefined,
-    timezone: Timezone,
-): FullDate | undefined {
+    timezone: SpecificTimezone,
+): FullDate<SpecificTimezone> | undefined {
     if (!elementOrValue) {
         return undefined;
     }

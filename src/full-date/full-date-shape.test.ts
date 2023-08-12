@@ -1,6 +1,8 @@
+import {assertTypeOf} from '@augment-vir/browser-testing';
 import {assertValidShape, defineShape, exact} from 'object-shape-tester';
 import {ReadonlyDeep} from 'type-fest';
-import {userTimezone, utcTimezone} from '../timezone/timezones';
+import {UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones';
+import {getNowFullDate} from './create-full-date';
 import {
     DatePart,
     FullDate,
@@ -51,6 +53,17 @@ describe('FullDate', () => {
         };
 
         assertValidShape(exampleDate, fullDateShape);
+    });
+
+    it('allow specifying a specific timezone', () => {
+        const anyTimezone = getNowFullDate(userTimezone);
+
+        /** There should be an error here because the timezone type parameters do not match. */
+        // @ts-expect-error
+        const specificTimezone: FullDate<UtcTimezone> = anyTimezone;
+
+        assertTypeOf(specificTimezone.timezone).toEqualTypeOf<UtcTimezone>();
+        assertTypeOf(specificTimezone.timezone).toEqualTypeOf(utcTimezone);
     });
 
     it('is assignable to readonly versions of itself', () => {

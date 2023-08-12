@@ -15,3 +15,4 @@ export const timezones = allTimezoneNames.reduce((accum, timezoneName) => {
 export const userTimezone = Settings.defaultZone.name as Timezone;
 /** The UTC timezone. */
 export const utcTimezone = timezones.UTC;
+export type UtcTimezone = typeof utcTimezone;

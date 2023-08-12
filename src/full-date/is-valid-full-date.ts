@@ -1,5 +1,6 @@
 import {assertValidShape} from 'object-shape-tester';
 import {assertValidTimezone} from '../timezone/timezone-checks';
+import {Timezone} from '../timezone/timezone-names';
 import {FullDate, fullDateShape} from './full-date-shape';
 import {toLuxonDateTime} from './luxon-date-time-conversion';
 
@@ -18,4 +19,11 @@ export function isValidFullDate(input: unknown): input is FullDate {
     } catch (error) {
         return false;
     }
+}
+
+export function hasTimezone<const SpecificTimezone extends Timezone>(
+    input: FullDate,
+    timezone: SpecificTimezone,
+): input is FullDate<SpecificTimezone> {
+    return input.timezone === timezone;
 }

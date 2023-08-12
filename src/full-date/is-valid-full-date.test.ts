@@ -1,8 +1,10 @@
-import {itCases} from '@augment-vir/browser-testing';
+import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
 import {ShapeMismatchError} from 'object-shape-tester';
 import {Timezone} from '../timezone/timezone-names';
+import {UtcTimezone, utcTimezone} from '../timezone/timezones';
 import {FullDate, fullDateShape} from './full-date-shape';
-import {assertIsValidFullDate} from './is-valid-full-date';
+import {exampleFullDate, nonUtcTimezone} from './full-date.test-helper';
+import {assertIsValidFullDate, hasTimezone} from './is-valid-full-date';
 
 describe(assertIsValidFullDate.name, () => {
     itCases(
@@ -89,4 +91,35 @@ describe(assertIsValidFullDate.name, () => {
             },
         ],
     );
+});
+
+describe(hasTimezone.name, () => {
+    itCases(hasTimezone, [
+        {
+            it: 'passes when the timezone matches',
+            inputs: [
+                exampleFullDate,
+                exampleFullDate.timezone,
+            ],
+            expect: true,
+        },
+        {
+            it: 'fails when the timezone does not match',
+            inputs: [
+                exampleFullDate,
+                nonUtcTimezone,
+            ],
+            expect: false,
+        },
+    ]);
+
+    it('type guards the input', () => {
+        const vagueTimezone = exampleFullDate as FullDate;
+
+        assertTypeOf(vagueTimezone).not.toEqualTypeOf<FullDate<UtcTimezone>>();
+
+        if (hasTimezone(vagueTimezone, utcTimezone)) {
+            assertTypeOf(vagueTimezone).toEqualTypeOf<FullDate<UtcTimezone>>();
+        }
+    });
 });
