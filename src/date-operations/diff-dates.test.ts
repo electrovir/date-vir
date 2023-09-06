@@ -2,78 +2,99 @@ import {randomInteger} from '@augment-vir/browser';
 import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
 import {exampleFullDate} from '../full-date/full-date.test-helper';
 import {calculateRelativeDate} from './calculate-relative-date';
-import {DiffDuration, diffDates} from './diff-dates';
+import {DiffDuration, DiffUnit, diffDates, isDateAfter} from './diff-dates';
+
+const secondsDiff = randomInteger({min: 1, max: 1_000_000_00});
+const exampleFullDateOffset = calculateRelativeDate(exampleFullDate, {seconds: secondsDiff});
+
+describe(isDateAfter.name, () => {
+    itCases(isDateAfter, [
+        {
+            it: 'detects a date is after another',
+            input: {
+                start: exampleFullDate,
+                end: exampleFullDateOffset,
+            },
+            expect: true,
+        },
+        {
+            it: 'calculates the opposite if the inputs are swapped',
+            input: {
+                start: exampleFullDateOffset,
+                end: exampleFullDate,
+            },
+            expect: false,
+        },
+    ]);
+});
 
 describe(diffDates.name, () => {
-    const secondsDiff = randomInteger({min: 1, max: 1_000_000_00});
-    const exampleFullDateOffset = calculateRelativeDate(exampleFullDate, {seconds: secondsDiff});
-
     itCases(diffDates, [
         {
             it: 'calculates diff correctly',
-            inputs: [
-                exampleFullDate,
-                exampleFullDateOffset,
-                'seconds',
-            ],
+            input: {
+                start: exampleFullDate,
+                end: exampleFullDateOffset,
+                unit: DiffUnit.Seconds,
+            },
             expect: {
                 seconds: secondsDiff,
             },
         },
         {
-            it: 'calculates the same if the inputs are swapped',
-            inputs: [
-                exampleFullDateOffset,
-                exampleFullDate,
-                'seconds',
-            ],
+            it: 'calculates the inverse if the inputs are swapped',
+            input: {
+                start: exampleFullDateOffset,
+                end: exampleFullDate,
+                unit: DiffUnit.Seconds,
+            },
             expect: {
-                seconds: secondsDiff,
+                seconds: secondsDiff * -1,
             },
         },
         {
             it: 'rejects an empty array of keys',
-            inputs: [
-                exampleFullDateOffset,
-                exampleFullDate,
-                // should have a type error here
+            input: {
+                start: exampleFullDateOffset,
+                end: exampleFullDate,
+                // should have a type error here because array is empty
                 // @ts-expect-error
-                [],
-            ],
+                unit: [],
+            },
             throws: Error,
         },
         {
             it: 'calculates the same if the key is in an array',
-            inputs: [
-                exampleFullDateOffset,
-                exampleFullDate,
-                ['seconds'],
-            ],
+            input: {
+                start: exampleFullDate,
+                end: exampleFullDateOffset,
+                unit: [DiffUnit.Seconds],
+            },
             expect: {
                 seconds: secondsDiff,
             },
         },
         {
             it: 'calculates the same if the key is in an array',
-            inputs: [
-                exampleFullDateOffset,
-                exampleFullDate,
-                ['minutes'],
-            ],
+            input: {
+                start: exampleFullDate,
+                end: exampleFullDateOffset,
+                unit: [DiffUnit.Minutes],
+            },
             expect: {
                 minutes: secondsDiff / 60,
             },
         },
         {
             it: 'works with multiple units',
-            inputs: [
-                exampleFullDateOffset,
-                exampleFullDate,
-                [
-                    'minutes',
-                    'seconds',
+            input: {
+                start: exampleFullDate,
+                end: exampleFullDateOffset,
+                unit: [
+                    DiffUnit.Minutes,
+                    DiffUnit.Seconds,
                 ],
-            ],
+            },
             expect: {
                 minutes: Math.floor(secondsDiff / 60),
                 seconds: secondsDiff - Math.floor(secondsDiff / 60) * 60,
@@ -82,28 +103,45 @@ describe(diffDates.name, () => {
     ]);
 
     it('has proper types', () => {
-        diffDates(
-            exampleFullDateOffset,
-            exampleFullDate,
+        diffDates({
+            start: exampleFullDateOffset,
+            end: exampleFullDate,
             // does not allow higher order units
             // @ts-expect-error
-            'years',
-        );
-        assertTypeOf(diffDates(exampleFullDateOffset, exampleFullDate, 'seconds')).toEqualTypeOf<{
-            seconds: number;
-        }>();
-        assertTypeOf(diffDates(exampleFullDateOffset, exampleFullDate, 'minutes')).toEqualTypeOf<{
-            minutes: number;
-        }>();
-        assertTypeOf(diffDates(exampleFullDateOffset, exampleFullDate, ['minutes'])).toEqualTypeOf<{
+            unit: 'years',
+        });
+
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDate,
+                end: exampleFullDateOffset,
+                unit: DiffUnit.Seconds,
+            }),
+        ).toMatchTypeOf<{seconds: number}>();
+        assertTypeOf(
+            diffDates({start: exampleFullDateOffset, end: exampleFullDate, unit: DiffUnit.Minutes}),
+        ).toMatchTypeOf<{
             minutes: number;
         }>();
         assertTypeOf(
-            diffDates(exampleFullDateOffset, exampleFullDate, [
-                'minutes',
-                'seconds',
-            ]),
-        ).toEqualTypeOf<{
+            diffDates({
+                start: exampleFullDate,
+                end: exampleFullDateOffset,
+                unit: [DiffUnit.Minutes],
+            }),
+        ).toMatchTypeOf<{
+            minutes: number;
+        }>();
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDate,
+                end: exampleFullDateOffset,
+                unit: [
+                    DiffUnit.Minutes,
+                    DiffUnit.Seconds,
+                ],
+            }),
+        ).toMatchTypeOf<{
             minutes: number;
             seconds: number;
         }>();
@@ -112,6 +150,6 @@ describe(diffDates.name, () => {
 
 describe('DiffDuration', () => {
     it('sets properties from its type parameter', () => {
-        assertTypeOf<DiffDuration<'seconds'>>().toEqualTypeOf<{seconds: number}>();
+        assertTypeOf<DiffDuration<DiffUnit.Seconds>>().toMatchTypeOf<{seconds: number}>();
     });
 });

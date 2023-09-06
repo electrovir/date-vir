@@ -1,6 +1,6 @@
 {
     "name": "date-vir",
-    "version": "0.9.0",
+    "version": "1.0.0",
     "description": "Easy and explicit dates and times",
     "keywords": [
         "date",
@@ -40,38 +40,38 @@
         "test:watch": "web-test-runner --watch --color --config configs/web-test-runner.config.mjs"
     },
     "dependencies": {
-        "@augment-vir/common": "^16.3.0",
-        "@types/luxon": "^3.3.1",
-        "luxon": "^3.4.0",
+        "@augment-vir/common": "^17.0.0",
+        "@types/luxon": "^3.3.2",
+        "luxon": "^3.4.3",
         "object-shape-tester": "^0.4.2",
-        "type-fest": "^4.2.0"
+        "type-fest": "^4.3.1"
     },
     "devDependencies": {
-        "@augment-vir/browser": "^16.3.0",
-        "@augment-vir/browser-testing": "^16.3.0",
+        "@augment-vir/browser": "^17.0.0",
+        "@augment-vir/browser-testing": "^17.0.0",
         "@open-wc/testing": "^3.2.0",
-        "@types/chai": "^4.3.5",
+        "@types/chai": "^4.3.6",
         "@types/mocha": "^10.0.1",
         "@web/dev-server-esbuild": "^0.4.1",
-        "@web/test-runner": "^0.17.0",
+        "@web/test-runner": "^0.17.1",
         "@web/test-runner-commands": "^0.8.0",
         "@web/test-runner-playwright": "^0.10.1",
         "@web/test-runner-visual-regression": "^0.8.2",
-        "cspell": "^7.0.0",
+        "cspell": "^7.3.2",
         "element-vir": "^16.3.1",
-        "esbuild": "^0.19.1",
+        "esbuild": "^0.19.2",
         "istanbul-smart-text-reporter": "^1.1.2",
         "markdown-code-example-inserter": "^0.3.1",
-        "npm-check-updates": "^16.10.18",
+        "npm-check-updates": "~16.12.3",
         "prettier": "^2.8.8",
         "prettier-plugin-interpolated-html-tags": "^0.0.4",
         "prettier-plugin-jsdoc": "^0.4.2",
         "prettier-plugin-multiline-arrays": "^2.0.0",
         "prettier-plugin-organize-imports": "^3.2.3",
         "prettier-plugin-packagejson": "^2.4.5",
-        "prettier-plugin-sort-json": "^1.0.0",
+        "prettier-plugin-sort-json": "^2.0.0",
         "prettier-plugin-toml": "^0.3.1",
-        "typescript": "^5.1.6",
-        "virmator": "^7.3.1"
+        "typescript": "^5.2.2",
+        "virmator": "^7.4.1"
     }
 }

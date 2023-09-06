@@ -1,5 +1,5 @@
 import {assert} from '@open-wc/testing';
-import {diffDates} from '../date-operations/diff-dates';
+import {DiffUnit, diffDates} from '../date-operations/diff-dates';
 import {createFullDate, getNowFullDate} from '../full-date/create-full-date';
 import {toIsoString} from '../full-date/primitive-conversions';
 import {utcTimezone} from '../timezone/timezones';
@@ -19,7 +19,7 @@ describe(getNowInIsoString.name, () => {
         const testFullDate = createFullDate(resultTest, utcTimezone);
         const compareFullDate = createFullDate(resultCompare, utcTimezone);
 
-        const diff = diffDates(testFullDate, compareFullDate, 'seconds');
+        const diff = diffDates({start: testFullDate, end: compareFullDate, unit: DiffUnit.Seconds});
 
         /** Allow large diff for slow CI action runners. */
         assert.isBelow(diff.seconds, 10);
