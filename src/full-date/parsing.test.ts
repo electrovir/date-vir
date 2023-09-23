@@ -1,7 +1,8 @@
-import {itCases, typedAssertInstanceOf} from '@augment-vir/browser-testing';
+import {itCases} from '@augment-vir/browser-testing';
 import {pickObjectKeys} from '@augment-vir/common';
 import {assert, fixture as renderFixture} from '@open-wc/testing';
 import {html} from 'element-vir';
+import {assertInstanceOf} from 'run-time-assertions';
 import {timezones} from '../timezone/timezones';
 import {FullDatePartEnum} from './full-date-shape';
 import {exampleFullDateUtc} from './full-date.test-helper';
@@ -53,7 +54,7 @@ describe(parseInputElementValue.name, () => {
             `,
         );
 
-        typedAssertInstanceOf(inputElement, HTMLInputElement);
+        assertInstanceOf(inputElement, HTMLInputElement);
 
         return inputElement;
     }
