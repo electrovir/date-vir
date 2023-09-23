@@ -7,7 +7,7 @@ import {createFullDate, toNewTimezone} from './create-full-date';
 import {formatPresets} from './format-presets';
 import {DatePart, FullDate, FullDatePartEnum} from './full-date-shape';
 import {
-    exampleFullDate,
+    exampleFullDateUtc,
     exampleIsoString,
     exampleTimestamp,
     nonUtcTimezone,
@@ -40,7 +40,7 @@ describe(toHtmlInputString.name, () => {
         {
             it: 'creates date strings in shifted timezones',
             inputs: [
-                toNewTimezone(exampleFullDate, timezones['America/Chicago']),
+                toNewTimezone(exampleFullDateUtc, timezones['America/Chicago']),
                 FullDatePartEnum.Date,
             ],
             expect: '2023-06-05',
@@ -245,32 +245,36 @@ describe(toHtmlInputString.name, () => {
 
     it('has proper types', () => {
         assertTypeOf(
-            toHtmlInputString(exampleFullDate, FullDatePartEnum.DateTime),
+            toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.DateTime),
         ).toEqualTypeOf<DateTimeString>();
         assertTypeOf(
-            toHtmlInputString(exampleFullDate, FullDatePartEnum.DateTime, true),
+            toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.DateTime, true),
         ).toEqualTypeOf<DateTimeWithSeconds>();
         assertTypeOf(
-            toHtmlInputString(exampleFullDate, FullDatePartEnum.Date),
+            toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.Date),
         ).toEqualTypeOf<JustDateString>();
         assertTypeOf(
-            toHtmlInputString(exampleFullDate, FullDatePartEnum.Time),
+            toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.Time),
         ).toEqualTypeOf<JustTimeString>();
         assertTypeOf(
-            toHtmlInputString(exampleFullDate, FullDatePartEnum.Time, true),
+            toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.Time, true),
         ).toEqualTypeOf<JustTimeWithSecondsString>();
         assertTypeOf(
-            toHtmlInputString(exampleFullDate, FullDatePartEnum.Time, true as boolean | undefined),
+            toHtmlInputString(
+                exampleFullDateUtc,
+                FullDatePartEnum.Time,
+                true as boolean | undefined,
+            ),
         ).toEqualTypeOf<JustTimeWithSecondsString | JustTimeString>();
         assertTypeOf(
-            toHtmlInputString(exampleFullDate, FullDatePartEnum.Date as FullDatePartEnum),
+            toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.Date as FullDatePartEnum),
         ).toEqualTypeOf<JustDateString | JustTimeString>();
         assertTypeOf(
-            toHtmlInputString(exampleFullDate, FullDatePartEnum.Date as FullDatePartEnum, true),
+            toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.Date as FullDatePartEnum, true),
         ).toEqualTypeOf<JustDateString | JustTimeWithSecondsString>();
         assertTypeOf(
             toHtmlInputString(
-                exampleFullDate,
+                exampleFullDateUtc,
                 FullDatePartEnum.Date as FullDatePartEnum,
                 false as boolean | undefined,
             ),
@@ -289,7 +293,7 @@ describe(toLocaleString.name, () => {
         {
             it: 'formats a string with the given locale',
             inputs: [
-                exampleFullDate,
+                exampleFullDateUtc,
                 {locale: 'fr'},
             ],
             expect: '05/06/2023',
@@ -297,7 +301,7 @@ describe(toLocaleString.name, () => {
         {
             it: 'formats a string with the user locale',
             inputs: [
-                exampleFullDate,
+                exampleFullDateUtc,
             ],
             throws: undefined,
         },
@@ -305,7 +309,7 @@ describe(toLocaleString.name, () => {
 
     it('formats with some more options', () => {
         const result = toLocaleString(
-            toNewTimezone(exampleFullDate, timezones['America/Chicago']),
+            toNewTimezone(exampleFullDateUtc, timezones['America/Chicago']),
             {
                 ...formatPresets.DatetimeFull,
                 locale: 'en-us',
@@ -328,7 +332,7 @@ describe(toFormattedString.name, () => {
         {
             it: 'should produce a string of arbitrary formatting',
             inputs: [
-                exampleFullDate,
+                exampleFullDateUtc,
                 'MMM-yyyy',
             ],
             expect: 'Jun-2023',
@@ -340,12 +344,12 @@ describe(toIsoString.name, () => {
     itCases(toIsoString, [
         {
             it: 'converts a UTC FullDate into an ISO string',
-            input: exampleFullDate,
+            input: exampleFullDateUtc,
             expect: exampleIsoString,
         },
         {
             it: 'converts a timezone shifted date to the same ISO string',
-            input: createFullDate(exampleFullDate, nonUtcTimezone),
+            input: createFullDate(exampleFullDateUtc, nonUtcTimezone),
             expect: exampleIsoString,
         },
     ]);
@@ -355,12 +359,12 @@ describe(toTimestamp.name, () => {
     itCases(toTimestamp, [
         {
             it: 'converts a UTC FullDate into a timestamp',
-            input: exampleFullDate,
+            input: exampleFullDateUtc,
             expect: exampleTimestamp,
         },
         {
             it: 'converts a timezone shifted FullDate into the same timestamp',
-            input: createFullDate(exampleFullDate, nonUtcTimezone),
+            input: createFullDate(exampleFullDateUtc, nonUtcTimezone),
             expect: exampleTimestamp,
         },
     ]);

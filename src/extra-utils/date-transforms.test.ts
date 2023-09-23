@@ -1,17 +1,17 @@
 import {itCases} from '@augment-vir/browser-testing';
+import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
 import {overrideDateParts} from './date-transforms';
-import {exampleFullDate} from './full-date.test-helper';
 
 describe(overrideDateParts.name, () => {
     itCases(overrideDateParts, [
         {
             it: 'overrides properties',
             inputs: [
-                exampleFullDate,
+                exampleFullDateUtc,
                 {day: 0, year: 0},
             ],
             expect: {
-                ...exampleFullDate,
+                ...exampleFullDateUtc,
                 day: 0,
                 year: 0,
             },

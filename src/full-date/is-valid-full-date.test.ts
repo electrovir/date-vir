@@ -3,7 +3,7 @@ import {ShapeMismatchError} from 'object-shape-tester';
 import {Timezone} from '../timezone/timezone-names';
 import {UtcTimezone, utcTimezone} from '../timezone/timezones';
 import {FullDate, fullDateShape} from './full-date-shape';
-import {exampleFullDate, nonUtcTimezone} from './full-date.test-helper';
+import {exampleFullDateUtc, nonUtcTimezone} from './full-date.test-helper';
 import {assertIsValidFullDate, hasTimezone} from './is-valid-full-date';
 
 describe(assertIsValidFullDate.name, () => {
@@ -98,15 +98,15 @@ describe(hasTimezone.name, () => {
         {
             it: 'passes when the timezone matches',
             inputs: [
-                exampleFullDate,
-                exampleFullDate.timezone,
+                exampleFullDateUtc,
+                exampleFullDateUtc.timezone,
             ],
             expect: true,
         },
         {
             it: 'fails when the timezone does not match',
             inputs: [
-                exampleFullDate,
+                exampleFullDateUtc,
                 nonUtcTimezone,
             ],
             expect: false,
@@ -114,7 +114,7 @@ describe(hasTimezone.name, () => {
     ]);
 
     it('type guards the input', () => {
-        const vagueTimezone = exampleFullDate as FullDate;
+        const vagueTimezone = exampleFullDateUtc as FullDate;
 
         assertTypeOf(vagueTimezone).not.toEqualTypeOf<FullDate<UtcTimezone>>();
 

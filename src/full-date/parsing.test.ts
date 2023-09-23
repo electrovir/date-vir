@@ -4,7 +4,7 @@ import {assert, fixture as renderFixture} from '@open-wc/testing';
 import {html} from 'element-vir';
 import {timezones} from '../timezone/timezones';
 import {FullDatePartEnum} from './full-date-shape';
-import {exampleFullDate} from './full-date.test-helper';
+import {exampleFullDateUtc} from './full-date.test-helper';
 import {parseInputElementValue, parseStrangeString} from './parsing';
 
 describe(parseInputElementValue.name, () => {
@@ -146,19 +146,19 @@ describe(parseStrangeString.name, () => {
         {
             it: 'parses arbitrary string format',
             input: {
-                dateString: '870-0-14-19 5 2023 6',
+                dateString: '877-7-14-19 5 2023 6',
                 // 2023-06-05T14:19:00.870Z
                 formatString: 'S-s-h-m d yyyy M',
-                timezone: exampleFullDate.timezone,
+                timezone: exampleFullDateUtc.timezone,
             },
-            expect: exampleFullDate,
+            expect: exampleFullDateUtc,
         },
         {
             it: 'fails with invalid inputs',
             input: {
                 dateString: '',
                 formatString: '',
-                timezone: exampleFullDate.timezone,
+                timezone: exampleFullDateUtc.timezone,
             },
             throws: 'Failed to parse string',
         },

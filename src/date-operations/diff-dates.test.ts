@@ -1,18 +1,18 @@
 import {randomInteger} from '@augment-vir/browser';
 import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
-import {exampleFullDate} from '../full-date/full-date.test-helper';
+import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
 import {calculateRelativeDate} from './calculate-relative-date';
 import {DiffDuration, DiffUnit, diffDates, isDateAfter} from './diff-dates';
 
 const secondsDiff = randomInteger({min: 1, max: 1_000_000_00});
-const exampleFullDateOffset = calculateRelativeDate(exampleFullDate, {seconds: secondsDiff});
+const exampleFullDateOffset = calculateRelativeDate(exampleFullDateUtc, {seconds: secondsDiff});
 
 describe(isDateAfter.name, () => {
     itCases(isDateAfter, [
         {
             it: 'detects a date is after another',
             input: {
-                start: exampleFullDate,
+                start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
             },
             expect: true,
@@ -21,7 +21,7 @@ describe(isDateAfter.name, () => {
             it: 'calculates the opposite if the inputs are swapped',
             input: {
                 start: exampleFullDateOffset,
-                end: exampleFullDate,
+                end: exampleFullDateUtc,
             },
             expect: false,
         },
@@ -33,7 +33,7 @@ describe(diffDates.name, () => {
         {
             it: 'calculates diff correctly',
             input: {
-                start: exampleFullDate,
+                start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
                 unit: DiffUnit.Seconds,
             },
@@ -45,7 +45,7 @@ describe(diffDates.name, () => {
             it: 'calculates the inverse if the inputs are swapped',
             input: {
                 start: exampleFullDateOffset,
-                end: exampleFullDate,
+                end: exampleFullDateUtc,
                 unit: DiffUnit.Seconds,
             },
             expect: {
@@ -53,10 +53,23 @@ describe(diffDates.name, () => {
             },
         },
         {
+            it: 'returns a fractional diff',
+            input: {
+                start: exampleFullDateUtc,
+                end: calculateRelativeDate(exampleFullDateUtc, {
+                    seconds: /* half a day in seconds */ 43_200,
+                }),
+                unit: DiffUnit.Days,
+            },
+            expect: {
+                days: 0.5,
+            },
+        },
+        {
             it: 'rejects an empty array of keys',
             input: {
                 start: exampleFullDateOffset,
-                end: exampleFullDate,
+                end: exampleFullDateUtc,
                 // should have a type error here because array is empty
                 // @ts-expect-error
                 unit: [],
@@ -66,7 +79,7 @@ describe(diffDates.name, () => {
         {
             it: 'calculates the same if the key is in an array',
             input: {
-                start: exampleFullDate,
+                start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
                 unit: [DiffUnit.Seconds],
             },
@@ -77,7 +90,7 @@ describe(diffDates.name, () => {
         {
             it: 'calculates the same if the key is in an array',
             input: {
-                start: exampleFullDate,
+                start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
                 unit: [DiffUnit.Minutes],
             },
@@ -88,7 +101,7 @@ describe(diffDates.name, () => {
         {
             it: 'works with multiple units',
             input: {
-                start: exampleFullDate,
+                start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
                 unit: [
                     DiffUnit.Minutes,
@@ -105,7 +118,7 @@ describe(diffDates.name, () => {
     it('has proper types', () => {
         diffDates({
             start: exampleFullDateOffset,
-            end: exampleFullDate,
+            end: exampleFullDateUtc,
             // does not allow higher order units
             // @ts-expect-error
             unit: 'years',
@@ -113,19 +126,23 @@ describe(diffDates.name, () => {
 
         assertTypeOf(
             diffDates({
-                start: exampleFullDate,
+                start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
                 unit: DiffUnit.Seconds,
             }),
         ).toMatchTypeOf<{seconds: number}>();
         assertTypeOf(
-            diffDates({start: exampleFullDateOffset, end: exampleFullDate, unit: DiffUnit.Minutes}),
+            diffDates({
+                start: exampleFullDateOffset,
+                end: exampleFullDateUtc,
+                unit: DiffUnit.Minutes,
+            }),
         ).toMatchTypeOf<{
             minutes: number;
         }>();
         assertTypeOf(
             diffDates({
-                start: exampleFullDate,
+                start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
                 unit: [DiffUnit.Minutes],
             }),
@@ -134,7 +151,7 @@ describe(diffDates.name, () => {
         }>();
         assertTypeOf(
             diffDates({
-                start: exampleFullDate,
+                start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
                 unit: [
                     DiffUnit.Minutes,

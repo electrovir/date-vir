@@ -3,7 +3,7 @@ import {userTimezone, utcTimezone} from '../timezone/timezones';
 import {createFullDate} from './create-full-date';
 import {fullDateShape} from './full-date-shape';
 import {
-    exampleFullDate,
+    exampleFullDateUtc,
     exampleIsoString,
     exampleTimestamp,
     nonUserTimezone,
@@ -22,12 +22,18 @@ describe('nonUtcTimezone', () => {
     });
 });
 
+describe('exampleUtcFullDate', () => {
+    it('matches the example timestamp', () => {
+        assert.deepStrictEqual(exampleFullDateUtc, createFullDate(exampleTimestamp, utcTimezone));
+    });
+});
+
 describe('example dates', () => {
     it('should all be equal', () => {
         const fromString = createFullDate(exampleIsoString, fullDateShape.defaultValue.timezone);
         const fromTimestamp = createFullDate(exampleTimestamp, fullDateShape.defaultValue.timezone);
 
-        assert.deepStrictEqual(exampleFullDate, fromTimestamp);
-        assert.deepStrictEqual(exampleFullDate, fromString);
+        assert.deepStrictEqual(exampleFullDateUtc, fromTimestamp);
+        assert.deepStrictEqual(exampleFullDateUtc, fromString);
     });
 });

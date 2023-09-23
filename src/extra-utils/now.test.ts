@@ -2,8 +2,8 @@ import {assert} from '@open-wc/testing';
 import {DiffUnit, diffDates} from '../date-operations/diff-dates';
 import {createFullDate, getNowFullDate} from '../full-date/create-full-date';
 import {toIsoString} from '../full-date/primitive-conversions';
-import {utcTimezone} from '../timezone/timezones';
-import {getNowInIsoString} from './now-in-iso-string';
+import {userTimezone, utcTimezone} from '../timezone/timezones';
+import {getNowInIsoString, getNowInUserTimezone} from './now';
 
 describe(getNowInIsoString.name, () => {
     it('produces same output as stringing together toIsoString and getNowFullDate', () => {
@@ -23,5 +23,21 @@ describe(getNowInIsoString.name, () => {
 
         /** Allow large diff for slow CI action runners. */
         assert.isBelow(diff.seconds, 10);
+    });
+});
+
+describe(getNowInUserTimezone.name, () => {
+    it('creates a time identical to doing getNowFullDate', () => {
+        const shortVersion = getNowInUserTimezone();
+        const longVersion = getNowFullDate(userTimezone);
+
+        /** Allow buffer for time between instruction execution */
+        const diff = diffDates({
+            start: shortVersion,
+            end: longVersion,
+            unit: DiffUnit.Minutes,
+        });
+
+        assert.isBelow(diff.minutes, 1);
     });
 });

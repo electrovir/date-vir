@@ -12,7 +12,7 @@ import {
 } from './create-full-date';
 import {FullDate, fullDateShape} from './full-date-shape';
 import {
-    exampleFullDate,
+    exampleFullDateUtc,
     exampleIsoString,
     exampleTimestamp,
     nonUserTimezone,
@@ -49,7 +49,7 @@ describe(createFullDate.name, () => {
                 exampleIsoString,
                 utcTimezone,
             ],
-            expect: exampleFullDate,
+            expect: exampleFullDateUtc,
         },
         {
             it: 'handles a weird formatted date',
@@ -75,7 +75,7 @@ describe(createFullDate.name, () => {
                 timezones['Australia/Brisbane'],
             ],
             expect: {
-                ...exampleFullDate,
+                ...exampleFullDateUtc,
                 day: 6,
                 hour: 0,
                 timezone: timezones['Australia/Brisbane'],
@@ -87,7 +87,7 @@ describe(createFullDate.name, () => {
                 exampleIsoString.slice(0, -1),
                 utcTimezone,
             ],
-            expect: exampleFullDate,
+            expect: exampleFullDateUtc,
         },
         {
             it: 'handles an ISO string with a timezone that changes the date',
@@ -96,7 +96,7 @@ describe(createFullDate.name, () => {
                 timezones['Etc/GMT-11'],
             ],
             expect: {
-                ...exampleFullDate,
+                ...exampleFullDateUtc,
                 day: 6,
                 hour: 1,
                 timezone: timezones['Etc/GMT-11'],
@@ -109,7 +109,7 @@ describe(createFullDate.name, () => {
                 timezones['Australia/Brisbane'],
             ],
             expect: {
-                ...exampleFullDate,
+                ...exampleFullDateUtc,
                 timezone: timezones['Australia/Brisbane'],
             },
         },
@@ -120,7 +120,7 @@ describe(createFullDate.name, () => {
                 timezones['Australia/Brisbane'],
             ],
             expect: {
-                ...exampleFullDate,
+                ...exampleFullDateUtc,
                 day: 6,
                 hour: 0,
                 timezone: timezones['Australia/Brisbane'],
@@ -133,8 +133,8 @@ describe(createFullDate.name, () => {
                 timezones['Etc/GMT-1'],
             ],
             expect: {
-                ...exampleFullDate,
-                hour: exampleFullDate.hour + 1,
+                ...exampleFullDateUtc,
+                hour: exampleFullDateUtc.hour + 1,
                 timezone: timezones['Etc/GMT-1'],
             },
         },
@@ -145,7 +145,7 @@ describe(createFullDate.name, () => {
                 utcTimezone,
             ],
             expect: {
-                ...exampleFullDate,
+                ...exampleFullDateUtc,
                 timezone: utcTimezone,
             },
         },
@@ -156,7 +156,7 @@ describe(createFullDate.name, () => {
                 timezones['Australia/Brisbane'],
             ],
             expect: {
-                ...exampleFullDate,
+                ...exampleFullDateUtc,
                 day: 6,
                 hour: 0,
                 timezone: timezones['Australia/Brisbane'],
@@ -190,7 +190,7 @@ describe(createFullDate.name, () => {
             it: 'rejects an invalid full date object',
             inputs: [
                 {
-                    ...exampleFullDate,
+                    ...exampleFullDateUtc,
                     day: 99,
                 },
                 timezones['Australia/Brisbane'],
@@ -210,7 +210,7 @@ describe(toNewTimezone.name, () => {
     });
 
     it('does nothing if the given date is already in the given timezone', () => {
-        const myDate = createFullDate(exampleIsoString, exampleFullDate.timezone);
+        const myDate = createFullDate(exampleIsoString, exampleFullDateUtc.timezone);
 
         const shiftedDate = toNewTimezone(myDate, utcTimezone);
 

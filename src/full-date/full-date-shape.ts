@@ -1,4 +1,4 @@
-import {Overwrite, RequiredBy} from '@augment-vir/common';
+import {ArrayElement, Overwrite, RequiredBy} from '@augment-vir/common';
 import {and, defineShape} from 'object-shape-tester';
 import {Timezone} from '../timezone/timezone-names';
 import {utcTimezone} from '../timezone/timezones';
@@ -13,15 +13,30 @@ export enum FullDatePartEnum {
     DateTime = 'datetime-local',
 }
 
+export const timeFullDateKeys = [
+    'hour',
+    'minute',
+    'second',
+    'millisecond',
+] as const satisfies ReadonlyArray<keyof typeof timePartShape.runTimeType>;
+export type TimeFullDateKeys = ArrayElement<typeof timeFullDateKeys>;
+
+export const dateFullDateKeys = [
+    'year',
+    'month',
+    'day',
+] as const satisfies ReadonlyArray<keyof typeof datePartShape.runTimeType>;
+export type DateFullDateKeys = ArrayElement<typeof dateFullDateKeys>;
+
 export const timePartShape = defineShape({
     /** Hour of the day in 24 time: 0-23 */
     hour: 14,
     /** Minute of the hour: 0-59 */
     minute: 19,
     /** Second of the minute: 0-59 */
-    second: 0,
+    second: 7,
     /** Millisecond of the second: 0-999 */
-    millisecond: 870,
+    millisecond: 877,
     /** The timezone that this date/time is meant for / originated from. */
     timezone: utcTimezone as Timezone,
 });

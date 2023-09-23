@@ -1,5 +1,5 @@
 import {itCases} from '@augment-vir/browser-testing';
-import {exampleFullDate} from '../full-date/full-date.test-helper';
+import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
 import {calculateRelativeDate} from './calculate-relative-date';
 
 describe(calculateRelativeDate.name, () => {
@@ -7,14 +7,14 @@ describe(calculateRelativeDate.name, () => {
         {
             it: 'calculates relative dates',
             inputs: [
-                exampleFullDate,
+                exampleFullDateUtc,
                 {
                     days: 2,
                 },
             ],
             expect: {
-                ...exampleFullDate,
-                day: exampleFullDate.day + 2,
+                ...exampleFullDateUtc,
+                day: exampleFullDateUtc.day + 2,
             },
         },
     ]);

@@ -8,7 +8,7 @@ import {
     datePartShape,
     timePartShape,
 } from '../full-date/full-date-shape';
-import {exampleFullDate, nonUserTimezone} from '../full-date/full-date.test-helper';
+import {exampleFullDateUtc, nonUserTimezone} from '../full-date/full-date.test-helper';
 import {userTimezone} from '../timezone/timezones';
 import {MaybeDatePart, combineDateParts} from './combine-dates';
 
@@ -17,18 +17,18 @@ describe(combineDateParts.name, () => {
         {
             it: 'does not modify parts that are the same',
             input: {
-                [FullDatePartEnum.Date]: exampleFullDate,
-                [FullDatePartEnum.Time]: exampleFullDate,
+                [FullDatePartEnum.Date]: exampleFullDateUtc,
+                [FullDatePartEnum.Time]: exampleFullDateUtc,
             },
-            expect: exampleFullDate,
+            expect: exampleFullDateUtc,
         },
         {
             it: 'handles undefined date part',
             input: {
-                [FullDatePartEnum.Time]: exampleFullDate,
+                [FullDatePartEnum.Time]: exampleFullDateUtc,
             },
             expect: omitObjectKeys(
-                exampleFullDate,
+                exampleFullDateUtc,
                 getObjectTypedKeys(datePartShape.defaultValue).filter(
                     (
                         key,
@@ -40,10 +40,10 @@ describe(combineDateParts.name, () => {
         {
             it: 'handles undefined time part',
             input: {
-                [FullDatePartEnum.Date]: exampleFullDate,
+                [FullDatePartEnum.Date]: exampleFullDateUtc,
             },
             expect: omitObjectKeys(
-                exampleFullDate,
+                exampleFullDateUtc,
                 getObjectTypedKeys(timePartShape.defaultValue).filter(
                     (
                         key,
@@ -151,36 +151,36 @@ describe(combineDateParts.name, () => {
         assertTypeOf(combineDateParts({})).toEqualTypeOf<undefined>();
         assertTypeOf(
             combineDateParts({
-                date: exampleFullDate,
+                date: exampleFullDateUtc,
             }),
         ).toEqualTypeOf<DatePart>();
         assertTypeOf(
             combineDateParts({
-                time: exampleFullDate,
+                time: exampleFullDateUtc,
             }),
         ).toEqualTypeOf<TimePart>();
         assertTypeOf(
             combineDateParts({
-                date: exampleFullDate,
-                time: exampleFullDate,
+                date: exampleFullDateUtc,
+                time: exampleFullDateUtc,
             }),
         ).toEqualTypeOf<FullDate>();
         assertTypeOf(
             combineDateParts({
-                date: exampleFullDate,
-                time: exampleFullDate as FullDate | undefined,
+                date: exampleFullDateUtc,
+                time: exampleFullDateUtc as FullDate | undefined,
             }),
         ).toEqualTypeOf<FullDate | DatePart>();
         assertTypeOf(
             combineDateParts({
-                date: exampleFullDate as FullDate | undefined,
-                time: exampleFullDate,
+                date: exampleFullDateUtc as FullDate | undefined,
+                time: exampleFullDateUtc,
             }),
         ).toEqualTypeOf<FullDate | TimePart>();
         assertTypeOf(
             combineDateParts({
-                date: exampleFullDate as FullDate | undefined,
-                time: exampleFullDate as FullDate | undefined,
+                date: exampleFullDateUtc as FullDate | undefined,
+                time: exampleFullDateUtc as FullDate | undefined,
             }),
         ).toEqualTypeOf<MaybeDatePart>();
     });
