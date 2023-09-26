@@ -4,6 +4,8 @@ Easy dates and times with explicit timezones (and typed timezones).
 
 `date-vir` revolves around the new `FullDate` type, which includes all the information you need to correctly pinpoint _and_ format a given point in time. Most notably, `FullDate` always includes a `timezone` property, so you _always_ know what timezone the date was originally defined in, or what timezone the date is intended to be used in:
 
+Full docs: http://electrovir.github.io/date-vir
+
 <!-- example-link: src/readme-examples/full-date.example.ts -->
 
 ```TypeScript

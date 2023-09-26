@@ -8,18 +8,15 @@ import {
     timePartShape,
 } from '../full-date/full-date-shape';
 
+/** An object containing date and/or time parts or neither. */
 type MaybeDateParts = Partial<{
     [FullDatePartEnum.Date]: DatePart | undefined | Partial<FullDate>;
     [FullDatePartEnum.Time]: TimePart | undefined | Partial<FullDate>;
 }>;
 
+/** A full date, time or date parts of a date, or undefined. */
 export type MaybeDatePart = FullDate | Partial<FullDate> | DatePart | TimePart | undefined;
 
-/**
- * Combine two parts of a FullDate objects into a filled-in FullDate. Note that the timezones must
- * match for both inputs. If two complete FullDate objects are passed in, only the respective parts
- * of each is used.
- */
 export function combineDateParts(maybeDateParts: {
     [FullDatePartEnum.Date]: DatePart;
     [FullDatePartEnum.Time]: TimePart;
@@ -45,6 +42,11 @@ export function combineDateParts(maybeDateParts: {
     [FullDatePartEnum.Time]: TimePart;
 }): FullDate | TimePart;
 export function combineDateParts(maybeDateParts: MaybeDateParts): MaybeDatePart;
+/**
+ * Combine two parts of a FullDate objects into a filled-in FullDate. Note that the timezones must
+ * match for both inputs. If two complete FullDate objects are passed in, only the respective parts
+ * of each is used.
+ */
 export function combineDateParts(maybeDateParts: MaybeDateParts): MaybeDatePart {
     const timePart: TimePart | undefined = isValidShape(maybeDateParts.time, timePartShape, {
         allowExtraKeys: true,

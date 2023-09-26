@@ -1,10 +1,14 @@
+import {AnyDuration} from '../duration';
 import {FullDate} from '../full-date/full-date-shape';
 import {parseLuxonDateTime, toLuxonDateTime} from '../full-date/luxon-date-time-conversion';
-import {RelativeTimeDuration} from '../relative-time-duration';
 
+/**
+ * Calculates a new date starting at the given fullDate and adding the given offsets. Offsets can be
+ * negative to go backwards in time.
+ */
 export function calculateRelativeDate(
-    fullDate: FullDate,
-    relativeCalculation: RelativeTimeDuration,
+    fullDate: Readonly<FullDate>,
+    offset: Readonly<AnyDuration>,
 ): FullDate {
-    return parseLuxonDateTime(toLuxonDateTime(fullDate).plus(relativeCalculation));
+    return parseLuxonDateTime(toLuxonDateTime(fullDate).plus(offset));
 }
