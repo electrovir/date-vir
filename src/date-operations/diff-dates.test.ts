@@ -1,8 +1,9 @@
 import {randomInteger} from '@augment-vir/browser';
 import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
+import {Duration} from '../duration';
 import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
 import {calculateRelativeDate} from './calculate-relative-date';
-import {DiffDuration, DiffUnit, diffDates, isDateAfter} from './diff-dates';
+import {DiffUnit, diffDates, isDateAfter} from './diff-dates';
 
 const secondsDiff = randomInteger({min: 1, max: 1_000_000_00});
 const exampleFullDateOffset = calculateRelativeDate(exampleFullDateUtc, {seconds: secondsDiff});
@@ -167,6 +168,6 @@ describe(diffDates.name, () => {
 
 describe('DiffDuration', () => {
     it('sets properties from its type parameter', () => {
-        assertTypeOf<DiffDuration<DiffUnit.Seconds>>().toMatchTypeOf<{seconds: number}>();
+        assertTypeOf<Duration<DiffUnit.Seconds>>().toMatchTypeOf<{seconds: number}>();
     });
 });
