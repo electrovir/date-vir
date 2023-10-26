@@ -10,7 +10,7 @@ import {MaybeTuple} from './augments/type';
  * If you REALLY want to use these higher order units, convert the dates to luxon objects with
  * toLuxonDateTime and then run diff calculations there.
  */
-export enum DiffUnit {
+export enum DurationUnit {
     Weeks = 'weeks',
     Days = 'days',
     Hours = 'hours',
@@ -27,9 +27,9 @@ export type AnyDuration = DurationObjectUnits;
  * dates, or add offsets to an existing date, or describe a single time duration. Usually only one
  * property is set on this at any given time.
  */
-export type Duration<DurationKeys extends MaybeTuple<DiffUnit>> =
-    MaybeTuple<DiffUnit> extends DurationKeys
-        ? Pick<AnyDuration, DiffUnit>
+export type Duration<DurationKeys extends MaybeTuple<DurationUnit>> =
+    MaybeTuple<DurationUnit> extends DurationKeys
+        ? Pick<AnyDuration, DurationUnit>
         : Pick<
               RequiredAndNotNull<AnyDuration>,
               DurationKeys extends AtLeastTuple<infer InnerValue, 1> ? InnerValue : DurationKeys

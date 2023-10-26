@@ -1,7 +1,7 @@
 import {itCases} from '@augment-vir/browser-testing';
 import {randomInteger} from '@augment-vir/common';
 import {assertTypeOf} from 'run-time-assertions';
-import {DiffUnit, Duration} from '../duration';
+import {Duration, DurationUnit} from '../duration';
 import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
 import {calculateRelativeDate} from './calculate-relative-date';
 import {diffDates, isDateAfter} from './diff-dates';
@@ -37,7 +37,7 @@ describe(diffDates.name, () => {
             input: {
                 start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
-                unit: DiffUnit.Seconds,
+                unit: DurationUnit.Seconds,
             },
             expect: {
                 seconds: secondsDiff,
@@ -48,7 +48,7 @@ describe(diffDates.name, () => {
             input: {
                 start: exampleFullDateOffset,
                 end: exampleFullDateUtc,
-                unit: DiffUnit.Seconds,
+                unit: DurationUnit.Seconds,
             },
             expect: {
                 seconds: secondsDiff * -1,
@@ -61,7 +61,7 @@ describe(diffDates.name, () => {
                 end: calculateRelativeDate(exampleFullDateUtc, {
                     seconds: /* half a day in seconds */ 43_200,
                 }),
-                unit: DiffUnit.Days,
+                unit: DurationUnit.Days,
             },
             expect: {
                 days: 0.5,
@@ -83,7 +83,7 @@ describe(diffDates.name, () => {
             input: {
                 start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
-                unit: [DiffUnit.Seconds],
+                unit: [DurationUnit.Seconds],
             },
             expect: {
                 seconds: secondsDiff,
@@ -94,7 +94,7 @@ describe(diffDates.name, () => {
             input: {
                 start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
-                unit: [DiffUnit.Minutes],
+                unit: [DurationUnit.Minutes],
             },
             expect: {
                 minutes: secondsDiff / 60,
@@ -106,8 +106,8 @@ describe(diffDates.name, () => {
                 start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
                 unit: [
-                    DiffUnit.Minutes,
-                    DiffUnit.Seconds,
+                    DurationUnit.Minutes,
+                    DurationUnit.Seconds,
                 ],
             },
             expect: {
@@ -130,14 +130,14 @@ describe(diffDates.name, () => {
             diffDates({
                 start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
-                unit: DiffUnit.Seconds,
+                unit: DurationUnit.Seconds,
             }),
         ).toMatchTypeOf<{seconds: number}>();
         assertTypeOf(
             diffDates({
                 start: exampleFullDateOffset,
                 end: exampleFullDateUtc,
-                unit: DiffUnit.Minutes,
+                unit: DurationUnit.Minutes,
             }),
         ).toMatchTypeOf<{
             minutes: number;
@@ -146,7 +146,7 @@ describe(diffDates.name, () => {
             diffDates({
                 start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
-                unit: [DiffUnit.Minutes],
+                unit: [DurationUnit.Minutes],
             }),
         ).toMatchTypeOf<{
             minutes: number;
@@ -156,8 +156,8 @@ describe(diffDates.name, () => {
                 start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
                 unit: [
-                    DiffUnit.Minutes,
-                    DiffUnit.Seconds,
+                    DurationUnit.Minutes,
+                    DurationUnit.Seconds,
                 ],
             }),
         ).toMatchTypeOf<{
@@ -169,6 +169,6 @@ describe(diffDates.name, () => {
 
 describe('DiffDuration', () => {
     it('sets properties from its type parameter', () => {
-        assertTypeOf<Duration<DiffUnit.Seconds>>().toMatchTypeOf<{seconds: number}>();
+        assertTypeOf<Duration<DurationUnit.Seconds>>().toMatchTypeOf<{seconds: number}>();
     });
 });
