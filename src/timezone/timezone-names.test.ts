@@ -1,4 +1,4 @@
-import {assertTypeOf} from '@augment-vir/browser-testing';
+import {assertTypeOf} from 'run-time-assertions';
 import {assertValidTimezone} from './timezone-checks';
 import {allTimezoneNames, Timezone} from './timezone-names';
 

@@ -6,10 +6,13 @@ export type Timezones = Readonly<{
 }>;
 
 /** A typed object of all known timezones, as of the writing of this message. */
-export const timezones = allTimezoneNames.reduce((accum, timezoneName) => {
-    accum[timezoneName] = timezoneName;
-    return accum;
-}, {} as Record<string, string>) as Timezones;
+export const timezones = allTimezoneNames.reduce(
+    (accum, timezoneName) => {
+        accum[timezoneName] = timezoneName;
+        return accum;
+    },
+    {} as Record<string, string>,
+) as Timezones;
 
 /** The timezone of the current user's environment. */
 export const userTimezone = Settings.defaultZone.name as Timezone;

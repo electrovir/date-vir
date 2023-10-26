@@ -1,5 +1,6 @@
-import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
+import {itCases} from '@augment-vir/browser-testing';
 import {ShapeMismatchError} from 'object-shape-tester';
+import {assertTypeOf} from 'run-time-assertions';
 import {Timezone} from '../timezone/timezone-names';
 import {UtcTimezone, utcTimezone} from '../timezone/timezones';
 import {FullDate, fullDateShape} from './full-date-shape';

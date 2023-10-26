@@ -1,6 +1,7 @@
-import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
+import {itCases} from '@augment-vir/browser-testing';
 import {RequiredBy} from '@augment-vir/common';
 import {assert} from '@open-wc/testing';
+import {assertTypeOf} from 'run-time-assertions';
 import {SetOptional} from 'type-fest';
 import {timezones, utcTimezone} from '../timezone/timezones';
 import {createFullDate, toNewTimezone} from './create-full-date';

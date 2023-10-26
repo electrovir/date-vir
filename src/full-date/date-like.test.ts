@@ -1,5 +1,5 @@
-import {assertTypeOf} from '@augment-vir/browser-testing';
 import {DateTime} from 'luxon';
+import {assertTypeOf} from 'run-time-assertions';
 import {timezones} from '../timezone/timezones';
 import {createFullDate} from './create-full-date';
 import {DateLike} from './date-like';

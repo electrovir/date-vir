@@ -48,11 +48,9 @@ describe(parseInputElementValue.name, () => {
     ]);
 
     async function setupInputElementTest(type: FullDatePartEnum, value: string) {
-        const inputElement = await renderFixture(
-            html`
-                <input type=${type} value=${value} />
-            `,
-        );
+        const inputElement = await renderFixture(html`
+            <input type=${type} value=${value} />
+        `);
 
         assertInstanceOf(inputElement, HTMLInputElement);
 

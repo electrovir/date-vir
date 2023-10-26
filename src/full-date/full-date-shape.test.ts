@@ -1,5 +1,5 @@
-import {assertTypeOf} from '@augment-vir/browser-testing';
 import {assertValidShape, defineShape, exact} from 'object-shape-tester';
+import {assertTypeOf} from 'run-time-assertions';
 import {ReadonlyDeep} from 'type-fest';
 import {UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones';
 import {getNowFullDate} from './create-full-date';

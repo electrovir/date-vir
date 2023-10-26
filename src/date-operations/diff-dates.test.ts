@@ -1,9 +1,10 @@
-import {randomInteger} from '@augment-vir/browser';
-import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
-import {Duration} from '../duration';
+import {itCases} from '@augment-vir/browser-testing';
+import {randomInteger} from '@augment-vir/common';
+import {assertTypeOf} from 'run-time-assertions';
+import {DiffUnit, Duration} from '../duration';
 import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
 import {calculateRelativeDate} from './calculate-relative-date';
-import {DiffUnit, diffDates, isDateAfter} from './diff-dates';
+import {diffDates, isDateAfter} from './diff-dates';
 
 const secondsDiff = randomInteger({min: 1, max: 1_000_000_00});
 const exampleFullDateOffset = calculateRelativeDate(exampleFullDateUtc, {seconds: secondsDiff});

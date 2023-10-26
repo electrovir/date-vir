@@ -1,5 +1,6 @@
-import {assertTypeOf, itCases} from '@augment-vir/browser-testing';
+import {itCases} from '@augment-vir/browser-testing';
 import {getObjectTypedKeys, omitObjectKeys} from '@augment-vir/common';
+import {assertTypeOf} from 'run-time-assertions';
 import {
     DatePart,
     FullDate,

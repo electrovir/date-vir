@@ -1,3 +1,4 @@
+export * from './augments/type';
 export * from './date-operations/calculate-relative-date';
 export * from './date-operations/combine-dates';
 export * from './date-operations/diff-dates';
