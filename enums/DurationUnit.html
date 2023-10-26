@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>DateLike | date-vir - v3.0.0</title><meta name="description" content="Documentation for date-vir"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css?cache=1698283891858"/><link rel="stylesheet" href="../assets/highlight.css?cache=1698283891858"/><script defer src="../assets/main.js?cache=1698283891858"></script><script async src="../assets/search.js?cache=1698283891858" id="tsd-search-script"></script><script async src="../assets/navigation.js?cache=1698283891858" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>DurationUnit | date-vir - v3.0.0</title><meta name="description" content="Documentation for date-vir"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css?cache=1698283891858"/><link rel="stylesheet" href="../assets/highlight.css?cache=1698283891858"/><script defer src="../assets/main.js?cache=1698283891858"></script><script async src="../assets/search.js?cache=1698283891858" id="tsd-search-script"></script><script async src="../assets/navigation.js?cache=1698283891858" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
 <div class="tsd-toolbar-contents container">
 <div class="table-cell" id="tsd-search" data-base="..">
 <div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
@@ -13,14 +13,64 @@
 <div class="tsd-page-title">
 <ul class="tsd-breadcrumb">
 <li><a href="../modules.html">date-vir</a></li>
-<li><a href="DateLike.html">DateLike</a></li></ul>
-<h1>Type alias DateLike</h1></div>
-<div class="tsd-signature"><span class="tsd-kind-type-alias">Date<wbr/>Like</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">Date</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">DateTime</span><span class="tsd-signature-symbol"> | </span><a href="FullDate.html" class="tsd-signature-type tsd-kind-type-alias">FullDate</a></div>
-<div class="tsd-comment tsd-typography"><p>Types that can be converted into dates.</p>
+<li><a href="DurationUnit.html">DurationUnit</a></li></ul>
+<h1>Enumeration DurationUnit</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>Exclude the higher order units of time measure for diffing because they vary significantly,
+causing inaccuracies and many issues. See
+<a href="https://moment.github.io/luxon/#/math?id=casual-vs-longterm-conversion-accuracy">https://moment.github.io/luxon/#/math?id=casual-vs-longterm-conversion-accuracy</a> for more info.</p>
+<p>If you REALLY want to use these higher order units, convert the dates to luxon objects with
+toLuxonDateTime and then run diff calculations there.</p>
 </div>
-<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<div class="tsd-comment tsd-typography"></div></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/electrovir/date-vir/blob/b60046e/src/full-date/date-like.ts#L5">full-date/date-like.ts:5</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/electrovir/date-vir/blob/b60046e/src/duration.ts#L13">duration.ts:13</a></li></ul></aside>
+<section class="tsd-panel-group tsd-index-group">
+<section class="tsd-panel tsd-index-panel">
+<details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
+<h5 class="tsd-index-heading uppercase" role="button" aria-expanded="false" tabIndex=0><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="#icon-chevronSmall"></use></svg> Index</h5></summary>
+<div class="tsd-accordion-details">
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading">Enumeration Members</h3>
+<div class="tsd-index-list"><a href="DurationUnit.html#Days" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-16"></use></svg><span>Days</span></a>
+<a href="DurationUnit.html#Hours" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-16"></use></svg><span>Hours</span></a>
+<a href="DurationUnit.html#Milliseconds" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-16"></use></svg><span>Milliseconds</span></a>
+<a href="DurationUnit.html#Minutes" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-16"></use></svg><span>Minutes</span></a>
+<a href="DurationUnit.html#Seconds" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-16"></use></svg><span>Seconds</span></a>
+<a href="DurationUnit.html#Weeks" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-16"></use></svg><span>Weeks</span></a>
+</div></section></div></details></section></section>
+<section class="tsd-panel-group tsd-member-group">
+<h2>Enumeration Members</h2>
+<section class="tsd-panel tsd-member"><a id="Days" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>Days</span><a href="#Days" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-enum-member">Days</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;days&quot;</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/electrovir/date-vir/blob/b60046e/src/duration.ts#L15">duration.ts:15</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member"><a id="Hours" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>Hours</span><a href="#Hours" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-enum-member">Hours</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;hours&quot;</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/electrovir/date-vir/blob/b60046e/src/duration.ts#L16">duration.ts:16</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member"><a id="Milliseconds" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>Milliseconds</span><a href="#Milliseconds" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-enum-member">Milliseconds</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;milliseconds&quot;</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/electrovir/date-vir/blob/b60046e/src/duration.ts#L19">duration.ts:19</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member"><a id="Minutes" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>Minutes</span><a href="#Minutes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-enum-member">Minutes</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;minutes&quot;</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/electrovir/date-vir/blob/b60046e/src/duration.ts#L17">duration.ts:17</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member"><a id="Seconds" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>Seconds</span><a href="#Seconds" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-enum-member">Seconds</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;seconds&quot;</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/electrovir/date-vir/blob/b60046e/src/duration.ts#L18">duration.ts:18</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member"><a id="Weeks" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>Weeks</span><a href="#Weeks" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-enum-member">Weeks</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;weeks&quot;</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/electrovir/date-vir/blob/b60046e/src/duration.ts#L14">duration.ts:14</a></li></ul></aside></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -33,31 +83,41 @@
 <li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
 <li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li></ul></form></div>
 <div class="tsd-theme-toggle">
-<h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div></div>
+<h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="#icon-chevronDown"></use></svg>On This Page</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li><a href="#Days" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-16"></use></svg><span>Days</span></a></li>
+<li><a href="#Hours" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-16"></use></svg><span>Hours</span></a></li>
+<li><a href="#Milliseconds" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-16"></use></svg><span>Milliseconds</span></a></li>
+<li><a href="#Minutes" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-16"></use></svg><span>Minutes</span></a></li>
+<li><a href="#Seconds" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-16"></use></svg><span>Seconds</span></a></li>
+<li><a href="#Weeks" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-16"></use></svg><span>Weeks</span></a></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../modules.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>date-vir - v3.0.0</span></a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="..">
-<li><a href="../enums/DurationUnit.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg>DurationUnit</a></li>
-<li><a href="../enums/FullDatePartEnum.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg>FullDatePartEnum</a></li>
-<li><a href="AnyDuration.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>AnyDuration</a></li>
-<li><a href="DateFullDateKeys.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>DateFullDateKeys</a></li>
-<li><a href="DateLike.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>DateLike</a></li>
-<li><a href="DatePart.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>DatePart</a></li>
-<li><a href="DateTimeString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>DateTimeString</a></li>
-<li><a href="DateTimeWithSeconds.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>DateTimeWithSeconds</a></li>
-<li><a href="Duration.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>Duration</a></li>
-<li><a href="FullDate.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>FullDate</a></li>
-<li><a href="JustDateString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>JustDateString</a></li>
-<li><a href="JustTimeString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>JustTimeString</a></li>
-<li><a href="JustTimeWithSecondsString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>JustTimeWithSecondsString</a></li>
-<li><a href="MaybeDatePart.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>MaybeDatePart</a></li>
-<li><a href="MaybeTuple.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>MaybeTuple</a></li>
-<li><a href="OnlyDatePart.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>OnlyDatePart</a></li>
-<li><a href="OnlyHourMinutePart.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>OnlyHourMinutePart</a></li>
-<li><a href="OnlyHourMinuteSecondPart.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>OnlyHourMinuteSecondPart</a></li>
-<li><a href="TimeFullDateKeys.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>TimeFullDateKeys</a></li>
-<li><a href="TimePart.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>TimePart</a></li>
-<li><a href="Timezone.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>Timezone</a></li>
+<li><a href="DurationUnit.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg>DurationUnit</a></li>
+<li><a href="FullDatePartEnum.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg>FullDatePartEnum</a></li>
+<li><a href="../types/AnyDuration.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>AnyDuration</a></li>
+<li><a href="../types/DateFullDateKeys.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>DateFullDateKeys</a></li>
+<li><a href="../types/DateLike.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>DateLike</a></li>
+<li><a href="../types/DatePart.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>DatePart</a></li>
+<li><a href="../types/DateTimeString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>DateTimeString</a></li>
+<li><a href="../types/DateTimeWithSeconds.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>DateTimeWithSeconds</a></li>
+<li><a href="../types/Duration.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>Duration</a></li>
+<li><a href="../types/FullDate.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>FullDate</a></li>
+<li><a href="../types/JustDateString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>JustDateString</a></li>
+<li><a href="../types/JustTimeString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>JustTimeString</a></li>
+<li><a href="../types/JustTimeWithSecondsString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>JustTimeWithSecondsString</a></li>
+<li><a href="../types/MaybeDatePart.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>MaybeDatePart</a></li>
+<li><a href="../types/MaybeTuple.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>MaybeTuple</a></li>
+<li><a href="../types/OnlyDatePart.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>OnlyDatePart</a></li>
+<li><a href="../types/OnlyHourMinutePart.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>OnlyHourMinutePart</a></li>
+<li><a href="../types/OnlyHourMinuteSecondPart.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>OnlyHourMinuteSecondPart</a></li>
+<li><a href="../types/TimeFullDateKeys.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>TimeFullDateKeys</a></li>
+<li><a href="../types/TimePart.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>TimePart</a></li>
+<li><a href="../types/Timezone.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2097152"></use></svg>Timezone</a></li>
 <li>Loading...</li></ul></nav></div></div></div>
 <div class="tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" rel="noopener" target="_blank">TypeDoc</a></p></div>
