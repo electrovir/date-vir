@@ -1,8 +1,8 @@
 import {itCases} from '@augment-vir/browser-testing';
+import {createFullDate} from '../full-date/create-full-date';
 import {utcTimezone} from '../timezone/timezones';
-import {createFullDate} from './create-full-date';
-import {toIsoString} from './primitive-conversions';
 import {isValidIsoString} from './string-format-types';
+import {toIsoString} from './timestamp';
 
 describe(isValidIsoString.name, () => {
     itCases(isValidIsoString, [

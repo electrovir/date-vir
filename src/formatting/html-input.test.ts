@@ -1,25 +1,12 @@
 import {itCases} from '@augment-vir/browser-testing';
 import {RequiredBy} from '@augment-vir/common';
-import {assert} from '@open-wc/testing';
 import {assertTypeOf} from 'run-time-assertions';
 import {SetOptional} from 'type-fest';
+import {createFullDate, toNewTimezone} from '../full-date/create-full-date';
+import {DatePart, FullDate, FullDatePartEnum} from '../full-date/full-date-shape';
+import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
 import {timezones, utcTimezone} from '../timezone/timezones';
-import {createFullDate, toNewTimezone} from './create-full-date';
-import {formatPresets} from './format-presets';
-import {DatePart, FullDate, FullDatePartEnum} from './full-date-shape';
-import {
-    exampleFullDateUtc,
-    exampleIsoString,
-    exampleTimestamp,
-    nonUtcTimezone,
-} from './full-date.test-helper';
-import {
-    toFormattedString,
-    toHtmlInputString,
-    toIsoString,
-    toLocaleString,
-    toTimestamp,
-} from './primitive-conversions';
+import {toHtmlInputString} from './html-input';
 import {
     DateTimeString,
     DateTimeWithSeconds,
@@ -287,86 +274,4 @@ describe(toHtmlInputString.name, () => {
             | DateTimeString
         >();
     });
-});
-
-describe(toLocaleString.name, () => {
-    itCases(toLocaleString, [
-        {
-            it: 'formats a string with the given locale',
-            inputs: [
-                exampleFullDateUtc,
-                {locale: 'fr'},
-            ],
-            expect: '05/06/2023',
-        },
-        {
-            it: 'formats a string with the user locale',
-            inputs: [
-                exampleFullDateUtc,
-            ],
-            throws: undefined,
-        },
-    ]);
-
-    it('formats with some more options', () => {
-        const result = toLocaleString(
-            toNewTimezone(exampleFullDateUtc, timezones['America/Chicago']),
-            {
-                ...formatPresets.DatetimeFull,
-                locale: 'en-us',
-            },
-        );
-
-        assert.include(
-            [
-                /** Different options the depend on the browser and operating system */
-                'June 5, 2023 at 9:19 AM CDT',
-                'June 5, 2023, 9:19 AM CDT',
-            ],
-            result,
-        );
-    });
-});
-
-describe(toFormattedString.name, () => {
-    itCases(toFormattedString, [
-        {
-            it: 'should produce a string of arbitrary formatting',
-            inputs: [
-                exampleFullDateUtc,
-                'MMM-yyyy',
-            ],
-            expect: 'Jun-2023',
-        },
-    ]);
-});
-
-describe(toIsoString.name, () => {
-    itCases(toIsoString, [
-        {
-            it: 'converts a UTC FullDate into an ISO string',
-            input: exampleFullDateUtc,
-            expect: exampleIsoString,
-        },
-        {
-            it: 'converts a timezone shifted date to the same ISO string',
-            input: createFullDate(exampleFullDateUtc, nonUtcTimezone),
-            expect: exampleIsoString,
-        },
-    ]);
-});
-
-describe(toTimestamp.name, () => {
-    itCases(toTimestamp, [
-        {
-            it: 'converts a UTC FullDate into a timestamp',
-            input: exampleFullDateUtc,
-            expect: exampleTimestamp,
-        },
-        {
-            it: 'converts a timezone shifted FullDate into the same timestamp',
-            input: createFullDate(exampleFullDateUtc, nonUtcTimezone),
-            expect: exampleTimestamp,
-        },
-    ]);
 });

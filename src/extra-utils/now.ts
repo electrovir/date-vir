@@ -1,7 +1,7 @@
+import {UtcIsoString} from '../formatting/string-format-types';
+import {toIsoString} from '../formatting/timestamp';
 import {getNowFullDate} from '../full-date/create-full-date';
 import {FullDate} from '../full-date/full-date-shape';
-import {toIsoString} from '../full-date/primitive-conversions';
-import {UtcIsoString} from '../full-date/string-format-types';
 import {userTimezone, utcTimezone} from '../timezone/timezones';
 
 export function getNowInIsoString(): UtcIsoString {
