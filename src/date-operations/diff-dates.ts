@@ -3,17 +3,22 @@ import {Duration, DurationUnit} from '../duration';
 import {FullDate} from '../full-date/full-date-shape';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion';
 
-export function diffDates<
-    const DurationKeys extends MaybeTuple<DurationUnit> = MaybeTuple<DurationUnit>,
->({
+/**
+ * Diffs two dates and returns the diff in the specific unit.
+ *
+ * Note: when years, quarters, or months are used for the unit then "long term" durations are used
+ * to calculate the diff. See more details here:
+ * https://moment.github.io/luxon/#/math?id=casual-vs-longterm-conversion-accuracy
+ */
+export function diffDates<const ChosenDurationKey extends DurationUnit>({
     start,
     end,
     unit,
 }: {
     start: FullDate;
     end: FullDate;
-    unit: DurationKeys;
-}): Duration<DurationKeys> {
+    unit: ChosenDurationKey;
+}): Duration<ChosenDurationKey> {
     const luxonDateStart = toLuxonDateTime(start);
     const luxonDateEnd = toLuxonDateTime(end);
 
