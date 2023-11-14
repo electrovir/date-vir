@@ -30,6 +30,8 @@ export function toRelativeString({
     relativeTo: Readonly<FullDate>;
     options?: PartialAndUndefined<RelativeStringOptions>;
 }): string | undefined {
+    const roundingDigits = options.decimalDigitCount || 0;
+
     const allUnitDiffs: Readonly<Record<DurationUnit, number>> = diffDatesAllUnits({
         start: fullDate,
         end: relativeTo,
@@ -38,7 +40,8 @@ export function toRelativeString({
     const unitsWithinBounds: Readonly<Record<DurationUnit, boolean>> = mapObjectValues(
         allUnitDiffs,
         (durationUnit, duration) => {
-            const isAboveZero: boolean = Math.floor(Math.abs(duration)) > 0;
+            const isAboveZero: boolean =
+                Math.floor(Math.abs(round({digits: 1, number: duration}))) > 0;
             return isAboveZero;
         },
     );
@@ -70,9 +73,7 @@ export function toRelativeString({
     }
 
     const duration = allUnitDiffs[unitToUse];
-    const roundedAbsoluteDuration = Math.abs(
-        round({digits: options.decimalDigitCount || 0, number: duration}),
-    );
+    const roundedAbsoluteDuration = Math.abs(round({digits: roundingDigits, number: duration}));
     const isDurationSingular = roundedAbsoluteDuration === 1;
     const unitName: string = [
         singularDurationUnitNames[unitToUse],

@@ -2,6 +2,7 @@ import {itCases} from '@augment-vir/browser-testing';
 import {calculateRelativeDate} from '../date-operations/calculate-relative-date';
 import {DurationUnit} from '../duration';
 import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
+import {utcTimezone} from '../timezone/timezones';
 import {toRelativeString} from './relative-string';
 
 describe(toRelativeString.name, () => {
@@ -131,6 +132,58 @@ describe(toRelativeString.name, () => {
                 },
             },
             expect: 'in 200 milliseconds',
+        },
+        {
+            it: 'calculates one month away correctly',
+            input: {
+                relativeTo: {
+                    day: 14,
+                    month: 11,
+                    year: 2023,
+                    hour: 7,
+                    minute: 44,
+                    second: 59,
+                    millisecond: 0,
+                    timezone: utcTimezone,
+                },
+                fullDate: {
+                    day: 14,
+                    month: 12,
+                    year: 2023,
+                    hour: 7,
+                    minute: 44,
+                    second: 51,
+                    millisecond: 0,
+                    timezone: utcTimezone,
+                },
+            },
+            expect: 'in a month',
+        },
+        {
+            it: 'calculates one month away from February correctly',
+            input: {
+                relativeTo: {
+                    day: 5,
+                    month: 2,
+                    year: 2023,
+                    hour: 23,
+                    minute: 11,
+                    second: 11,
+                    millisecond: 111,
+                    timezone: utcTimezone,
+                },
+                fullDate: {
+                    day: 5,
+                    month: 3,
+                    year: 2023,
+                    hour: 11,
+                    minute: 11,
+                    second: 11,
+                    millisecond: 111,
+                    timezone: utcTimezone,
+                },
+            },
+            expect: 'in a month',
         },
     ]);
 });
