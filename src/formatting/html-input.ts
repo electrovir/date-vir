@@ -1,4 +1,5 @@
 import {getEnumTypedValues} from '@augment-vir/common';
+import {assertHasDateProps} from '../extra-utils/has-date-props';
 import {
     FullDate,
     FullDatePartEnum,
@@ -6,6 +7,7 @@ import {
     OnlyHourMinutePart,
     OnlyHourMinuteSecondPart,
 } from '../full-date/full-date-shape';
+import {toSimpleDatePartString, toSimpleTimePartString} from './simple-strings';
 import {
     DateTimeString,
     DateTimeWithSeconds,
@@ -92,45 +94,26 @@ export function toHtmlInputString(
     const internalFullDate = fullDate as Omit<Partial<FullDate>, 'timezone'>;
 
     if (inputType === FullDatePartEnum.Date) {
-        if (internalFullDate.year == undefined) {
-            throw new Error(`Tried to create date string but no year was provided.`);
-        }
-        if (internalFullDate.month == undefined) {
-            throw new Error(`Tried to create date string but no month was provided.`);
-        }
-        if (internalFullDate.day == undefined) {
-            throw new Error(`Tried to create date string but no day was provided.`);
-        }
+        assertHasDateProps(internalFullDate, [
+            'year',
+            'month',
+            'day',
+        ]);
 
-        const dateParts = [
-            String(Math.abs(internalFullDate.year)).padStart(4, '0'),
-            String(Math.abs(internalFullDate.month)).padStart(2, '0'),
-            String(Math.abs(internalFullDate.day)).padStart(2, '0'),
-        ] as const;
-        return dateParts.join('-') as JustDateString;
+        return toSimpleDatePartString(internalFullDate);
     } else if (inputType === FullDatePartEnum.Time) {
-        const seconds = includeSeconds
-            ? String(Math.abs(internalFullDate.second ?? 0)).padStart(2, '0')
-            : undefined;
         if (includeSeconds && internalFullDate.second == undefined) {
             throw new Error(
                 'Tried to include seconds in the time string but no seconds were provided.',
             );
         }
-        if (internalFullDate.hour == undefined) {
-            throw new Error(`Tried to create time string but no hour was provided.`);
-        }
-        if (internalFullDate.minute == undefined) {
-            throw new Error(`Tried to create time string but no minutes were provided.`);
-        }
 
-        const timeParts = [
-            String(Math.abs(internalFullDate.hour)).padStart(2, '0'),
-            String(Math.abs(internalFullDate.minute)).padStart(2, '0'),
-            seconds,
-        ].filter((entry) => entry != undefined);
+        assertHasDateProps(internalFullDate, [
+            'hour',
+            'minute',
+        ]);
 
-        return timeParts.join(':') as JustTimeWithSecondsString | JustTimeString;
+        return toSimpleTimePartString(internalFullDate, !!includeSeconds);
     } else if (inputType === FullDatePartEnum.DateTime) {
         const datePart = toHtmlInputString(fullDate, FullDatePartEnum.Date);
         const timePart = toHtmlInputString(fullDate, FullDatePartEnum.Time, includeSeconds);
