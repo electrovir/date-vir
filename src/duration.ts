@@ -13,6 +13,18 @@ export enum DurationUnit {
     Milliseconds = 'milliseconds',
 }
 
+export const singularDurationUnitNames = {
+    [DurationUnit.Milliseconds]: 'millisecond',
+    [DurationUnit.Seconds]: 'second',
+    [DurationUnit.Minutes]: 'minute',
+    [DurationUnit.Hours]: 'hour',
+    [DurationUnit.Days]: 'day',
+    [DurationUnit.Weeks]: 'week',
+    [DurationUnit.Months]: 'month',
+    [DurationUnit.Quarters]: 'quarter',
+    [DurationUnit.Years]: 'year',
+} as const satisfies Readonly<Record<DurationUnit, string>>;
+
 /**
  * All possible options for the more strict Duration type. Matches the DurationObjectUnits type from
  * the luxon package.
