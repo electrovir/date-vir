@@ -26,6 +26,22 @@ export const singularDurationUnitNames = {
 } as const satisfies Readonly<Record<DurationUnit, string>>;
 
 /**
+ * Array of DurationUnit values: from smallest unit (milliseconds at index 0) to longest unit
+ * (years).
+ */
+export const orderedDurationUnits = [
+    DurationUnit.Milliseconds,
+    DurationUnit.Seconds,
+    DurationUnit.Minutes,
+    DurationUnit.Hours,
+    DurationUnit.Days,
+    DurationUnit.Weeks,
+    DurationUnit.Months,
+    DurationUnit.Quarters,
+    DurationUnit.Years,
+] as const satisfies ReadonlyArray<DurationUnit>;
+
+/**
  * All possible options for the more strict Duration type. Matches the DurationObjectUnits type from
  * the luxon package.
  */
