@@ -14,16 +14,16 @@ describe(isDateAfter.name, () => {
         {
             it: 'detects a date is after another',
             input: {
-                start: exampleFullDateUtc,
-                end: exampleFullDateOffset,
+                relativeTo: exampleFullDateUtc,
+                fullDate: exampleFullDateOffset,
             },
             expect: true,
         },
         {
             it: 'calculates the opposite if the inputs are swapped',
             input: {
-                start: exampleFullDateOffset,
-                end: exampleFullDateUtc,
+                relativeTo: exampleFullDateOffset,
+                fullDate: exampleFullDateUtc,
             },
             expect: false,
         },

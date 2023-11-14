@@ -24,6 +24,15 @@ export function diffDates<
     return diff as Duration<DurationKeys>;
 }
 
-export function isDateAfter({start, end}: {start: FullDate; end: FullDate}): boolean {
-    return diffDates({start, end, unit: DurationUnit.Milliseconds}).milliseconds >= 0;
+export function isDateAfter({
+    relativeTo,
+    fullDate,
+}: {
+    relativeTo: FullDate;
+    fullDate: FullDate;
+}): boolean {
+    return (
+        diffDates({start: relativeTo, end: fullDate, unit: DurationUnit.Milliseconds})
+            .milliseconds >= 0
+    );
 }
