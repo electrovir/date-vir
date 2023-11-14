@@ -9,6 +9,7 @@ export * from './extra-utils/now';
 export * from './extra-utils/zero';
 export * from './formatting/formatted-string';
 export * from './formatting/html-input';
+export * from './formatting/relative-string';
 export * from './formatting/simple-strings';
 export * from './formatting/string-format-types';
 export * from './formatting/timestamp';
