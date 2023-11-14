@@ -1,7 +1,20 @@
-import {MaybeTuple} from '../augments/type';
+import {ConversionAccuracy} from 'luxon';
 import {Duration, DurationUnit} from '../duration';
 import {FullDate} from '../full-date/full-date-shape';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion';
+
+const conversionAccuracies: Record<DurationUnit, ConversionAccuracy> = {
+    [DurationUnit.Years]: 'longterm',
+    [DurationUnit.Quarters]: 'longterm',
+    [DurationUnit.Months]: 'longterm',
+
+    [DurationUnit.Weeks]: 'casual',
+    [DurationUnit.Days]: 'casual',
+    [DurationUnit.Hours]: 'casual',
+    [DurationUnit.Minutes]: 'casual',
+    [DurationUnit.Seconds]: 'casual',
+    [DurationUnit.Milliseconds]: 'casual',
+};
 
 /**
  * Diffs two dates and returns the diff in the specific unit.
@@ -23,10 +36,12 @@ export function diffDates<const ChosenDurationKey extends DurationUnit>({
     const luxonDateEnd = toLuxonDateTime(end);
 
     const diff = luxonDateEnd
-        .diff(luxonDateStart, unit as DurationUnit | DurationUnit[])
+        .diff(luxonDateStart, unit as DurationUnit | DurationUnit[], {
+            conversionAccuracy: conversionAccuracies[unit],
+        })
         .toObject();
 
-    return diff as Duration<DurationKeys>;
+    return diff as Duration<ChosenDurationKey>;
 }
 
 export function isDateAfter({

@@ -67,54 +67,6 @@ describe(diffDates.name, () => {
                 days: 0.5,
             },
         },
-        {
-            it: 'rejects an empty array of keys',
-            input: {
-                start: exampleFullDateOffset,
-                end: exampleFullDateUtc,
-                // should have a type error here because array is empty
-                // @ts-expect-error
-                unit: [],
-            },
-            throws: Error,
-        },
-        {
-            it: 'calculates the same if the key is in an array',
-            input: {
-                start: exampleFullDateUtc,
-                end: exampleFullDateOffset,
-                unit: [DurationUnit.Seconds],
-            },
-            expect: {
-                seconds: secondsDiff,
-            },
-        },
-        {
-            it: 'calculates the same if the key is in an array',
-            input: {
-                start: exampleFullDateUtc,
-                end: exampleFullDateOffset,
-                unit: [DurationUnit.Minutes],
-            },
-            expect: {
-                minutes: secondsDiff / 60,
-            },
-        },
-        {
-            it: 'works with multiple units',
-            input: {
-                start: exampleFullDateUtc,
-                end: exampleFullDateOffset,
-                unit: [
-                    DurationUnit.Minutes,
-                    DurationUnit.Seconds,
-                ],
-            },
-            expect: {
-                minutes: Math.floor(secondsDiff / 60),
-                seconds: secondsDiff - Math.floor(secondsDiff / 60) * 60,
-            },
-        },
     ]);
 
     it('has proper types', () => {
@@ -141,28 +93,6 @@ describe(diffDates.name, () => {
             }),
         ).toMatchTypeOf<{
             minutes: number;
-        }>();
-        assertTypeOf(
-            diffDates({
-                start: exampleFullDateUtc,
-                end: exampleFullDateOffset,
-                unit: [DurationUnit.Minutes],
-            }),
-        ).toMatchTypeOf<{
-            minutes: number;
-        }>();
-        assertTypeOf(
-            diffDates({
-                start: exampleFullDateUtc,
-                end: exampleFullDateOffset,
-                unit: [
-                    DurationUnit.Minutes,
-                    DurationUnit.Seconds,
-                ],
-            }),
-        ).toMatchTypeOf<{
-            minutes: number;
-            seconds: number;
         }>();
     });
 });
