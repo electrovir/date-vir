@@ -11,6 +11,10 @@ import {MaybeTuple} from './augments/type';
  * toLuxonDateTime and then run diff calculations there.
  */
 export enum DurationUnit {
+    Years = 'years',
+    Quarters = 'quarters',
+    Months = 'months',
+
     Weeks = 'weeks',
     Days = 'days',
     Hours = 'hours',
