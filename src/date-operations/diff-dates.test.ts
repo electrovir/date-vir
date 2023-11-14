@@ -1,10 +1,10 @@
 import {itCases} from '@augment-vir/browser-testing';
-import {randomInteger} from '@augment-vir/common';
+import {mapObjectValues, randomInteger, round} from '@augment-vir/common';
 import {assertTypeOf} from 'run-time-assertions';
 import {Duration, DurationUnit} from '../duration';
 import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
 import {calculateRelativeDate} from './calculate-relative-date';
-import {diffDates, isDateAfter} from './diff-dates';
+import {diffDates, diffDatesAllUnits, isDateAfter} from './diff-dates';
 
 const secondsDiff = randomInteger({min: 1, max: 1_000_000_00});
 const exampleFullDateOffset = calculateRelativeDate(exampleFullDateUtc, {seconds: secondsDiff});
@@ -30,10 +30,47 @@ describe(isDateAfter.name, () => {
     ]);
 });
 
+describe(diffDatesAllUnits.name, () => {
+    const diff = {milliseconds: 123_456_789};
+
+    function diffDatesAllUnitsTestWrapper(...inputs: Parameters<typeof diffDatesAllUnits>) {
+        const diffOutput = diffDatesAllUnits(...inputs);
+
+        return mapObjectValues(diffOutput, (key, value) => {
+            return round({
+                /** Use 3 digits so we can still get a distinct value for year diffs. */
+                digits: 3,
+                number: value,
+            });
+        });
+    }
+
+    itCases(diffDatesAllUnitsTestWrapper, [
+        {
+            it: 'calculates seconds diff',
+            input: {
+                start: exampleFullDateUtc,
+                end: calculateRelativeDate(exampleFullDateUtc, diff),
+            },
+            expect: {
+                milliseconds: diff.milliseconds,
+                seconds: 123456.789,
+                minutes: 2057.613,
+                hours: 34.294,
+                days: 1.429,
+                weeks: 0.204,
+                months: 0.048,
+                quarters: 0.016,
+                years: 0.004,
+            },
+        },
+    ]);
+});
+
 describe(diffDates.name, () => {
     itCases(diffDates, [
         {
-            it: 'calculates diff correctly',
+            it: 'calculates seconds diff',
             input: {
                 start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
@@ -44,7 +81,7 @@ describe(diffDates.name, () => {
             },
         },
         {
-            it: 'calculates the inverse if the inputs are swapped',
+            it: 'calculates inverse if inputs are swapped',
             input: {
                 start: exampleFullDateOffset,
                 end: exampleFullDateUtc,
@@ -65,6 +102,20 @@ describe(diffDates.name, () => {
             },
             expect: {
                 days: 0.5,
+            },
+        },
+        {
+            it: 'calculates year diff',
+            input: {
+                start: exampleFullDateUtc,
+                end: {
+                    ...exampleFullDateUtc,
+                    year: exampleFullDateUtc.year - 10,
+                },
+                unit: DurationUnit.Years,
+            },
+            expect: {
+                years: -10,
             },
         },
     ]);
