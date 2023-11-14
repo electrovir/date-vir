@@ -4,6 +4,7 @@ export * from './date-operations/combine-dates';
 export * from './date-operations/diff-dates';
 export * from './duration';
 export * from './extra-utils/date-transforms';
+export * from './extra-utils/has-date-props';
 export * from './extra-utils/js-date-conversion';
 export * from './extra-utils/now';
 export * from './extra-utils/zero';
