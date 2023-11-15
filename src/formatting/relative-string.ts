@@ -1,4 +1,4 @@
-import {PartialAndUndefined, mapObjectValues, round} from '@augment-vir/common';
+import {PartialAndUndefined, areJsonEqual, mapObjectValues, round} from '@augment-vir/common';
 import {diffDatesAllUnits} from '../date-operations/diff-dates';
 import {DurationUnit, orderedDurationUnits, singularDurationUnitNames} from '../duration';
 import {FullDate} from '../full-date/full-date-shape';
@@ -61,15 +61,16 @@ export function toRelativeString({
 
     const shouldUseJustNow = options.blockJustNow
         ? false
-        : (unitToUse === DurationUnit.Minutes && allUnitDiffs.minutes < 2) ||
+        : areJsonEqual(fullDate, relativeTo) ||
+          (unitToUse === DurationUnit.Minutes && allUnitDiffs.minutes < 2) ||
           (unitToUse === DurationUnit.Seconds && allUnitDiffs.seconds < 11) ||
           (unitToUse === DurationUnit.Milliseconds && allUnitDiffs.milliseconds < 710);
 
     /** Some short circuits. */
-    if (unitToUse == undefined) {
-        return undefined;
-    } else if (shouldUseJustNow) {
+    if (shouldUseJustNow) {
         return 'just now';
+    } else if (unitToUse == undefined) {
+        return undefined;
     }
 
     const duration = allUnitDiffs[unitToUse];

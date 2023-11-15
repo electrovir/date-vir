@@ -1,8 +1,9 @@
 import {itCases} from '@augment-vir/browser-testing';
 import {calculateRelativeDate} from '../date-operations/calculate-relative-date';
 import {DurationUnit} from '../duration';
+import {createFullDate} from '../full-date/create-full-date';
 import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
-import {utcTimezone} from '../timezone/timezones';
+import {timezones, utcTimezone} from '../timezone/timezones';
 import {toRelativeString} from './relative-string';
 
 describe(toRelativeString.name, () => {
@@ -158,6 +159,22 @@ describe(toRelativeString.name, () => {
                 },
             },
             expect: 'in a month',
+        },
+        {
+            it: 'calculates years from a long time ago',
+            input: {
+                fullDate: createFullDate(1134567891011, timezones['Africa/Banjul']),
+                relativeTo: createFullDate(1234567891011, timezones['Africa/Banjul']),
+            },
+            expect: '3 years ago',
+        },
+        {
+            it: 'returns just now for identical inputs',
+            input: {
+                fullDate: createFullDate(1234567891011, timezones['Africa/Banjul']),
+                relativeTo: createFullDate(1234567891011, timezones['Africa/Banjul']),
+            },
+            expect: 'just now',
         },
         {
             it: 'calculates one month away from February correctly',
