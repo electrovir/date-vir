@@ -169,6 +169,18 @@ describe(toRelativeString.name, () => {
             expect: '3 years ago',
         },
         {
+            it: 'does not exceed max duration units',
+            input: {
+                fullDate: createFullDate(1134567891011, timezones['Africa/Banjul']),
+                relativeTo: createFullDate(1234567891011, timezones['Africa/Banjul']),
+                options: {
+                    limitUnitMax: true,
+                    blockedRelativeUnits: [DurationUnit.Years],
+                },
+            },
+            expect: undefined,
+        },
+        {
             it: 'returns just now for identical inputs',
             input: {
                 fullDate: createFullDate(1234567891011, timezones['Africa/Banjul']),

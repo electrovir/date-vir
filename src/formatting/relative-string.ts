@@ -3,6 +3,18 @@ import {diffDatesAllUnits} from '../date-operations/diff-dates';
 import {DurationUnit, orderedDurationUnits, singularDurationUnitNames} from '../duration';
 import {FullDate} from '../full-date/full-date-shape';
 
+const maxDurations: Readonly<Record<DurationUnit, number>> = {
+    [DurationUnit.Milliseconds]: 1000,
+    [DurationUnit.Seconds]: 60,
+    [DurationUnit.Minutes]: 60,
+    [DurationUnit.Hours]: 24,
+    [DurationUnit.Days]: 30,
+    [DurationUnit.Weeks]: 4,
+    [DurationUnit.Months]: 12,
+    [DurationUnit.Quarters]: 4,
+    [DurationUnit.Years]: Infinity,
+};
+
 export type RelativeStringOptions = {
     /**
      * The relative units that the relative string function is not allowed to use. By default, all
@@ -19,6 +31,12 @@ export type RelativeStringOptions = {
     decimalDigitCount: number;
     /** Set this to true to block the 'just now' relative string. By default, that string is allowed. */
     blockJustNow: true;
+    /**
+     * Set to true to limit durations to their max value. Each unit's max value is its value when it
+     * turns into the subsequent unit. For example, seconds maxes out at 60, at which point it
+     * becomes a minute.
+     */
+    limitUnitMax: true;
 };
 
 export function toRelativeString({
@@ -40,9 +58,14 @@ export function toRelativeString({
     const unitsWithinBounds: Readonly<Record<DurationUnit, boolean>> = mapObjectValues(
         allUnitDiffs,
         (durationUnit, duration) => {
-            const isAboveZero: boolean =
-                Math.floor(Math.abs(round({digits: 1, number: duration}))) > 0;
-            return isAboveZero;
+            const roundedDuration = Math.floor(Math.abs(round({digits: 1, number: duration})));
+
+            const isAboveZero: boolean = roundedDuration > 0;
+
+            const isBelowMax: boolean = options.limitUnitMax
+                ? roundedDuration < maxDurations[durationUnit]
+                : true;
+            return isAboveZero && isBelowMax;
         },
     );
 
