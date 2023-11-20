@@ -1,5 +1,5 @@
-import {isRuntimeTypeOf} from '@augment-vir/common';
 import {DateTime} from 'luxon';
+import {isRunTimeType} from 'run-time-assertions';
 import {Timezone} from '../timezone/timezone-names';
 import {UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones';
 import {DateLike} from './date-like';
@@ -69,9 +69,9 @@ function convertDateLikeToLuxonDateTime(
 
     if (DateTime.isDateTime(dateLike)) {
         return dateLike.setZone(timezone);
-    } else if (isRuntimeTypeOf(dateLike, 'number')) {
+    } else if (isRunTimeType(dateLike, 'number')) {
         return DateTime.fromMillis(dateLike, {zone: utcTimezone}).setZone(timezone);
-    } else if (isRuntimeTypeOf(dateLike, 'string')) {
+    } else if (isRunTimeType(dateLike, 'string')) {
         const dateTime = DateTime.fromISO(dateLike, {zone: timezone});
 
         if (!dateTime.isValid) {

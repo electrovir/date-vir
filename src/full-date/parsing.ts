@@ -1,5 +1,5 @@
-import {isRuntimeTypeOf} from '@augment-vir/common';
 import {DateTime} from 'luxon';
+import {isRunTimeType} from 'run-time-assertions';
 import {Timezone} from '../timezone/timezone-names';
 import {createFullDate} from './create-full-date';
 import {FullDate} from './full-date-shape';
@@ -53,7 +53,7 @@ export function parseInputElementValue<const SpecificTimezone extends Timezone =
         return undefined;
     }
 
-    const value: string = isRuntimeTypeOf(elementOrValue, 'string')
+    const value: string = isRunTimeType(elementOrValue, 'string')
         ? elementOrValue
         : elementOrValue.value;
 
