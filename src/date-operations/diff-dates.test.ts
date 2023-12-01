@@ -1,10 +1,11 @@
 import {itCases} from '@augment-vir/browser-testing';
-import {mapObjectValues, randomInteger, round} from '@augment-vir/common';
-import {assertTypeOf} from 'run-time-assertions';
-import {Duration, DurationUnit} from '../duration';
+import {randomInteger} from '@augment-vir/common';
+import {assertThrows, assertTypeOf} from 'run-time-assertions';
+import {Duration, DurationUnit, orderedDurationUnits} from '../duration';
+import {FullDate} from '../full-date/full-date-shape';
 import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
 import {calculateRelativeDate} from './calculate-relative-date';
-import {diffDates, diffDatesAllUnits, isDateAfter} from './diff-dates';
+import {DiffType, diffDates, isDateAfter} from './diff-dates';
 
 const secondsDiff = randomInteger({min: 1, max: 1_000_000_00});
 const exampleFullDateOffset = calculateRelativeDate(exampleFullDateUtc, {seconds: secondsDiff});
@@ -30,51 +31,23 @@ describe(isDateAfter.name, () => {
     ]);
 });
 
-describe(diffDatesAllUnits.name, () => {
-    const diff = {milliseconds: 123_456_789};
-
-    function diffDatesAllUnitsTestWrapper(...inputs: Parameters<typeof diffDatesAllUnits>) {
-        const diffOutput = diffDatesAllUnits(...inputs);
-
-        return mapObjectValues(diffOutput, (key, value) => {
-            return round({
-                /** Use 3 digits so we can still get a distinct value for year diffs. */
-                digits: 3,
-                number: value,
-            });
-        });
+describe(diffDates.name, () => {
+    function testSingleUnitDiffs(input: {
+        start: FullDate;
+        end: FullDate;
+        units: Readonly<[DurationUnit]>;
+        diffType?: DiffType | undefined;
+    }) {
+        return diffDates(input);
     }
 
-    itCases(diffDatesAllUnitsTestWrapper, [
-        {
-            it: 'calculates seconds diff',
-            input: {
-                start: exampleFullDateUtc,
-                end: calculateRelativeDate(exampleFullDateUtc, diff),
-            },
-            expect: {
-                milliseconds: diff.milliseconds,
-                seconds: 123456.789,
-                minutes: 2057.613,
-                hours: 34.294,
-                days: 1.429,
-                weeks: 0.204,
-                months: 0.048,
-                quarters: 0.016,
-                years: 0.004,
-            },
-        },
-    ]);
-});
-
-describe(diffDates.name, () => {
-    itCases(diffDates, [
+    itCases(testSingleUnitDiffs, [
         {
             it: 'calculates seconds diff',
             input: {
                 start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
-                unit: DurationUnit.Seconds,
+                units: [DurationUnit.Seconds],
             },
             expect: {
                 seconds: secondsDiff,
@@ -85,7 +58,7 @@ describe(diffDates.name, () => {
             input: {
                 start: exampleFullDateOffset,
                 end: exampleFullDateUtc,
-                unit: DurationUnit.Seconds,
+                units: [DurationUnit.Seconds],
             },
             expect: {
                 seconds: secondsDiff * -1,
@@ -98,7 +71,7 @@ describe(diffDates.name, () => {
                 end: calculateRelativeDate(exampleFullDateUtc, {
                     seconds: /* half a day in seconds */ 43_200,
                 }),
-                unit: DurationUnit.Days,
+                units: [DurationUnit.Days],
             },
             expect: {
                 days: 0.5,
@@ -112,7 +85,7 @@ describe(diffDates.name, () => {
                     ...exampleFullDateUtc,
                     year: exampleFullDateUtc.year - 10,
                 },
-                unit: DurationUnit.Years,
+                units: [DurationUnit.Years],
             },
             expect: {
                 years: -10,
@@ -120,27 +93,220 @@ describe(diffDates.name, () => {
         },
     ]);
 
+    itCases(diffDates, [
+        {
+            it: 'calculates equivalent seconds and minutes diff',
+            input: {
+                start: exampleFullDateUtc,
+                end: exampleFullDateOffset,
+                units: [
+                    DurationUnit.Seconds,
+                    DurationUnit.Minutes,
+                ],
+                diffType: DiffType.EquivalentUnits,
+            },
+            expect: {
+                minutes: secondsDiff / 60,
+                seconds: secondsDiff,
+            },
+        },
+        {
+            it: 'calculates additive hours and minutes diff',
+            input: {
+                start: exampleFullDateUtc,
+                end: calculateRelativeDate(exampleFullDateUtc, {days: 1.1}),
+                units: [
+                    DurationUnit.Hours,
+                    DurationUnit.Minutes,
+                ],
+                diffType: DiffType.AdditiveUnits,
+            },
+            expect: {
+                hours: 26,
+                minutes: 24,
+            },
+        },
+        {
+            it: 'calculates inverse equivalent seconds and minutes diff',
+            input: {
+                start: exampleFullDateOffset,
+                end: exampleFullDateUtc,
+                units: [
+                    DurationUnit.Seconds,
+                    DurationUnit.Minutes,
+                ],
+                diffType: DiffType.EquivalentUnits,
+            },
+            expect: {
+                minutes: -secondsDiff / 60,
+                seconds: -secondsDiff,
+            },
+        },
+        {
+            it: 'calculates inverse additive hours and minutes diff',
+            input: {
+                start: calculateRelativeDate(exampleFullDateUtc, {days: 1.1}),
+                end: exampleFullDateUtc,
+                units: [
+                    DurationUnit.Hours,
+                    DurationUnit.Minutes,
+                ],
+                diffType: DiffType.AdditiveUnits,
+            },
+            expect: {
+                hours: -26,
+                minutes: -24,
+            },
+        },
+        {
+            it: 'calculates seconds diff',
+            input: {
+                start: exampleFullDateUtc,
+                end: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 123_456_789}),
+                units: orderedDurationUnits,
+                diffType: DiffType.EquivalentUnits,
+                decimalCount: 3,
+            },
+            expect: {
+                milliseconds: 123_456_789,
+                seconds: 123456.789,
+                minutes: 2057.613,
+                hours: 34.294,
+                days: 1.429,
+                weeks: 0.204,
+                months: 0.048,
+                quarters: 0.016,
+                years: 0.004,
+            },
+        },
+    ]);
+
+    it('has correct type for a single unit', () => {
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDateOffset,
+                end: exampleFullDateUtc,
+                units: [DurationUnit.Years],
+            }),
+        ).toEqualTypeOf<{years: number}>();
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDateOffset,
+                end: exampleFullDateUtc,
+                units: [DurationUnit.Years],
+                diffType: DiffType.AdditiveUnits,
+            }),
+        ).toEqualTypeOf<{years: number}>();
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDateOffset,
+                end: exampleFullDateUtc,
+                units: [DurationUnit.Years],
+                diffType: DiffType.EquivalentUnits,
+            }),
+        ).toEqualTypeOf<{years: number}>();
+    });
+
+    it('has correct type for multiple units', () => {
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDateOffset,
+                end: exampleFullDateUtc,
+                units: [
+                    DurationUnit.Days,
+                    DurationUnit.Hours,
+                ],
+                diffType: DiffType.AdditiveUnits,
+            }),
+        ).toEqualTypeOf<{days: number; hours: number}>();
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDateOffset,
+                end: exampleFullDateUtc,
+                units: [
+                    DurationUnit.Days,
+                    DurationUnit.Hours,
+                ],
+                diffType: DiffType.EquivalentUnits,
+            }),
+        ).toEqualTypeOf<{days: number; hours: number}>();
+    });
+
+    it('requires diffType input when multiple units are specified', () => {
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDateOffset,
+                end: exampleFullDateUtc,
+                units: [
+                    DurationUnit.Days,
+                ],
+            }),
+        ).toEqualTypeOf<{days: number}>();
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDateOffset,
+                end: exampleFullDateUtc,
+                units: [
+                    DurationUnit.Days,
+                    DurationUnit.Hours,
+                ],
+                diffType: DiffType.EquivalentUnits,
+            }),
+        ).toEqualTypeOf<{days: number; hours: number}>();
+        assertThrows(
+            () =>
+                /** DiffType is missing. */
+                // @ts-expect-error
+                diffDates({
+                    start: exampleFullDateOffset,
+                    end: exampleFullDateUtc,
+                    units: [
+                        DurationUnit.Days,
+                        DurationUnit.Hours,
+                    ],
+                }),
+            {matchMessage: 'no diffType'},
+        );
+    });
+
+    it('fails on invalid diffType', () => {
+        assertThrows(
+            () =>
+                diffDates({
+                    start: exampleFullDateOffset,
+                    end: exampleFullDateUtc,
+                    units: [
+                        DurationUnit.Days,
+                        DurationUnit.Hours,
+                    ],
+                    // @ts-expect-error
+                    diffType: 'invalid-diff-type',
+                }),
+            {matchMessage: 'diffType is invalid'},
+        );
+    });
+
     it('has proper types', () => {
-        diffDates({
-            start: exampleFullDateOffset,
-            end: exampleFullDateUtc,
-            // does not allow higher order units
-            // @ts-expect-error
-            unit: 'years',
-        });
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDateOffset,
+                end: exampleFullDateUtc,
+                units: [DurationUnit.Years],
+            }),
+        ).toEqualTypeOf<{years: number}>();
 
         assertTypeOf(
             diffDates({
                 start: exampleFullDateUtc,
                 end: exampleFullDateOffset,
-                unit: DurationUnit.Seconds,
+                units: [DurationUnit.Seconds],
             }),
         ).toMatchTypeOf<{seconds: number}>();
         assertTypeOf(
             diffDates({
                 start: exampleFullDateOffset,
                 end: exampleFullDateUtc,
-                unit: DurationUnit.Minutes,
+                units: [DurationUnit.Minutes],
             }),
         ).toMatchTypeOf<{
             minutes: number;
