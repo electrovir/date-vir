@@ -1,5 +1,5 @@
 import {assertTypeOf} from 'run-time-assertions';
-import {AnyDuration, Duration, DurationUnit} from './duration';
+import {AnyDuration, Duration, DurationUnit, roundDuration} from './duration';
 
 describe('Duration', () => {
     it('picks a single unit', () => {
@@ -22,5 +22,11 @@ describe('DurationUnit', () => {
     it('has all props of AnyDuration', () => {
         assertTypeOf<`${DurationUnit}`>().toEqualTypeOf<keyof AnyDuration>();
         assertTypeOf<keyof AnyDuration>().toEqualTypeOf<`${DurationUnit}`>();
+    });
+});
+
+describe(roundDuration.name, () => {
+    it('has correct types', () => {
+        assertTypeOf(roundDuration({days: 5}, 4)).toEqualTypeOf<{days: number}>();
     });
 });

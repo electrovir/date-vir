@@ -1,4 +1,5 @@
-import {RequiredAndNotNull} from '@augment-vir/common';
+import {RequiredAndNotNull, mapObjectValues, round} from '@augment-vir/common';
+import {isRunTimeType} from 'run-time-assertions';
 
 export enum DurationUnit {
     Years = 'years',
@@ -71,3 +72,16 @@ export type AllDurations = RequiredAndNotNull<AnyDuration>;
  */
 export type Duration<DurationKeys extends DurationUnit = DurationUnit> =
     DurationUnit extends DurationKeys ? AnyDuration : Pick<AllDurations, `${DurationKeys}`>;
+
+export function roundDuration<InputDuration extends AnyDuration>(
+    duration: Readonly<InputDuration>,
+    decimalCount: number | undefined,
+): InputDuration {
+    return mapObjectValues(duration, (key, value): number | undefined => {
+        if (decimalCount == undefined || !isRunTimeType(value, 'number')) {
+            return value as number | undefined;
+        } else {
+            return round({number: value, digits: decimalCount});
+        }
+    }) as AnyDuration as InputDuration;
+}
