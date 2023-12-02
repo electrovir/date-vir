@@ -1,7 +1,7 @@
-import {itCases} from '@augment-vir/browser-testing';
+import {FunctionTestCase, itCases} from '@augment-vir/browser-testing';
 import {randomInteger} from '@augment-vir/common';
 import {assertThrows, assertTypeOf} from 'run-time-assertions';
-import {Duration, DurationUnit, orderedDurationUnits} from '../duration';
+import {AnyDuration, Duration, DurationUnit, orderedDurationUnits} from '../duration';
 import {FullDate} from '../full-date/full-date-shape';
 import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
 import {calculateRelativeDate} from './calculate-relative-date';
@@ -32,16 +32,20 @@ describe(isDateAfter.name, () => {
 });
 
 describe(diffDates.name, () => {
-    function testSingleUnitDiffs(input: {
+    function testSingleUnitDiffArray(input: {
         start: FullDate;
         end: FullDate;
         units: Readonly<[DurationUnit]>;
         diffType?: DiffType | undefined;
     }) {
-        return diffDates(input);
+        return diffDates(input) as AnyDuration;
     }
 
-    itCases(testSingleUnitDiffs, [
+    function testSingleUnitDiff(input: Parameters<typeof testSingleUnitDiffArray>[0]) {
+        return diffDates({...input, unit: input.units[0]});
+    }
+
+    const singleUnitTestCases: ReadonlyArray<FunctionTestCase<typeof testSingleUnitDiffArray>> = [
         {
             it: 'calculates seconds diff',
             input: {
@@ -91,7 +95,14 @@ describe(diffDates.name, () => {
                 years: -10,
             },
         },
-    ]);
+    ];
+
+    describe('with single entry unit tuple', () => {
+        itCases(testSingleUnitDiffArray, singleUnitTestCases);
+    });
+    describe('with single unit input', () => {
+        itCases(testSingleUnitDiff, singleUnitTestCases);
+    });
 
     itCases(diffDates, [
         {
@@ -140,6 +151,22 @@ describe(diffDates.name, () => {
             expect: {
                 minutes: -secondsDiff / 60,
                 seconds: -secondsDiff,
+            },
+        },
+        {
+            it: 'calculates diff with longterm accuracy',
+            input: {
+                start: exampleFullDateUtc,
+                end: calculateRelativeDate(exampleFullDateUtc, {days: 492}),
+                units: [
+                    DurationUnit.Days,
+                    DurationUnit.Years,
+                ],
+                diffType: DiffType.AdditiveUnits,
+            },
+            expect: {
+                years: 1,
+                days: 126,
             },
         },
         {
@@ -307,6 +334,30 @@ describe(diffDates.name, () => {
                 start: exampleFullDateOffset,
                 end: exampleFullDateUtc,
                 units: [DurationUnit.Minutes],
+            }),
+        ).toMatchTypeOf<{
+            minutes: number;
+        }>();
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDateOffset,
+                end: exampleFullDateUtc,
+                unit: DurationUnit.Years,
+            }),
+        ).toEqualTypeOf<{years: number}>();
+
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDateUtc,
+                end: exampleFullDateOffset,
+                unit: DurationUnit.Seconds,
+            }),
+        ).toMatchTypeOf<{seconds: number}>();
+        assertTypeOf(
+            diffDates({
+                start: exampleFullDateOffset,
+                end: exampleFullDateUtc,
+                unit: DurationUnit.Minutes,
             }),
         ).toMatchTypeOf<{
             minutes: number;

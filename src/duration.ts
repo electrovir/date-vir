@@ -1,5 +1,6 @@
 import {RequiredAndNotNull, mapObjectValues, round} from '@augment-vir/common';
 import {isRunTimeType} from 'run-time-assertions';
+import {IsUnknown, UnionToIntersection} from 'type-fest';
 
 export enum DurationUnit {
     Years = 'years',
@@ -70,8 +71,13 @@ export type AllDurations = RequiredAndNotNull<AnyDuration>;
  * dates, or add offsets to an existing date, or describe a single time duration. Usually only one
  * property is set on this at any given time.
  */
-export type Duration<DurationKeys extends DurationUnit = DurationUnit> =
-    DurationUnit extends DurationKeys ? AnyDuration : Pick<AllDurations, `${DurationKeys}`>;
+export type Duration<DurationKeys extends DurationUnit | unknown> = UnionToIntersection<
+    IsUnknown<DurationKeys> extends true
+        ? AnyDuration
+        : DurationKeys extends DurationUnit
+          ? Pick<AllDurations, `${DurationKeys}`>
+          : never
+>;
 
 export function roundDuration<InputDuration extends AnyDuration>(
     duration: Readonly<InputDuration>,

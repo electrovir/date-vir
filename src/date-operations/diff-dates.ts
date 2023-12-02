@@ -1,6 +1,6 @@
 import {ArrayElement, makeWritable, typedObjectFromEntries} from '@augment-vir/common';
 import {ConversionAccuracy} from 'luxon';
-import {Duration, DurationUnit, roundDuration} from '../duration';
+import {AnyDuration, Duration, DurationUnit, roundDuration} from '../duration';
 import {FullDate} from '../full-date/full-date-shape';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion';
 
@@ -59,11 +59,11 @@ export enum DiffType {
  * to calculate the diff. See more details here:
  * https://moment.github.io/luxon/#/math?id=casual-vs-longterm-conversion-accuracy
  */
-export function diffDates<const ChosenDurationKeys extends Readonly<[DurationUnit]>>(params: {
-    start: FullDate;
-    end: FullDate;
-    /** Which units the output should contain. */
-    units: ChosenDurationKeys;
+export function diffDates<const ChosenDurationUnits extends DurationUnit>(params: {
+    start: Readonly<FullDate>;
+    end: Readonly<FullDate>;
+    /** The unit which the output should contain. */
+    unit: ChosenDurationUnits;
     /**
      * Determine the diff type calculation. See DiffType values for explanations on each one.
      * Optional when only one unit is provided, as the diffType will not change the output either
@@ -72,32 +72,61 @@ export function diffDates<const ChosenDurationKeys extends Readonly<[DurationUni
     diffType?: DiffType | undefined;
     /** How many decimals to round the outputs to. Leave undefined to skip rounding entirely. */
     decimalCount?: number | undefined;
-}): Duration<ArrayElement<ChosenDurationKeys>>;
-export function diffDates<const ChosenDurationKeys extends ReadonlyArray<DurationUnit>>(params: {
-    start: FullDate;
-    end: FullDate;
+}): Duration<ChosenDurationUnits>;
+export function diffDates<const ChosenDurationUnits extends Readonly<[DurationUnit]>>(params: {
+    start: Readonly<FullDate>;
+    end: Readonly<FullDate>;
     /** Which units the output should contain. */
-    units: ChosenDurationKeys;
+    units: ChosenDurationUnits;
+    /**
+     * Determine the diff type calculation. See DiffType values for explanations on each one.
+     * Optional when only one unit is provided, as the diffType will not change the output either
+     * way.
+     */
+    diffType?: DiffType | undefined;
+    /** How many decimals to round the outputs to. Leave undefined to skip rounding entirely. */
+    decimalCount?: number | undefined;
+}): Duration<ArrayElement<ChosenDurationUnits>>;
+export function diffDates<const ChosenDurationUnits extends ReadonlyArray<DurationUnit>>(params: {
+    start: Readonly<FullDate>;
+    end: Readonly<FullDate>;
+    /** Which units the output should contain. */
+    units: ChosenDurationUnits;
     /** Determine the diff type calculation. See DiffType values for explanations on each one. */
     diffType: DiffType;
     /** How many decimals to round the outputs to. Leave undefined to skip rounding entirely. */
     decimalCount?: number | undefined;
-}): Duration<ArrayElement<ChosenDurationKeys>>;
-export function diffDates<const ChosenDurationKeys extends ReadonlyArray<DurationUnit>>({
+}): Duration<ArrayElement<ChosenDurationUnits>>;
+export function diffDates<
+    const ChosenDurationUnits extends ReadonlyArray<DurationUnit> | DurationUnit,
+>({
     start,
     end,
-    units,
+    units: unitsInput,
+    unit: unitInput,
     diffType: diffTypeInput,
     decimalCount,
 }: {
-    start: FullDate;
-    end: FullDate;
-    units: ChosenDurationKeys;
+    start: Readonly<FullDate>;
+    end: Readonly<FullDate>;
+    units?: ChosenDurationUnits;
+    unit?: ChosenDurationUnits;
     diffType?: DiffType | undefined;
     decimalCount?: number | undefined;
-}): Duration<ArrayElement<ChosenDurationKeys>> {
+}): Duration<
+    ChosenDurationUnits extends ReadonlyArray<DurationUnit>
+        ? ArrayElement<ChosenDurationUnits>
+        : ChosenDurationUnits
+> {
+    type ReturnType = Duration<
+        ChosenDurationUnits extends ReadonlyArray<DurationUnit>
+            ? ArrayElement<ChosenDurationUnits>
+            : ChosenDurationUnits
+    >;
     const luxonDateStart = toLuxonDateTime(start);
     const luxonDateEnd = toLuxonDateTime(end);
+
+    const units = (unitsInput ?? [unitInput]) as ReadonlyArray<DurationUnit>;
 
     const diffType =
         units.length === 1
@@ -121,9 +150,7 @@ export function diffDates<const ChosenDurationKeys extends ReadonlyArray<Duratio
             })
             .toObject();
 
-        return roundDuration(additiveDiff, decimalCount) as Duration<
-            ArrayElement<ChosenDurationKeys>
-        >;
+        return roundDuration(additiveDiff, decimalCount) as ReturnType;
     } else if (diffType === DiffType.EquivalentUnits) {
         const allUnitDiffEntries = units.map((durationUnit) => {
             const diff = luxonDateEnd
@@ -148,11 +175,9 @@ export function diffDates<const ChosenDurationKeys extends ReadonlyArray<Duratio
             ] as const;
         });
 
-        const equivalentDiff = typedObjectFromEntries(allUnitDiffEntries);
+        const equivalentDiff = typedObjectFromEntries(allUnitDiffEntries) as AnyDuration;
 
-        return roundDuration(equivalentDiff, decimalCount) as Duration<
-            ArrayElement<ChosenDurationKeys>
-        >;
+        return roundDuration(equivalentDiff, decimalCount) as ReturnType;
     } else {
         throw new Error(`Failed to diff dates: provided diffType is invalid: '${diffType}'`);
     }
@@ -162,11 +187,14 @@ export function isDateAfter({
     relativeTo,
     fullDate,
 }: {
-    relativeTo: FullDate;
-    fullDate: FullDate;
+    relativeTo: Readonly<FullDate>;
+    fullDate: Readonly<FullDate>;
 }): boolean {
     return (
-        diffDates({start: relativeTo, end: fullDate, units: [DurationUnit.Milliseconds]})
-            .milliseconds >= 0
+        diffDates({
+            start: relativeTo,
+            end: fullDate,
+            unit: DurationUnit.Milliseconds,
+        }).milliseconds >= 0
     );
 }

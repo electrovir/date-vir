@@ -13,8 +13,8 @@ describe('Duration', () => {
         }>();
     });
 
-    it('defaults to AnyDuration', () => {
-        assertTypeOf<Duration>().toEqualTypeOf<AnyDuration>();
+    it('allows AllDuration', () => {
+        assertTypeOf<Duration<unknown>>().toEqualTypeOf<AnyDuration>();
     });
 });
 

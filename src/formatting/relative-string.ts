@@ -1,5 +1,5 @@
 import {PartialAndUndefined, areJsonEqual, mapObjectValues, round} from '@augment-vir/common';
-import {diffDatesAllUnits} from '../date-operations/diff-dates';
+import {DiffType, diffDates} from '../date-operations/diff-dates';
 import {DurationUnit, orderedDurationUnits, singularDurationUnitNames} from '../duration';
 import {FullDate} from '../full-date/full-date-shape';
 
@@ -50,9 +50,11 @@ export function toRelativeString({
 }): string | undefined {
     const roundingDigits = options.decimalDigitCount || 0;
 
-    const allUnitDiffs: Readonly<Record<DurationUnit, number>> = diffDatesAllUnits({
+    const allUnitDiffs: Readonly<Record<DurationUnit, number>> = diffDates({
         start: fullDate,
         end: relativeTo,
+        units: orderedDurationUnits,
+        diffType: DiffType.EquivalentUnits,
     });
 
     const unitsWithinBounds: Readonly<Record<DurationUnit, boolean>> = mapObjectValues(
