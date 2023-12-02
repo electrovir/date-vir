@@ -1,6 +1,6 @@
 {
     "name": "date-vir",
-    "version": "4.1.1",
+    "version": "5.0.0",
     "description": "Easy and explicit dates and times",
     "keywords": [
         "date",
@@ -77,9 +77,5 @@
         "typedoc": "^0.25.4",
         "typescript": "^5.3.2",
         "virmator": "^11.1.4"
-    },
-    "overrides": {
-        "@open-wc/scoped-elements": "2.2.3",
-        "@open-wc/testing-helpers": "2.3.0"
     }
 }
