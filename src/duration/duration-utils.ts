@@ -21,3 +21,15 @@ export function roundDuration<InputDuration extends AnyDuration>(
         }
     }) as AnyDuration as InputDuration;
 }
+
+/** Convert a duration from any combination of units into a single unit. */
+export function convertDuration<RequiredDurationUnit extends DurationUnit>(
+    inputDuration: AnyDuration,
+    requiredUnit: RequiredDurationUnit,
+): Duration<RequiredDurationUnit> {
+    const luxonDuration = LuxonDuration.fromObject(inputDuration);
+
+    const newUnitValue = luxonDuration.as(requiredUnit);
+
+    return {[requiredUnit]: newUnitValue} as Duration<RequiredDurationUnit>;
+}

@@ -42,3 +42,54 @@ describe(roundDuration.name, () => {
         },
     ]);
 });
+
+describe(convertDuration.name, () => {
+    it('has proper types', () => {
+        assertTypeOf(convertDuration({days: 54.35}, DurationUnit.Minutes)).toEqualTypeOf<{
+            minutes: number;
+        }>();
+    });
+
+    itCases(convertDuration, [
+        {
+            it: 'converts to milliseconds',
+            inputs: [
+                {minutes: 32, seconds: 2},
+                DurationUnit.Milliseconds,
+            ],
+            expect: {milliseconds: 1_922_000},
+        },
+        {
+            it: 'works with a negative duration',
+            inputs: [
+                {minutes: -32, seconds: -2},
+                DurationUnit.Milliseconds,
+            ],
+            expect: {milliseconds: -1_922_000},
+        },
+        {
+            it: 'works with negative and positive durations',
+            inputs: [
+                {minutes: -32, seconds: 2},
+                DurationUnit.Milliseconds,
+            ],
+            expect: {milliseconds: -1_918_000},
+        },
+        {
+            it: 'converts to seconds',
+            inputs: [
+                {minutes: 32, seconds: 2},
+                DurationUnit.Seconds,
+            ],
+            expect: {seconds: 1_922},
+        },
+        {
+            it: 'handles an empty object',
+            inputs: [
+                {} as AtLeastOneDuration,
+                DurationUnit.Seconds,
+            ],
+            expect: {seconds: 0},
+        },
+    ]);
+});
