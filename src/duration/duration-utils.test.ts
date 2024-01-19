@@ -91,5 +91,29 @@ describe(convertDuration.name, () => {
             ],
             expect: {seconds: 0},
         },
+        {
+            it: 'handles infinity',
+            inputs: [
+                {seconds: Infinity},
+                DurationUnit.Milliseconds,
+            ],
+            expect: {milliseconds: Infinity},
+        },
+        {
+            it: 'handles negative infinity',
+            inputs: [
+                {seconds: -Infinity},
+                DurationUnit.Milliseconds,
+            ],
+            expect: {milliseconds: -Infinity},
+        },
+        {
+            it: 'handles multiple infinities',
+            inputs: [
+                {minutes: Infinity, seconds: Infinity},
+                DurationUnit.Milliseconds,
+            ],
+            expect: {milliseconds: Infinity},
+        },
     ]);
 });
