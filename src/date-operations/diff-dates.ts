@@ -1,6 +1,8 @@
 import {ArrayElement, makeWritable, typedObjectFromEntries} from '@augment-vir/common';
 import {ConversionAccuracy} from 'luxon';
-import {AnyDuration, Duration, DurationUnit, roundDuration} from '../duration';
+import {AnyDuration, Duration} from '../duration/duration';
+import {DurationUnit} from '../duration/duration-unit';
+import {roundDuration} from '../duration/duration-utils';
 import {FullDate} from '../full-date/full-date-shape';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion';
 

@@ -13,6 +13,8 @@ export const zeroDate = {
     millisecond: 0,
 } as const satisfies Readonly<Omit<TimePart, 'timezone'>>;
 
+export const emptyDate = zeroDate;
+
 export const zeroTime = pickObjectKeys(zeroDate, timeFullDateKeys);
 
 export function clearTime(inputFullDate: Readonly<FullDate>): FullDate {

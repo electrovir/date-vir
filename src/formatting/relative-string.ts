@@ -1,6 +1,10 @@
 import {PartialAndUndefined, areJsonEqual, mapObjectValues, round} from '@augment-vir/common';
 import {DiffType, diffDates} from '../date-operations/diff-dates';
-import {DurationUnit, orderedDurationUnits, singularDurationUnitNames} from '../duration';
+import {
+    DurationUnit,
+    orderedDurationUnits,
+    singularDurationUnitNames,
+} from '../duration/duration-unit';
 import {FullDate} from '../full-date/full-date-shape';
 
 const maxDurations: Readonly<Record<DurationUnit, number>> = {

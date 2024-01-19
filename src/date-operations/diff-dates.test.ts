@@ -1,7 +1,8 @@
 import {FunctionTestCase, itCases} from '@augment-vir/browser-testing';
 import {randomInteger} from '@augment-vir/common';
 import {assertThrows, assertTypeOf} from 'run-time-assertions';
-import {AnyDuration, Duration, DurationUnit, orderedDurationUnits} from '../duration';
+import {AnyDuration, Duration} from '../duration/duration';
+import {DurationUnit, orderedDurationUnits} from '../duration/duration-unit';
 import {FullDate} from '../full-date/full-date-shape';
 import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
 import {calculateRelativeDate} from './calculate-relative-date';

@@ -1,6 +1,6 @@
 import {assert} from '@open-wc/testing';
 import {diffDates} from '../date-operations/diff-dates';
-import {DurationUnit} from '../duration';
+import {DurationUnit} from '../duration/duration-unit';
 import {toIsoString} from '../formatting/timestamp';
 import {createFullDate, getNowFullDate} from '../full-date/create-full-date';
 import {userTimezone, utcTimezone} from '../timezone/timezones';

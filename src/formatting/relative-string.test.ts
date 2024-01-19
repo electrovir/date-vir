@@ -1,6 +1,6 @@
 import {itCases} from '@augment-vir/browser-testing';
 import {calculateRelativeDate} from '../date-operations/calculate-relative-date';
-import {DurationUnit} from '../duration';
+import {DurationUnit} from '../duration/duration-unit';
 import {createFullDate} from '../full-date/create-full-date';
 import {exampleFullDateUtc} from '../full-date/full-date.test-helper';
 import {timezones, utcTimezone} from '../timezone/timezones';
