@@ -123,6 +123,19 @@ describe(toRelativeString.name, () => {
             expect: 'just now',
         },
         {
+            it: 'returns just now when less than seconds but milliseconds are blocked',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 1}),
+                options: {
+                    blockedRelativeUnits: [
+                        DurationUnit.Milliseconds,
+                    ],
+                },
+            },
+            expect: 'just now',
+        },
+        {
             it: 'rounds to a decimal point',
             input: {
                 relativeTo: exampleFullDateUtc,

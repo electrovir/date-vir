@@ -90,7 +90,8 @@ export function toRelativeString({
 
     const shouldUseJustNow = options.blockJustNow
         ? false
-        : areJsonEqual(fullDate, relativeTo) ||
+        : (unitToUse == undefined && allUnitDiffs.minutes < 2) ||
+          areJsonEqual(fullDate, relativeTo) ||
           (unitToUse === DurationUnit.Minutes &&
               options.blockedRelativeUnits?.includes(DurationUnit.Seconds) &&
               allUnitDiffs.minutes < 2) ||
@@ -103,7 +104,7 @@ export function toRelativeString({
     if (shouldUseJustNow) {
         return 'just now';
     } else if (unitToUse == undefined) {
-            return undefined;
+        return undefined;
     }
 
     const duration = allUnitDiffs[unitToUse];
