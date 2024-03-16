@@ -91,15 +91,19 @@ export function toRelativeString({
     const shouldUseJustNow = options.blockJustNow
         ? false
         : areJsonEqual(fullDate, relativeTo) ||
-          (unitToUse === DurationUnit.Minutes && allUnitDiffs.minutes < 2) ||
-          (unitToUse === DurationUnit.Seconds && allUnitDiffs.seconds < 11) ||
+          (unitToUse === DurationUnit.Minutes &&
+              options.blockedRelativeUnits?.includes(DurationUnit.Seconds) &&
+              allUnitDiffs.minutes < 2) ||
+          (unitToUse === DurationUnit.Seconds &&
+              options.blockedRelativeUnits?.includes(DurationUnit.Milliseconds) &&
+              allUnitDiffs.seconds < 11) ||
           (unitToUse === DurationUnit.Milliseconds && allUnitDiffs.milliseconds < 710);
 
     /** Some short circuits. */
     if (shouldUseJustNow) {
         return 'just now';
     } else if (unitToUse == undefined) {
-        return undefined;
+            return undefined;
     }
 
     const duration = allUnitDiffs[unitToUse];

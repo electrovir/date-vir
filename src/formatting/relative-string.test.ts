@@ -93,6 +93,11 @@ describe(toRelativeString.name, () => {
             input: {
                 relativeTo: exampleFullDateUtc,
                 fullDate: calculateRelativeDate(exampleFullDateUtc, {seconds: 2}),
+                options: {
+                    blockedRelativeUnits: [
+                        DurationUnit.Milliseconds,
+                    ],
+                },
             },
             expect: 'just now',
         },
@@ -109,6 +114,11 @@ describe(toRelativeString.name, () => {
             input: {
                 relativeTo: exampleFullDateUtc,
                 fullDate: calculateRelativeDate(exampleFullDateUtc, {minutes: 1}),
+                options: {
+                    blockedRelativeUnits: [
+                        DurationUnit.Seconds,
+                    ],
+                },
             },
             expect: 'just now',
         },
@@ -179,6 +189,39 @@ describe(toRelativeString.name, () => {
                 },
             },
             expect: undefined,
+        },
+        {
+            it: 'prints 1 minute ago',
+            input: {
+                fullDate: {
+                    day: 16,
+                    month: 3,
+                    year: 2024,
+                    hour: 8,
+                    minute: 42,
+                    second: 20,
+                    millisecond: 68,
+                    timezone: utcTimezone,
+                },
+                relativeTo: {
+                    day: 16,
+                    month: 3,
+                    year: 2024,
+                    hour: 8,
+                    minute: 43,
+                    second: 21,
+                    millisecond: 278,
+                    timezone: utcTimezone,
+                },
+                options: {
+                    blockedRelativeUnits: [
+                        DurationUnit.Milliseconds,
+                        DurationUnit.Quarters,
+                    ],
+                    limitUnitMax: true,
+                },
+            },
+            expect: 'a minute ago',
         },
         {
             it: 'returns just now for identical inputs',
