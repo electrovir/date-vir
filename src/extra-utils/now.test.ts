@@ -4,7 +4,7 @@ import {DurationUnit} from '../duration/duration-unit';
 import {toIsoString} from '../formatting/timestamp';
 import {createFullDate, getNowFullDate} from '../full-date/create-full-date';
 import {userTimezone, utcTimezone} from '../timezone/timezones';
-import {getNowInIsoString, getNowInUserTimezone} from './now';
+import {getNowInIsoString, getNowInUserTimezone, getNowInUtcTimezone} from './now';
 
 describe(getNowInIsoString.name, () => {
     it('produces same output as stringing together toIsoString and getNowFullDate', () => {
@@ -35,6 +35,22 @@ describe(getNowInUserTimezone.name, () => {
     it('creates a time identical to doing getNowFullDate', () => {
         const shortVersion = getNowInUserTimezone();
         const longVersion = getNowFullDate(userTimezone);
+
+        /** Allow buffer for time between instruction execution */
+        const diff = diffDates({
+            start: shortVersion,
+            end: longVersion,
+            unit: DurationUnit.Minutes,
+        });
+
+        assert.isBelow(diff.minutes, 1);
+    });
+});
+
+describe(getNowInUtcTimezone.name, () => {
+    it('creates a time identical to doing getNowFullDate', () => {
+        const shortVersion = getNowInUtcTimezone();
+        const longVersion = getNowFullDate(utcTimezone);
 
         /** Allow buffer for time between instruction execution */
         const diff = diffDates({

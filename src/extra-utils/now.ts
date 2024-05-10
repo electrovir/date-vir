@@ -15,3 +15,7 @@ export function getNowInIsoString(): UtcIsoString {
 export function getNowInUserTimezone(): FullDate {
     return getNowFullDate(userTimezone);
 }
+
+export function getNowInUtcTimezone(): FullDate {
+    return getNowFullDate(utcTimezone);
+}
