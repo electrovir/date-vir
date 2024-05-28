@@ -1,12 +1,14 @@
 import {PartialAndUndefined, RequiredAndNotNullBy} from '@augment-vir/common';
 import {FullDate} from '../full-date/full-date-shape';
+import {Timezone} from '../timezone/timezone-names';
 
 export function hasDateProps<
-    PartialFullDate extends PartialAndUndefined<FullDate>,
+    SpecificTimezone extends Timezone,
+    PartialFullDate extends PartialAndUndefined<FullDate<SpecificTimezone>>,
     /** A union of strings. */
-    RequiredKeysUnion extends keyof FullDate,
+    RequiredKeysUnion extends keyof FullDate<SpecificTimezone>,
 >(
-    dateInput: PartialAndUndefined<FullDate>,
+    dateInput: PartialAndUndefined<FullDate<SpecificTimezone>>,
     keys: ReadonlyArray<RequiredKeysUnion>,
 ): dateInput is RequiredAndNotNullBy<PartialFullDate, RequiredKeysUnion> {
     try {
@@ -18,11 +20,12 @@ export function hasDateProps<
 }
 
 export function assertHasDateProps<
-    PartialFullDate extends PartialAndUndefined<FullDate>,
+    SpecificTimezone extends Timezone,
+    PartialFullDate extends PartialAndUndefined<FullDate<SpecificTimezone>>,
     /** A union of strings. */
-    RequiredKeysUnion extends keyof FullDate,
+    RequiredKeysUnion extends keyof FullDate<SpecificTimezone>,
 >(
-    dateInput: PartialAndUndefined<FullDate>,
+    dateInput: PartialAndUndefined<FullDate<SpecificTimezone>>,
     keys: ReadonlyArray<RequiredKeysUnion>,
 ): asserts dateInput is RequiredAndNotNullBy<PartialFullDate, RequiredKeysUnion> {
     const missingKeys: PropertyKey[] = [];

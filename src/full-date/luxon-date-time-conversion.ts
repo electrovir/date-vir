@@ -27,7 +27,7 @@ export function toLuxonDateTime(fullDateInput: FullDate): DateTime {
  * could be helpful if you need it. Usually you should prefer using the createFullDate function
  * instead.
  */
-export function parseLuxonDateTime<const SpecificTimezone extends Timezone = Timezone>(
+export function parseLuxonDateTime<const SpecificTimezone extends Timezone>(
     dateTimeInput: DateTime,
     forcedTimezone?: SpecificTimezone,
 ): FullDate<SpecificTimezone> {

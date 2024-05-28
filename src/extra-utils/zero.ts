@@ -1,5 +1,6 @@
 import {pickObjectKeys, typedObjectFromEntries} from '@augment-vir/common';
 import {FullDate, TimePart, timeFullDateKeys} from '../full-date/full-date-shape';
+import {Timezone} from '../timezone/timezone-names';
 import {overrideDateParts} from './date-transforms';
 
 export const zeroDate = {
@@ -17,12 +18,14 @@ export const emptyDate = zeroDate;
 
 export const zeroTime = pickObjectKeys(zeroDate, timeFullDateKeys);
 
-export function clearTime(inputFullDate: Readonly<FullDate>): FullDate {
+export function clearTime<const SpecificTimezone extends Timezone>(
+    inputFullDate: Readonly<FullDate<SpecificTimezone>>,
+): FullDate<SpecificTimezone> {
     return clearParts(inputFullDate, timeFullDateKeys);
 }
 
-export function clearParts(
-    inputFullDate: Readonly<FullDate>,
+export function clearParts<const SpecificTimezone extends Timezone>(
+    inputFullDate: Readonly<FullDate<SpecificTimezone>>,
     parts: ReadonlyArray<Exclude<keyof FullDate, 'timezone'>>,
 ) {
     const clearParts = typedObjectFromEntries(
@@ -34,5 +37,5 @@ export function clearParts(
         }),
     );
 
-    return overrideDateParts(inputFullDate, clearParts);
+    return overrideDateParts<SpecificTimezone>(inputFullDate, clearParts);
 }

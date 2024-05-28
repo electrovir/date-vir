@@ -14,7 +14,7 @@ import {parseLuxonDateTime} from './luxon-date-time-conversion';
  * The formatString input is passed to Luxon. All format options are listed here:
  * https://moment.github.io/luxon/#/parsing?id=table-of-tokens
  */
-export function parseStrangeString({
+export function parseStrangeString<const SpecificTimezone extends Timezone>({
     dateString,
     formatString,
     timezone,
@@ -27,8 +27,8 @@ export function parseStrangeString({
      */
     formatString: string;
     /** The timezone that this date/time is meant for / originated from. */
-    timezone: Timezone;
-}): FullDate {
+    timezone: SpecificTimezone;
+}): FullDate<SpecificTimezone> {
     try {
         const dateTime = DateTime.fromFormat(dateString, formatString, {
             zone: timezone,
@@ -45,7 +45,7 @@ export function parseStrangeString({
  * Read either an HTMLInputElement's value directly, or the value string retrieved from an
  * HTMLInputElement. Handles both type="date" and type="time" <input> elements.
  */
-export function parseInputElementValue<const SpecificTimezone extends Timezone = Timezone>(
+export function parseInputElementValue<const SpecificTimezone extends Timezone>(
     elementOrValue: HTMLInputElement | string | null | undefined,
     timezone: SpecificTimezone,
 ): FullDate<SpecificTimezone> | undefined {

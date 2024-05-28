@@ -10,6 +10,7 @@ import {
     timePartShape,
 } from '../full-date/full-date-shape';
 import {exampleFullDateUtc, nonUserTimezone} from '../full-date/full-date.test-helper';
+import {Timezone} from '../timezone/timezone-names';
 import {userTimezone} from '../timezone/timezones';
 import {MaybeDatePart, combineDateParts} from './combine-dates';
 
@@ -183,6 +184,6 @@ describe(combineDateParts.name, () => {
                 date: exampleFullDateUtc as FullDate | undefined,
                 time: exampleFullDateUtc as FullDate | undefined,
             }),
-        ).toEqualTypeOf<MaybeDatePart>();
+        ).toEqualTypeOf<MaybeDatePart<Timezone>>();
     });
 });

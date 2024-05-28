@@ -19,7 +19,7 @@ export function createUtcFullDate(dateLike: Readonly<DateLike>): FullDate<UtcTim
  * Parses the given dateLike and then reads the fullDate properties from that parsed value as if it
  * were in the given timezone.
  */
-export function createFullDate<const SpecificTimezone extends Timezone = Timezone>(
+export function createFullDate<const SpecificTimezone extends Timezone>(
     /** The original date representation to be converted into a FullDate. */
     dateLike: Readonly<DateLike>,
     /** The timezone that this date/time is meant for / originated from. */
@@ -38,7 +38,7 @@ export function createFullDate<const SpecificTimezone extends Timezone = Timezon
  * Creates and returns a new FullDate object with its values shifted to be the same original time
  * but represented in a new timezone.
  */
-export function toNewTimezone<const SpecificTimezone extends Timezone = Timezone>(
+export function toNewTimezone<const SpecificTimezone extends Timezone>(
     fullDate: Readonly<FullDate>,
     timezone: SpecificTimezone,
 ): FullDate<SpecificTimezone> {
@@ -87,7 +87,7 @@ function convertDateLikeToLuxonDateTime(
     return lastDitchConversion(dateLike);
 }
 
-export function getNowFullDate<const SpecificTimezone extends Timezone = Timezone>(
+export function getNowFullDate<const SpecificTimezone extends Timezone>(
     timezone: SpecificTimezone,
 ): FullDate<SpecificTimezone> {
     return createFullDate(Date.now(), timezone);
