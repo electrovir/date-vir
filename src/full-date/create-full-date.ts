@@ -6,6 +6,7 @@ import {DateLike} from './date-like';
 import {FullDate} from './full-date-shape';
 import {isValidFullDate} from './is-valid-full-date';
 import {parseLuxonDateTime, toLuxonDateTime} from './luxon-date-time-conversion';
+import {parseDateString} from './string-parsing';
 
 export function createFullDateInUserTimezone(dateLike: Readonly<DateLike>): FullDate {
     return createFullDate(dateLike, userTimezone);
@@ -50,6 +51,7 @@ export function toNewTimezone<const SpecificTimezone extends Timezone>(
 }
 
 function lastDitchConversion(dateLike: Readonly<DateLike>): DateTime | undefined {
+    DateTime.fromFormat;
     /** As any cast for last ditch effort to convert the dateLike into a date. */
     const dateTime = DateTime.fromJSDate(new Date(dateLike as any));
     if (dateTime.isValid) {
@@ -72,13 +74,10 @@ function convertDateLikeToLuxonDateTime(
     } else if (isRunTimeType(dateLike, 'number')) {
         return DateTime.fromMillis(dateLike, {zone: utcTimezone}).setZone(timezone);
     } else if (isRunTimeType(dateLike, 'string')) {
-        const dateTime = DateTime.fromISO(dateLike, {zone: timezone});
-
-        if (!dateTime.isValid) {
-            return lastDitchConversion(dateLike);
+        const parsedStringDate = parseDateString(dateLike, timezone);
+        if (parsedStringDate) {
+            return parsedStringDate;
         }
-
-        return dateTime;
     } else if (dateLike instanceof Date) {
         const dateTime = DateTime.fromJSDate(dateLike);
         return dateTime.setZone(timezone);

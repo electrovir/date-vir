@@ -52,6 +52,74 @@ describe(createFullDate.name, () => {
             expect: exampleFullDateUtc,
         },
         {
+            it: 'works on short month-year string',
+            inputs: [
+                'jan-2021',
+                utcTimezone,
+            ],
+            expect: {
+                day: 1,
+                hour: 0,
+                millisecond: 0,
+                minute: 0,
+                month: 1,
+                second: 0,
+                timezone: 'UTC',
+                year: 2021,
+            },
+        },
+        {
+            it: 'works on full month-year string',
+            inputs: [
+                'january-2021',
+                utcTimezone,
+            ],
+            expect: {
+                day: 1,
+                hour: 0,
+                millisecond: 0,
+                minute: 0,
+                month: 1,
+                second: 0,
+                timezone: 'UTC',
+                year: 2021,
+            },
+        },
+        {
+            it: 'works on full month-year string',
+            inputs: [
+                'january-2021',
+                utcTimezone,
+            ],
+            expect: {
+                day: 1,
+                hour: 0,
+                millisecond: 0,
+                minute: 0,
+                month: 1,
+                second: 0,
+                timezone: 'UTC',
+                year: 2021,
+            },
+        },
+        {
+            it: 'works on month number-year string',
+            inputs: [
+                '1-2021',
+                utcTimezone,
+            ],
+            expect: {
+                day: 1,
+                hour: 0,
+                millisecond: 0,
+                minute: 0,
+                month: 1,
+                second: 0,
+                timezone: 'UTC',
+                year: 2021,
+            },
+        },
+        {
             it: 'handles a weird formatted date',
             inputs: [
                 'March 1 2023',
