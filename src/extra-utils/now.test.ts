@@ -1,9 +1,11 @@
 import {assert} from '@open-wc/testing';
+import {assertTypeOf} from 'run-time-assertions';
 import {diffDates} from '../date-operations/diff-dates';
 import {DurationUnit} from '../duration/duration-unit';
 import {toIsoString} from '../formatting/timestamp';
 import {createFullDate, getNowFullDate} from '../full-date/create-full-date';
-import {userTimezone, utcTimezone} from '../timezone/timezones';
+import {FullDate} from '../full-date/full-date-shape';
+import {UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones';
 import {getNowInIsoString, getNowInUserTimezone, getNowInUtcTimezone} from './now';
 
 describe(getNowInIsoString.name, () => {
@@ -60,5 +62,9 @@ describe(getNowInUtcTimezone.name, () => {
         });
 
         assert.isBelow(diff.minutes, 1);
+    });
+
+    it('matches the UTC timezone type', () => {
+        assertTypeOf(getNowInUtcTimezone()).toEqualTypeOf<FullDate<UtcTimezone>>();
     });
 });

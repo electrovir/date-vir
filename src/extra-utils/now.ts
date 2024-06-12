@@ -2,7 +2,7 @@ import {UtcIsoString} from '../formatting/string-format-types';
 import {toIsoString} from '../formatting/timestamp';
 import {getNowFullDate} from '../full-date/create-full-date';
 import {FullDate} from '../full-date/full-date-shape';
-import {userTimezone, utcTimezone} from '../timezone/timezones';
+import {UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones';
 
 export function getNowInIsoString(): UtcIsoString {
     /**
@@ -16,6 +16,6 @@ export function getNowInUserTimezone(): FullDate {
     return getNowFullDate(userTimezone);
 }
 
-export function getNowInUtcTimezone(): FullDate {
+export function getNowInUtcTimezone(): FullDate<UtcTimezone> {
     return getNowFullDate(utcTimezone);
 }
