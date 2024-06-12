@@ -1,7 +1,10 @@
 import {itCases} from '@augment-vir/browser-testing';
+import {assertTypeOf} from 'run-time-assertions';
 import {createFullDate} from '../full-date/create-full-date';
+import {FullDate} from '../full-date/full-date-shape';
 import {exampleFullDateUtc, exampleTimestamp} from '../full-date/full-date.test-helper';
-import {utcTimezone} from '../timezone/timezones';
+import {Timezones, UtcTimezone, utcTimezone} from '../timezone/timezones';
+import {getNowInUtcTimezone} from './now';
 import {clearParts, clearTime, zeroTime} from './zero';
 
 describe(clearTime.name, () => {
@@ -72,4 +75,20 @@ describe(clearParts.name, () => {
             },
         },
     ]);
+
+    it('preserves the input timezone', () => {
+        assertTypeOf(clearParts(getNowInUtcTimezone(), ['day'])).toEqualTypeOf<
+            FullDate<UtcTimezone>
+        >();
+        assertTypeOf(clearParts(getNowInUtcTimezone(), ['day'])).not.toEqualTypeOf<
+            FullDate<Timezones['Africa/Abidjan']>
+        >();
+
+        const startDate: FullDate<UtcTimezone> = getNowInUtcTimezone() as any;
+
+        assertTypeOf(clearParts(startDate, ['day'])).toEqualTypeOf<FullDate<UtcTimezone>>();
+        assertTypeOf(clearParts(startDate, ['day'])).not.toEqualTypeOf<
+            FullDate<Timezones['Africa/Abidjan']>
+        >();
+    });
 });
