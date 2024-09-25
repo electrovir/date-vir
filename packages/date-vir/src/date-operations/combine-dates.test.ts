@@ -1,17 +1,16 @@
 import {assert} from '@augment-vir/assert';
 import {getObjectTypedKeys, omitObjectKeys} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
+import {FullDatePart} from '../full-date/full-date-parts.js';
 import {
     DatePart,
     FullDate,
-    FullDatePartEnum,
     TimePart,
     datePartShape,
     timePartShape,
 } from '../full-date/full-date-shape.js';
 import {exampleFullDateUtc, nonUserTimezone} from '../full-date/full-date.mock.js';
-import {Timezone} from '../timezone/timezone-names.js';
-import {userTimezone} from '../timezone/timezones.js';
+import {userTimezone, type Timezone} from '../timezone/timezones.js';
 import {MaybeDatePart, combineDateParts} from './combine-dates.js';
 
 describe(combineDateParts.name, () => {
@@ -19,22 +18,22 @@ describe(combineDateParts.name, () => {
         {
             it: 'does not modify parts that are the same',
             input: {
-                [FullDatePartEnum.Date]: exampleFullDateUtc,
-                [FullDatePartEnum.Time]: exampleFullDateUtc,
+                [FullDatePart.Date]: exampleFullDateUtc,
+                [FullDatePart.Time]: exampleFullDateUtc,
             },
             expect: exampleFullDateUtc,
         },
         {
             it: 'handles undefined date part',
             input: {
-                [FullDatePartEnum.Time]: exampleFullDateUtc,
+                [FullDatePart.Time]: exampleFullDateUtc,
             },
             expect: omitObjectKeys(
                 exampleFullDateUtc,
                 getObjectTypedKeys(datePartShape.defaultValue).filter(
                     (
                         key,
-                    ): key is Exclude<keyof (typeof datePartShape)['runTimeType'], 'timezone'> =>
+                    ): key is Exclude<keyof (typeof datePartShape)['runtimeType'], 'timezone'> =>
                         key !== 'timezone',
                 ),
             ),
@@ -42,14 +41,14 @@ describe(combineDateParts.name, () => {
         {
             it: 'handles undefined time part',
             input: {
-                [FullDatePartEnum.Date]: exampleFullDateUtc,
+                [FullDatePart.Date]: exampleFullDateUtc,
             },
             expect: omitObjectKeys(
                 exampleFullDateUtc,
                 getObjectTypedKeys(timePartShape.defaultValue).filter(
                     (
                         key,
-                    ): key is Exclude<keyof (typeof timePartShape)['runTimeType'], 'timezone'> =>
+                    ): key is Exclude<keyof (typeof timePartShape)['runtimeType'], 'timezone'> =>
                         key !== 'timezone',
                 ),
             ),
@@ -57,14 +56,14 @@ describe(combineDateParts.name, () => {
         {
             it: 'merges two date parts',
             input: {
-                [FullDatePartEnum.Time]: {
+                [FullDatePart.Time]: {
                     hour: 12,
                     minute: 32,
                     second: 52,
                     millisecond: 100,
                     timezone: userTimezone,
                 },
-                [FullDatePartEnum.Date]: {
+                [FullDatePart.Date]: {
                     year: 2023,
                     month: 8,
                     day: 9,
@@ -85,7 +84,7 @@ describe(combineDateParts.name, () => {
         {
             it: 'merges two different FullDate instances',
             input: {
-                [FullDatePartEnum.Time]: {
+                [FullDatePart.Time]: {
                     hour: 12,
                     minute: 32,
                     second: 52,
@@ -96,7 +95,7 @@ describe(combineDateParts.name, () => {
                     day: 9,
                     timezone: userTimezone,
                 },
-                [FullDatePartEnum.Date]: {
+                [FullDatePart.Date]: {
                     hour: 7,
                     minute: 56,
                     second: 46,
@@ -122,7 +121,7 @@ describe(combineDateParts.name, () => {
         {
             it: 'errors if timezones are different',
             input: {
-                [FullDatePartEnum.Time]: {
+                [FullDatePart.Time]: {
                     hour: 12,
                     minute: 32,
                     second: 52,
@@ -133,7 +132,7 @@ describe(combineDateParts.name, () => {
                     day: 9,
                     timezone: nonUserTimezone,
                 },
-                [FullDatePartEnum.Date]: {
+                [FullDatePart.Date]: {
                     hour: 7,
                     minute: 56,
                     second: 46,

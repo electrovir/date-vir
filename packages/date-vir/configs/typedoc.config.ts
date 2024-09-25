@@ -11,10 +11,12 @@ export const typeDocConfig: Partial<TypeDocOptions> = {
     entryPoints: [
         indexTsFile,
     ],
+    treatWarningsAsErrors: false,
     intentionallyNotExported: [],
     defaultCategory: 'MISSING CATEGORY',
     categoryOrder: [
-        'Main',
+        '*',
+        'Util',
         'Internal',
     ],
 };

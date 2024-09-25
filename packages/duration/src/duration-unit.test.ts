@@ -5,7 +5,6 @@ import {AnyDuration} from './duration.js';
 
 describe('DurationUnit', () => {
     it('has all props of AnyDuration', () => {
-        assert.tsType<`${DurationUnit}`>().equals<keyof AnyDuration>();
-        assert.tsType<keyof AnyDuration>().equals<`${DurationUnit}`>();
+        assert.tsType<DurationUnit>().equals<keyof AnyDuration>();
     });
 });

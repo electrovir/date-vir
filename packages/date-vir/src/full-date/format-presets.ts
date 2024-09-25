@@ -1,8 +1,11 @@
 import {DateTime} from 'luxon';
+import {toLocaleString} from '../formatting/formatted-string.js';
 
 /**
- * Format preset re-exported from luxon to be used with toLocaleString. To see examples of all
- * presets, go here: https://moment.github.io/luxon/#/formatting?id=presets
+ * Format presets to be used with {@link toLocaleString}. To see examples of all presets, go here:
+ * https://moment.github.io/luxon/#/formatting?id=presets
+ *
+ * @category Formatting
  */
 export const formatPresets = {
     DateShort: DateTime.DATE_SHORT,

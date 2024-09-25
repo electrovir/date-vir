@@ -1,21 +1,21 @@
-import {typedHasProperty} from '@augment-vir/common';
+import {check} from '@augment-vir/assert';
 import {describe, FunctionTestCase, itCases} from '@augment-vir/test';
 import {assertValidTimezone, isValidTimezone} from './timezone-checks.js';
 
 const testCases: ReadonlyArray<FunctionTestCase<typeof assertValidTimezone>> = [
     {
         it: 'passes a valid timezone name string',
-        input: 'Australia/Melbourne',
+        inputs: ['Australia/Melbourne'],
         throws: undefined,
     },
     {
         it: 'passes uppercase utc',
-        input: 'UTC',
+        inputs: ['UTC'],
         throws: undefined,
     },
     {
         it: 'fails an invalid timezone',
-        input: 'not a timezone',
+        inputs: ['not a timezone'],
         throws: {
             matchConstructor: Error,
         },
@@ -31,9 +31,9 @@ describe(isValidTimezone.name, () => {
         isValidTimezone,
         testCases.map((testCase) => {
             return {
-                ...testCase,
-                throws: undefined,
-                expect: !(typedHasProperty(testCase, 'throws') && testCase.throws),
+                it: testCase.it,
+                input: testCase.inputs[0],
+                expect: !(check.hasKey(testCase, 'throws') && testCase.throws),
             };
         }),
     );

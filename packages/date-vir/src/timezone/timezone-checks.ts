@@ -1,31 +1,37 @@
+import {AssertionError} from '@augment-vir/assert';
 import {Info} from 'luxon';
-import {Timezone} from './timezone-names.js';
+import {Timezone} from './timezones.js';
 
 /**
- * Asserts that the given timezoneName is a valid timezone name.
+ * Asserts that the given input is a valid timezone name.
  *
- * Note that this may actually allow names beyond what is currently in the exact TimezoneName type,
- * because this function uses luxon to check that it is able to generate a date with the given
- * timezone, regardless of whether it's in our typed list or not.
+ * Note that this may actually allow names beyond what is currently in the exact {@link Timezone}
+ * type, because this function checks to see if the given timezone can be used to construct a date,
+ * regardless of whether it's in our typed list or not.
+ *
+ * @category Assertion
  */
 export function assertValidTimezone(
-    potentialTimezoneName: string,
-): asserts potentialTimezoneName is Timezone {
-    if (!Info.isValidIANAZone(potentialTimezoneName)) {
-        throw new Error(`'${potentialTimezoneName}' is not a valid time zone`);
+    potentialTimezone: string,
+    userMessage?: string | undefined,
+): asserts potentialTimezone is Timezone {
+    if (!Info.isValidIANAZone(potentialTimezone)) {
+        throw new AssertionError(`'${potentialTimezone}' is not a valid time zone`, userMessage);
     }
 }
 
 /**
- * Checks that the given timezoneName is a valid timezone name.
+ * Checks that the given timezone is valid.
  *
- * Note that this may actually allow names beyond what is currently in the exact TimezoneName type,
- * because this function uses luxon to check that it is able to generate a date with the given
- * timezone, regardless of whether it's in our typed list or not.
+ * Note that this may actually allow names beyond what is currently in the exact {@link Timezone}
+ * type, because this function checks to see if the given timezone can be used to construct a date,
+ * regardless of whether it's in our typed list or not.
+ *
+ * @category Assertion
  */
-export function isValidTimezone(potentialTimezoneName: string): potentialTimezoneName is Timezone {
+export function isValidTimezone(potentialTimezone: string): potentialTimezone is Timezone {
     try {
-        assertValidTimezone(potentialTimezoneName);
+        assertValidTimezone(potentialTimezone);
         return true;
     } catch {
         return false;

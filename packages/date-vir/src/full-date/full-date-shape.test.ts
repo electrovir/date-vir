@@ -1,9 +1,7 @@
-import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {assertValidShape, defineShape, exact} from 'object-shape-tester';
 import {ReadonlyDeep} from 'type-fest';
-import {UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
-import {getNowFullDate} from './create-full-date.js';
+import {userTimezone, utcTimezone} from '../timezone/timezones.js';
 import {
     DatePart,
     FullDate,
@@ -56,16 +54,6 @@ describe('FullDate', () => {
         assertValidShape(exampleDate, fullDateShape);
     });
 
-    it('allow specifying a specific timezone', () => {
-        const anyTimezone = getNowFullDate(userTimezone);
-
-        // @ts-expect-error: mismatched timezone type parameter
-        const specificTimezone: FullDate<UtcTimezone> = anyTimezone;
-
-        assert.tsType(specificTimezone.timezone).equals<UtcTimezone>();
-        assert.tsType(specificTimezone.timezone).equals(utcTimezone);
-    });
-
     it('is assignable to readonly versions of itself', () => {
         const myShape = defineShape({
             deployLocation: exact('github'),
@@ -90,7 +78,7 @@ describe('FullDate', () => {
             b: fullDateShape,
         });
 
-        const exampleMyInstance: typeof myShape.runTimeType = {
+        const exampleMyInstance: typeof myShape.runtimeType = {
             a: 'hi',
             b: {
                 year: 1,

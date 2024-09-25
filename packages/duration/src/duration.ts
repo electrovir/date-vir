@@ -1,5 +1,5 @@
 import type {RequireAtLeastOne, UnionToIntersection} from 'type-fest';
-import {type DurationUnit} from './duration-unit.js';
+import {DurationUnit} from './duration-unit.js';
 
 /** Copied from `@augment-vir/common` so this package doesn't depend on augment-vir. */
 type RequiredAndNotNull<T> = {
@@ -10,24 +10,14 @@ type RequiredAndNotNull<T> = {
  * A looser type with all possible options, based on the stricter {@link Duration} type. Matches the
  * DurationObjectUnits type from the luxon package.
  *
- * @category Duration : Util
+ * @category Util
  */
-export type AnyDuration = {
-    years?: number | undefined;
-    quarters?: number | undefined;
-    months?: number | undefined;
-    weeks?: number | undefined;
-    days?: number | undefined;
-    hours?: number | undefined;
-    minutes?: number | undefined;
-    seconds?: number | undefined;
-    milliseconds?: number | undefined;
-};
+export type AnyDuration = Partial<Record<DurationUnit, number | undefined>>;
 
 /**
  * Requires at least one duration unit to be set.
  *
- * @category Duration : Util
+ * @category Util
  */
 export type AtLeastOneDuration = RequireAtLeastOne<RequiredAndNotNull<AnyDuration>>;
 
@@ -36,7 +26,7 @@ export type AtLeastOneDuration = RequireAtLeastOne<RequiredAndNotNull<AnyDuratio
  * form the whole picture or whether each duration is the same value but calculated in different
  * units depends on the context of this type's usage.
  *
- * @category Duration : Util
+ * @category Util
  */
 export type AllDurations = RequiredAndNotNull<AnyDuration>;
 
@@ -53,6 +43,30 @@ export type Duration<DurationKeys extends DurationUnit | true> = UnionToIntersec
     DurationKeys extends true
         ? AnyDuration
         : DurationKeys extends DurationUnit
-          ? Pick<AllDurations, `${DurationKeys}`>
+          ? Pick<AllDurations, DurationKeys>
           : never
 >;
+
+/**
+ * An object with all {@link DurationUnit} keys set to `0`.
+ *
+ * @category Zero
+ */
+export const zeroDuration = {
+    years: 0,
+    quarters: 0,
+    months: 0,
+    weeks: 0,
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    milliseconds: 0,
+} as const satisfies Readonly<AllDurations>;
+
+/**
+ * An object with all {@link DurationUnit} keys set to `0`. Alias for {@link zeroDuration}.
+ *
+ * @category Zero
+ */
+export const emptyDuration = zeroDuration;

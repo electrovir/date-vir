@@ -35,7 +35,12 @@
     },
     "dependencies": {
         "@augment-vir/assert": "^30.1.0",
-        "@date-vir/duration": "^6.0.0"
+        "@augment-vir/common": "^30.1.0",
+        "@date-vir/duration": "^6.0.0",
+        "@types/luxon": "^3.4.2",
+        "luxon": "^3.5.0",
+        "object-shape-tester": "^3.0.0",
+        "type-fest": "^4.26.1"
     },
     "devDependencies": {
         "@augment-vir/test": "^30.1.0",

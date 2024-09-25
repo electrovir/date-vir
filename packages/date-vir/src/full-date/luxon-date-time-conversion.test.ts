@@ -1,5 +1,5 @@
 import {describe, itCases} from '@augment-vir/test';
-import {Timezone} from '../timezone/timezone-names.js';
+import {Timezone} from '../timezone/timezones.js';
 import {fullDateShape} from './full-date-shape.js';
 import {toLuxonDateTime} from './luxon-date-time-conversion.js';
 

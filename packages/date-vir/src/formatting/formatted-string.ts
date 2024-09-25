@@ -1,5 +1,5 @@
-import {PartialAndUndefined} from '@augment-vir/common';
-import {FullDate} from '../full-date/full-date-shape.js';
+import {type PartialWithUndefined} from '@augment-vir/common';
+import {type FullDate} from '../full-date/full-date-shape.js';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
 import {userLocale} from '../locales.js';
 
@@ -11,11 +11,33 @@ function fixChromiumSpace(original: string): string {
     return original.replace(new RegExp(String.fromCodePoint(8239), 'g'), ' ');
 }
 
-/** Converts the given FullDate into a string in the user's locale, or the given localeOverride. */
+/**
+ * Converts the given {@link FullDate} into a string based the user's locale, or the given locale
+ * options.
+ *
+ * @category Formatting
+ * @example
+ *
+ * ```ts
+ * import {toLocaleString} from 'date-vir';
+ *
+ * ToLocaleString({
+ *     year: 2024,
+ *     month: 9,
+ *     day: 25,
+ *     hour: 0,
+ *     minute: 0,
+ *     second: 0,
+ *     millisecond: 0,
+ * });
+ * // `'9/25/2024'` in my locale, yours may be different
+ * ```
+ */
 export function toLocaleString(
     fullDate: FullDate,
+    /** Defaults to using the user's own locale. */
     formatOptions?:
-        | (Intl.DateTimeFormatOptions & PartialAndUndefined<{locale: string}>)
+        | (Intl.DateTimeFormatOptions & PartialWithUndefined<{locale: string}>)
         | undefined,
 ): string {
     const localeString = toLuxonDateTime(fullDate).toLocaleString(
@@ -31,11 +53,32 @@ export function toLocaleString(
 }
 
 /**
- * Provides arbitrary date formatting using Luxon. For full details on the options for the format
- * string input, see https://moment.github.io/luxon/#/formatting?id=table-of-tokens
+ * Provides arbitrary date formatting control (using Luxon under the hood). For full details on the
+ * options for format control, see https://moment.github.io/luxon/#/formatting?id=table-of-tokens
  *
- * You probably should **prefer toLocaleString** so your users see the format they expect. It
- * already has many formatting options.
+ * In most cases you should prefer {@link toLocaleString} so your users see the format they expect.
+ * {@link toLocaleString} already has many formatting options.
+ *
+ * @category Formatting
+ * @example
+ *
+ * ```ts
+ * import {toFormattedString} from 'date-vir';
+ *
+ * toFormattedString(
+ *     {
+ *         year: 2024,
+ *         month: 9,
+ *         day: 25,
+ *         hour: 0,
+ *         minute: 0,
+ *         second: 0,
+ *         millisecond: 0,
+ *     },
+ *     'MMM-yyyy',
+ * );
+ * // `'Sep-2024'`
+ * ```
  */
 export function toFormattedString(
     fullDate: FullDate,

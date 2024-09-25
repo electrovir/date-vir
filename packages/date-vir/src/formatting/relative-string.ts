@@ -1,121 +1,162 @@
 import {check} from '@augment-vir/assert';
-import {PartialAndUndefined, mapObjectValues, round} from '@augment-vir/common';
-import {DurationUnit, orderedDurationUnits, singularDurationUnitNames} from '@date-vir/duration';
-import {DiffType, diffDates} from '../date-operations/diff-dates.js';
+import {arrayToObject, filterMap, type PartialWithUndefined} from '@augment-vir/common';
+import {
+    AnyDuration,
+    DurationUnit,
+    DurationUnitSelection,
+    convertDuration,
+    flattenUnitSelection,
+    singularDurationUnitNames,
+} from '@date-vir/duration';
+import {diffDates} from '../date-operations/diff-dates.js';
 import {FullDate} from '../full-date/full-date-shape.js';
 
-const maxDurations: Readonly<Record<DurationUnit, number>> = {
-    [DurationUnit.Milliseconds]: 1000,
-    [DurationUnit.Seconds]: 60,
-    [DurationUnit.Minutes]: 60,
-    [DurationUnit.Hours]: 24,
-    [DurationUnit.Days]: 30,
-    [DurationUnit.Weeks]: 4,
-    [DurationUnit.Months]: 12,
-    [DurationUnit.Quarters]: 4,
-    [DurationUnit.Years]: Infinity,
-};
-
-export type RelativeStringOptions = {
+/**
+ * Options for {@link toRelativeString}.
+ *
+ * @category Internal
+ */
+export type RelativeStringOptions = PartialWithUndefined<{
     /**
-     * The relative units that the relative string function is not allowed to use. By default, all
-     * units are allowed. Thus, you can use this to selectively disable some of them.
-     */
-    blockedRelativeUnits: ReadonlyArray<DurationUnit>;
-    /**
-     * The number of digits to round the relative number value to. Defaults to 0, meaning there will
-     * be no decimal digits.
+     * Set this to `true` to prevent the `'just now'` relative string from being used when the two
+     * dates are very close.
      *
-     * Example output: {decimalDigitCount: 4} can result in values like 5.6789 whereas
-     * {decimalDigitCount: 0} will result in values like 6.
+     * @default false // (`'just now'` is used)
      */
-    decimalDigitCount: number;
-    /** Set this to true to block the 'just now' relative string. By default, that string is allowed. */
-    blockJustNow: true;
+    blockJustNow: boolean;
     /**
-     * Set to true to limit durations to their max value. Each unit's max value is its value when it
-     * turns into the subsequent unit. For example, seconds maxes out at 60, at which point it
-     * becomes a minute.
+     * Set this to `true` to only use the largest selected unit with a non-zero value. Otherwise,
+     * the output string will contain all selected non-zero units.
+     *
+     * @default false
      */
-    limitUnitMax: true;
-};
+    useOnlyLargestUnit: boolean;
+    /**
+     * The number of decimals to allow for each duration unit's value.
+     *
+     * @default 0
+     */
+    allowedDecimals: number;
+}>;
 
-export function toRelativeString({
-    fullDate,
-    relativeTo,
-    options = {},
-}: {
-    fullDate: Readonly<FullDate>;
-    relativeTo: Readonly<FullDate>;
-    options?: PartialAndUndefined<RelativeStringOptions>;
-}): string | undefined {
-    const roundingDigits = options.decimalDigitCount || 0;
-
-    const allUnitDiffs: Readonly<Record<DurationUnit, number>> = diffDates({
-        start: fullDate,
-        end: relativeTo,
-        units: orderedDurationUnits,
-        diffType: DiffType.EquivalentUnits,
-    });
-
-    const unitsWithinBounds: Readonly<Record<DurationUnit, boolean>> = mapObjectValues(
-        allUnitDiffs,
-        (durationUnit, duration) => {
-            const roundedDuration = Math.floor(Math.abs(round({digits: 1, number: duration})));
-
-            const isAboveZero: boolean = roundedDuration > 0;
-
-            const isBelowMax: boolean = options.limitUnitMax
-                ? roundedDuration < maxDurations[durationUnit]
-                : true;
-            return isAboveZero && isBelowMax;
-        },
-    );
-
-    const unitToUse: DurationUnit | undefined = orderedDurationUnits.reduce(
-        (chosenUnit, currentUnit) => {
-            const isUnitAllowed = !options.blockedRelativeUnits?.includes(currentUnit);
-
-            if (isUnitAllowed && unitsWithinBounds[currentUnit]) {
-                return currentUnit;
-            } else {
-                return chosenUnit;
-            }
-        },
-        undefined as DurationUnit | undefined,
-    );
-
-    const shouldUseJustNow = options.blockJustNow
-        ? false
-        : (unitToUse == undefined && allUnitDiffs.minutes < 2) ||
-          check.jsonEquals(fullDate, relativeTo) ||
-          (unitToUse === DurationUnit.Minutes &&
-              options.blockedRelativeUnits?.includes(DurationUnit.Seconds) &&
-              allUnitDiffs.minutes < 2) ||
-          (unitToUse === DurationUnit.Seconds &&
-              options.blockedRelativeUnits?.includes(DurationUnit.Milliseconds) &&
-              allUnitDiffs.seconds < 11) ||
-          (unitToUse === DurationUnit.Milliseconds && allUnitDiffs.milliseconds < 710);
-
-    /** Some short circuits. */
-    if (shouldUseJustNow) {
-        return 'just now';
-    } else if (unitToUse == undefined) {
-        return undefined;
+/**
+ * This function starts with a duration (either by being directly passed a duration or by diffing
+ * two dates into a duration) and converts that duration into a relative string like "1 month ago"
+ * or "in 1 month". Rounding is automatically set to 0 decimal points, but that can be changed.
+ *
+ * When extremely close to a `0` difference, the output string will be `'just now'`, which can be
+ * disabled.
+ *
+ * @category Formatting
+ * @example
+ *
+ * ```ts
+ * import {toRelativeString, selectAllDurationUnits} from 'date-vir';
+ *
+ * toRelativeString({days: 1.6}, {days: true}); // `'in 2 days'`
+ * toRelativeString({days: 1.6}, {days: true, hours: true}); // `'in 1 day, 14 hours'`
+ * toRelativeString({seconds: 1}, selectAllDurationUnits); // `'just now'`
+ * ```
+ */
+export function toRelativeString(
+    datesOrDuration:
+        | Readonly<{
+              start: Readonly<FullDate>;
+              end: Readonly<FullDate>;
+          }>
+        | Readonly<AnyDuration>,
+    units: Readonly<DurationUnitSelection>,
+    options: Readonly<RelativeStringOptions> = {},
+): string {
+    const selectedUnits = flattenUnitSelection(units);
+    /** If there are no selected units, return nothing. */
+    if (!check.isLengthAtLeast(selectedUnits, 1)) {
+        return '';
     }
 
-    const duration = allUnitDiffs[unitToUse];
-    const roundedAbsoluteDuration = Math.abs(round({digits: roundingDigits, number: duration}));
-    const isDurationSingular = roundedAbsoluteDuration === 1;
-    const unitName: string = [
-        singularDurationUnitNames[unitToUse],
-        isDurationSingular ? '' : 's',
-    ].join('');
-    const value = isDurationSingular ? 'a' : roundedAbsoluteDuration;
+    const diff: AnyDuration = convertDuration(
+        'start' in datesOrDuration ? diffDates(datesOrDuration, units) : datesOrDuration,
+        units,
+        {
+            roundToDigits: options.allowedDecimals || 0,
+        },
+    );
+    const isDiffPositive = convertDuration(diff, {milliseconds: true}).milliseconds >= 0;
 
-    if (duration < 0) {
-        return `in ${value} ${unitName}`;
+    const unitValues = filterMap(
+        selectedUnits,
+        (unit) => {
+            const quantity = diff[unit] || 0;
+
+            if (!quantity) {
+                return undefined;
+            }
+
+            return {
+                quantity,
+                unit,
+            };
+        },
+        check.isTruthy,
+    ).reverse();
+
+    const shouldUseJustNow =
+        !options.blockJustNow &&
+        (!check.isLengthAtLeast(unitValues, 1) ||
+            (unitValues[0].unit === DurationUnit.Minutes && (diff.minutes || 0) < 1.5) ||
+            (unitValues[0].unit === DurationUnit.Seconds && (diff.seconds || 0) < 11) ||
+            (unitValues[0].unit === DurationUnit.Milliseconds && (diff.milliseconds || 0) < 750));
+
+    if (shouldUseJustNow) {
+        return 'just now';
+    } else if (options.useOnlyLargestUnit) {
+        return toRelativeString(
+            datesOrDuration,
+            {[unitValues[0].unit]: true},
+            {
+                ...options,
+                useOnlyLargestUnit: false,
+            },
+        );
+    } else if (unitValues.length < selectedUnits.length) {
+        /**
+         * If the finalized units are less than the selected units, rerun the whole calculation to
+         * make sure we're using the right accuracy.
+         */
+        return toRelativeString(
+            datesOrDuration,
+            arrayToObject(unitValues, ({unit}) => {
+                return {
+                    key: unit,
+                    value: true,
+                };
+            }),
+            options,
+        );
+    }
+
+    const unitsString = unitValues
+        .map(({quantity, unit}) => {
+            const absoluteQuantity = Math.abs(quantity);
+
+            return [
+                absoluteQuantity,
+                ' ',
+                singularDurationUnitNames[unit],
+                absoluteQuantity > 1 ? 's' : '',
+            ].join('');
+        })
+        .join(', ');
+
+    if (isDiffPositive) {
+        return [
+            'in',
+            unitsString,
+        ].join(' ');
     } else {
-        return `${value} ${unitName} ago`;
+        return [
+            unitsString,
+            'ago',
+        ].join(' ');
     }
 }

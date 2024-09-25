@@ -1,26 +1,26 @@
 import {
     createFullDate,
     getNowFullDate,
+    parseDateStringWithPattern,
     parseInputElementValue,
-    parseStrangeString,
-    timezones,
+    Timezone,
 } from '../index.js';
 
 /**
  * Creates a FullDate from a wide range of possible inputs. See TypeScript types for full details on
  * available inputs.
  */
-createFullDate('2023-06-05', timezones['Europe/Rome']);
+createFullDate('2023-06-05', Timezone['Europe/Rome']);
 
 /** Get the current date and time right now in the given timezone. */
-getNowFullDate(timezones['America/Argentina/Buenos_Aires']);
+getNowFullDate(Timezone['America/Argentina/Buenos_Aires']);
 
 /**
  * Parsed the value of an <input> element directly from the element itself. This is intended to be
  * used for type="date" or type="time" <input> elements, but any input element with a valid date or
  * time string will work.
  */
-parseInputElementValue(document.querySelector('input'), timezones['Asia/Tokyo']);
+parseInputElementValue(document.querySelector('input'), Timezone['Asia/Tokyo']);
 
 /**
  * If you have a really oddly formatted date/time string and createFullDate does not suffice, you
@@ -28,8 +28,8 @@ parseInputElementValue(document.querySelector('input'), timezones['Asia/Tokyo'])
  * so you can see all the formatString options in its docs:
  * https://moment.github.io/luxon/#/parsing?id=table-of-tokens
  */
-parseStrangeString({
+parseDateStringWithPattern({
     dateString: '870-0-14-19 5 2023 6',
     formatString: 'S-s-h-m d yyyy M',
-    timezone: timezones['America/Cancun'],
+    timezone: Timezone['America/Cancun'],
 });

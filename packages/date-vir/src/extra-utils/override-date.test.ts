@@ -1,6 +1,6 @@
 import {describe, itCases} from '@augment-vir/test';
 import {exampleFullDateUtc} from '../full-date/full-date.mock.js';
-import {overrideDateParts} from './date-transforms.js';
+import {overrideDateParts} from './override-date.js';
 
 describe(overrideDateParts.name, () => {
     itCases(overrideDateParts, [

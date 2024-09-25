@@ -1,27 +1,35 @@
 import {isValidShape} from 'object-shape-tester';
+import type {FullDatePart} from '../full-date/full-date-parts.js';
 import {
     DatePart,
     FullDate,
-    FullDatePartEnum,
     TimePart,
     datePartShape,
     timePartShape,
 } from '../full-date/full-date-shape.js';
-import {Timezone} from '../timezone/timezone-names.js';
+import type {Timezone} from '../timezone/timezones.js';
 
-/** An object containing date and/or time parts or neither. */
-type MaybeDateParts<SpecificTimezone extends Timezone> = Partial<{
-    [FullDatePartEnum.Date]:
+/**
+ * An object containing date and/or time parts or neither. Used for {@link combineDateParts}
+ *
+ * @category Internal
+ */
+export type MaybeDateParts<SpecificTimezone extends Timezone> = Partial<{
+    [FullDatePart.Date]:
         | DatePart<SpecificTimezone>
         | undefined
         | Partial<FullDate<SpecificTimezone>>;
-    [FullDatePartEnum.Time]:
+    [FullDatePart.Time]:
         | TimePart<SpecificTimezone>
         | undefined
         | Partial<FullDate<SpecificTimezone>>;
 }>;
 
-/** A full date, time or date parts of a date, or undefined. */
+/**
+ * A full date, time or date parts of a date, or undefined. Used for {@link combineDateParts}.
+ *
+ * @category Internal
+ */
 export type MaybeDatePart<SpecificTimezone extends Timezone> =
     | FullDate<SpecificTimezone>
     | Partial<FullDate<SpecificTimezone>>
@@ -30,42 +38,44 @@ export type MaybeDatePart<SpecificTimezone extends Timezone> =
     | undefined;
 
 export function combineDateParts<const SpecificTimezone extends Timezone>(maybeDateParts: {
-    [FullDatePartEnum.Date]: DatePart<SpecificTimezone>;
-    [FullDatePartEnum.Time]: TimePart<SpecificTimezone>;
+    [FullDatePart.Date]: DatePart<SpecificTimezone>;
+    [FullDatePart.Time]: TimePart<SpecificTimezone>;
 }): FullDate<SpecificTimezone>;
 export function combineDateParts(maybeDateParts: {
-    [FullDatePartEnum.Date]?: undefined;
-    [FullDatePartEnum.Time]?: undefined;
+    [FullDatePart.Date]?: undefined;
+    [FullDatePart.Time]?: undefined;
 }): undefined;
 export function combineDateParts<const SpecificTimezone extends Timezone>(maybeDateParts: {
-    [FullDatePartEnum.Date]: DatePart<SpecificTimezone>;
-    [FullDatePartEnum.Time]?: undefined;
+    [FullDatePart.Date]: DatePart<SpecificTimezone>;
+    [FullDatePart.Time]?: undefined;
 }): DatePart<SpecificTimezone>;
 export function combineDateParts<const SpecificTimezone extends Timezone>(maybeDateParts: {
-    [FullDatePartEnum.Date]: DatePart<SpecificTimezone>;
-    [FullDatePartEnum.Time]?:
+    [FullDatePart.Date]: DatePart<SpecificTimezone>;
+    [FullDatePart.Time]?:
         | TimePart<SpecificTimezone>
         | undefined
         | Partial<FullDate<SpecificTimezone>>;
 }): FullDate<SpecificTimezone> | DatePart<SpecificTimezone>;
 export function combineDateParts<const SpecificTimezone extends Timezone>(maybeDateParts: {
-    [FullDatePartEnum.Date]?: undefined;
-    [FullDatePartEnum.Time]: TimePart<SpecificTimezone>;
+    [FullDatePart.Date]?: undefined;
+    [FullDatePart.Time]: TimePart<SpecificTimezone>;
 }): TimePart<SpecificTimezone>;
 export function combineDateParts<const SpecificTimezone extends Timezone>(maybeDateParts: {
-    [FullDatePartEnum.Date]?:
+    [FullDatePart.Date]?:
         | DatePart<SpecificTimezone>
         | undefined
         | Partial<FullDate<SpecificTimezone>>;
-    [FullDatePartEnum.Time]: TimePart<SpecificTimezone>;
+    [FullDatePart.Time]: TimePart<SpecificTimezone>;
 }): FullDate<SpecificTimezone> | TimePart<SpecificTimezone>;
 export function combineDateParts<const SpecificTimezone extends Timezone>(
     maybeDateParts: MaybeDateParts<SpecificTimezone>,
 ): MaybeDatePart<SpecificTimezone>;
 /**
- * Combine two parts of a FullDate objects into a filled-in FullDate. Note that the timezones must
- * match for both inputs. If two complete FullDate objects are passed in, only the respective parts
- * of each is used.
+ * Combine two parts of a {@link FullDate} objects into a filled-in {@link FullDate}. Note that the
+ * timezones must match for both inputs. If two complete {@link FullDate} objects are passed in, only
+ * the respective parts of each is used.
+ *
+ * @category Util
  */
 export function combineDateParts<const SpecificTimezone extends Timezone>(
     maybeDateParts: MaybeDateParts<SpecificTimezone>,

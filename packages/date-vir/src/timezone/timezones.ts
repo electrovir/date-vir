@@ -1,21 +1,56 @@
+/* eslint-disable sonarjs/no-redeclare */
+
+import type {ArrayElement} from '@augment-vir/common';
 import {Settings} from 'luxon';
-import {Timezone, allTimezoneNames} from './timezone-names.js';
+import {allTimezoneNames} from './timezone-names.js';
 
-export type Timezones = Readonly<{
+/**
+ * All possible timezone names.
+ *
+ * @category Timezone
+ * @see {@link allTimezoneNames}
+ */
+export type Timezone = ArrayElement<typeof allTimezoneNames>;
+
+/**
+ * An enum of all possible timezone names.
+ *
+ * @category Timezone
+ * @example
+ *
+ * ```ts
+ * import {Timezone} from 'date-vir';
+ *
+ * Timezone['Africa/Bamako'];
+ * ```
+ */
+export const Timezone: Readonly<{
     [SpecificTimezoneName in Timezone]: SpecificTimezoneName;
-}>;
-
-/** A typed object of all known timezones, as of the writing of this message. */
-export const timezones = allTimezoneNames.reduce(
+}> = allTimezoneNames.reduce(
     (accum, timezoneName) => {
         accum[timezoneName] = timezoneName;
         return accum;
     },
     {} as Record<string, string>,
-) as Timezones;
+) as Readonly<{
+    [SpecificTimezoneName in Timezone]: SpecificTimezoneName;
+}>;
 
-/** The timezone of the current user's environment. */
+/**
+ * The timezone of the current user's environment.
+ *
+ * @category Timezone
+ */
 export const userTimezone = Settings.defaultZone.name as Timezone;
-/** The UTC timezone. */
-export const utcTimezone = timezones.UTC;
+/**
+ * The UTC timezone.
+ *
+ * @category Timezone
+ */
+export const utcTimezone = Timezone.UTC;
+/**
+ * The UTC timezone as a type.
+ *
+ * @category Timezone
+ */
 export type UtcTimezone = typeof utcTimezone;

@@ -1,4 +1,4 @@
-import {FullDate, timezones} from '../index.js';
+import {FullDate, utcTimezone} from '../index.js';
 
 const myDate: FullDate = {
     year: 2023,
@@ -10,5 +10,5 @@ const myDate: FullDate = {
     second: 27,
     millisecond: 652,
 
-    timezone: timezones.UTC,
+    timezone: utcTimezone,
 };

@@ -1,17 +1,17 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {assertValidTimezone} from './timezone-checks.js';
-import {timezones, userTimezone} from './timezones.js';
+import {Timezone, userTimezone} from './timezones.js';
 
 describe('timezoneName object', () => {
     it('has all valid time zones', () => {
-        Object.values(timezones).forEach((timezone) => {
+        Object.values(Timezone).forEach((timezone) => {
             assertValidTimezone(timezone);
         });
     });
 
     it('has values equalling the keys', () => {
-        Object.entries(timezones).forEach(
+        Object.entries(Timezone).forEach(
             ([
                 key,
                 value,
@@ -22,11 +22,11 @@ describe('timezoneName object', () => {
     });
 
     it('has type safety', () => {
-        timezones['Africa/Abidjan'];
-        timezones.UTC;
-        timezones['America/Anchorage'];
+        Timezone['Africa/Abidjan'];
+        Timezone.UTC;
+        Timezone['America/Anchorage'];
         // @ts-expect-error: intentionally incorrect timezone name
-        timezones['Some/Random_Name'];
+        Timezone['Some/Random_Name'];
     });
 });
 

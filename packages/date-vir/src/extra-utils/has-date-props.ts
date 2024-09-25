@@ -1,36 +1,62 @@
-import {PartialAndUndefined, RequiredAndNotNullBy} from '@augment-vir/common';
-import {FullDate} from '../full-date/full-date-shape.js';
-import {Timezone} from '../timezone/timezone-names.js';
+import {type PartialWithUndefined, type SetRequiredAndNotNull} from '@augment-vir/common';
+import {type FullDate} from '../full-date/full-date-shape.js';
+import type {Timezone} from '../timezone/timezones.js';
 
-export function hasDateProps<
+/**
+ * Checks that the input has all the requested {@link FullDate} keys.
+ *
+ * @category Util
+ * @example
+ *
+ * ```ts
+ * import {hasFullDateKeys} from 'date-vir';
+ *
+ * hasFullDateKeys({year: 2024}, ['year']); // `true`
+ * hasFullDateKeys({year: 2024}, ['day']); // `false`
+ * ```
+ */
+export function hasFullDateKeys<
     SpecificTimezone extends Timezone,
-    PartialFullDate extends PartialAndUndefined<FullDate<SpecificTimezone>>,
+    PartialFullDate extends PartialWithUndefined<FullDate<SpecificTimezone>>,
     /** A union of strings. */
-    RequiredKeysUnion extends keyof FullDate<SpecificTimezone>,
+    RequiredKeys extends keyof FullDate<SpecificTimezone>,
 >(
-    dateInput: PartialAndUndefined<FullDate<SpecificTimezone>>,
-    keys: ReadonlyArray<RequiredKeysUnion>,
-): dateInput is RequiredAndNotNullBy<PartialFullDate, RequiredKeysUnion> {
+    partialFullDate: PartialWithUndefined<FullDate<SpecificTimezone>>,
+    keys: ReadonlyArray<RequiredKeys>,
+): partialFullDate is SetRequiredAndNotNull<PartialFullDate, RequiredKeys> {
     try {
-        assertHasDateProps(dateInput, keys);
+        assertHasFullDateKeys(partialFullDate, keys);
         return true;
     } catch {
         return false;
     }
 }
 
-export function assertHasDateProps<
+/**
+ * Asserts that the input has all the requested {@link FullDate} keys.
+ *
+ * @category Util
+ * @example
+ *
+ * ```ts
+ * import {assertHasFullDateKeys} from 'date-vir';
+ *
+ * assertHasFullDateKeys({year: 2024}, ['year']); // passes
+ * assertHasFullDateKeys({year: 2024}, ['day']); // fails
+ * ```
+ */
+export function assertHasFullDateKeys<
     SpecificTimezone extends Timezone,
-    PartialFullDate extends PartialAndUndefined<FullDate<SpecificTimezone>>,
+    PartialFullDate extends PartialWithUndefined<FullDate<SpecificTimezone>>,
     /** A union of strings. */
-    RequiredKeysUnion extends keyof FullDate<SpecificTimezone>,
+    RequiredKeys extends keyof FullDate<SpecificTimezone>,
 >(
-    dateInput: PartialAndUndefined<FullDate<SpecificTimezone>>,
-    keys: ReadonlyArray<RequiredKeysUnion>,
-): asserts dateInput is RequiredAndNotNullBy<PartialFullDate, RequiredKeysUnion> {
+    partialFullDate: PartialWithUndefined<FullDate<SpecificTimezone>>,
+    keys: ReadonlyArray<RequiredKeys>,
+): asserts partialFullDate is SetRequiredAndNotNull<PartialFullDate, RequiredKeys> {
     const missingKeys: PropertyKey[] = [];
     keys.forEach((key) => {
-        if (dateInput[key] == undefined) {
+        if (partialFullDate[key] == undefined) {
             missingKeys.push(key);
         }
     });

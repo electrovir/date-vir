@@ -2,7 +2,7 @@ import {describe, itCases} from '@augment-vir/test';
 import {createFullDate} from '../full-date/create-full-date.js';
 import {utcTimezone} from '../timezone/timezones.js';
 import {isValidIsoString} from './string-format-types.js';
-import {toIsoString} from './timestamp.js';
+import {toUtcIsoString} from './timestamp.js';
 
 describe(isValidIsoString.name, () => {
     itCases(isValidIsoString, [
@@ -18,8 +18,13 @@ describe(isValidIsoString.name, () => {
         },
         {
             it: 'succeeds on iso string',
-            input: toIsoString(createFullDate('March 1, 2023', utcTimezone)),
-            expect: false,
+            input: toUtcIsoString(createFullDate('March 1, 2023', utcTimezone)),
+            expect: true,
+        },
+        {
+            it: 'accepts the example',
+            input: '2024-05-01T20:18:17.123Z',
+            expect: true,
         },
     ]);
 });
