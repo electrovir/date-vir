@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
+import {convertDuration} from './convert-duration.js';
 import {DurationUnit} from './duration-unit.js';
-import {convertDuration} from './duration-utils.js';
 import {AtLeastOneDuration} from './duration.js';
 
 describe(convertDuration.name, () => {

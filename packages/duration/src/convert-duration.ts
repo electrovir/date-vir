@@ -6,6 +6,13 @@ import {AnyDuration, Duration} from './duration.js';
  * Convert a duration from any combination of units into a single unit.
  *
  * @category Duration
+ * @example
+ *
+ * ```ts
+ * import {convertDuration} from 'date-vir';
+ *
+ * convertDuration({seconds: 5, milliseconds: 5}, DurationUnit.Minutes); // `{minutes: 0.25}`
+ * ```
  */
 export function convertDuration<RequiredDurationUnit extends DurationUnit>(
     inputDuration: AnyDuration,

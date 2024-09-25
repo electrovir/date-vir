@@ -7,10 +7,10 @@ type RequiredAndNotNull<T> = {
 };
 
 /**
- * All possible options for the more strict Duration type. Matches the DurationObjectUnits type from
- * the luxon package.
+ * A looser type with all possible options, based on the stricter {@link Duration} type. Matches the
+ * DurationObjectUnits type from the luxon package.
  *
- * @category Duration
+ * @category Duration : Util
  */
 export type AnyDuration = {
     years?: number | undefined;
@@ -27,7 +27,7 @@ export type AnyDuration = {
 /**
  * Requires at least one duration unit to be set.
  *
- * @category Duration
+ * @category Duration : Util
  */
 export type AtLeastOneDuration = RequireAtLeastOne<RequiredAndNotNull<AnyDuration>>;
 
@@ -36,7 +36,7 @@ export type AtLeastOneDuration = RequireAtLeastOne<RequiredAndNotNull<AnyDuratio
  * form the whole picture or whether each duration is the same value but calculated in different
  * units depends on the context of this type's usage.
  *
- * @category Duration
+ * @category Duration : Util
  */
 export type AllDurations = RequiredAndNotNull<AnyDuration>;
 
