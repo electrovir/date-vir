@@ -1,0 +1,6 @@
+-   create function that breaks a duration down into parts
+    -   like converting {milliseconds: 10_000} to {seconds: 10}
+-   create a function that converts a duration into a string
+-   add docs to each string formatter so that it's easy to see what the output looks like
+-   better doc categories
+-   add readonly to all inputs

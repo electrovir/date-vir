@@ -1,0 +1,274 @@
+import {describe, itCases} from '@augment-vir/test';
+import {DurationUnit} from '@date-vir/duration';
+import {calculateRelativeDate} from '../date-operations/calculate-relative-date.js';
+import {createFullDate} from '../full-date/create-full-date.js';
+import {exampleFullDateUtc} from '../full-date/full-date.mock.js';
+import {timezones, utcTimezone} from '../timezone/timezones.js';
+import {toRelativeString} from './relative-string.js';
+
+describe(toRelativeString.name, () => {
+    itCases(toRelativeString, [
+        {
+            it: 'calculates past months',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {months: -2}),
+            },
+            expect: '2 months ago',
+        },
+        {
+            it: 'calculates future months',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {months: 2}),
+            },
+            expect: 'in 2 months',
+        },
+        {
+            it: 'calculates past days',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {days: -2}),
+            },
+            expect: '2 days ago',
+        },
+        {
+            it: 'blocks past days',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {days: -2}),
+                options: {
+                    blockedRelativeUnits: [DurationUnit.Days],
+                },
+            },
+            expect: '48 hours ago',
+        },
+        {
+            it: 'blocks future days',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {days: 2}),
+                options: {
+                    blockedRelativeUnits: [DurationUnit.Days],
+                },
+            },
+            expect: 'in 48 hours',
+        },
+        {
+            it: 'calculates singular past duration',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {days: -8}),
+            },
+            expect: 'a week ago',
+        },
+        {
+            it: 'calculates singular future duration',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {days: 8}),
+            },
+            expect: 'in a week',
+        },
+        {
+            it: 'returns undefined if no units match',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {days: -8}),
+                options: {
+                    blockedRelativeUnits: [
+                        DurationUnit.Milliseconds,
+                        DurationUnit.Seconds,
+                        DurationUnit.Minutes,
+                        DurationUnit.Hours,
+                        DurationUnit.Days,
+                        DurationUnit.Weeks,
+                    ],
+                },
+            },
+            expect: undefined,
+        },
+        {
+            it: 'returns just now for close seconds',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {seconds: 2}),
+                options: {
+                    blockedRelativeUnits: [
+                        DurationUnit.Milliseconds,
+                    ],
+                },
+            },
+            expect: 'just now',
+        },
+        {
+            it: 'returns just now for close milliseconds',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 200}),
+            },
+            expect: 'just now',
+        },
+        {
+            it: 'returns just now for close minutes',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {minutes: 1}),
+                options: {
+                    blockedRelativeUnits: [
+                        DurationUnit.Seconds,
+                    ],
+                },
+            },
+            expect: 'just now',
+        },
+        {
+            it: 'returns just now when less than seconds but milliseconds are blocked',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 1}),
+                options: {
+                    blockedRelativeUnits: [
+                        DurationUnit.Milliseconds,
+                    ],
+                },
+            },
+            expect: 'just now',
+        },
+        {
+            it: 'rounds to a decimal point',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {seconds: 12_345}),
+                options: {
+                    decimalDigitCount: 1,
+                },
+            },
+            expect: 'in 3.4 hours',
+        },
+        {
+            it: 'blocks "just now"',
+            input: {
+                relativeTo: exampleFullDateUtc,
+                fullDate: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 200}),
+                options: {
+                    blockJustNow: true,
+                },
+            },
+            expect: 'in 200 milliseconds',
+        },
+        {
+            it: 'calculates one month away correctly',
+            input: {
+                relativeTo: {
+                    day: 14,
+                    month: 11,
+                    year: 2023,
+                    hour: 7,
+                    minute: 44,
+                    second: 59,
+                    millisecond: 0,
+                    timezone: utcTimezone,
+                },
+                fullDate: {
+                    day: 14,
+                    month: 12,
+                    year: 2023,
+                    hour: 7,
+                    minute: 44,
+                    second: 51,
+                    millisecond: 0,
+                    timezone: utcTimezone,
+                },
+            },
+            expect: 'in a month',
+        },
+        {
+            it: 'calculates years from a long time ago',
+            input: {
+                fullDate: createFullDate(1_134_567_891_011, timezones['Africa/Banjul']),
+                relativeTo: createFullDate(1_234_567_891_011, timezones['Africa/Banjul']),
+            },
+            expect: '3 years ago',
+        },
+        {
+            it: 'does not exceed max duration units',
+            input: {
+                fullDate: createFullDate(1_134_567_891_011, timezones['Africa/Banjul']),
+                relativeTo: createFullDate(1_234_567_891_011, timezones['Africa/Banjul']),
+                options: {
+                    limitUnitMax: true,
+                    blockedRelativeUnits: [DurationUnit.Years],
+                },
+            },
+            expect: undefined,
+        },
+        {
+            it: 'prints 1 minute ago',
+            input: {
+                fullDate: {
+                    day: 16,
+                    month: 3,
+                    year: 2024,
+                    hour: 8,
+                    minute: 42,
+                    second: 20,
+                    millisecond: 68,
+                    timezone: utcTimezone,
+                },
+                relativeTo: {
+                    day: 16,
+                    month: 3,
+                    year: 2024,
+                    hour: 8,
+                    minute: 43,
+                    second: 21,
+                    millisecond: 278,
+                    timezone: utcTimezone,
+                },
+                options: {
+                    blockedRelativeUnits: [
+                        DurationUnit.Milliseconds,
+                        DurationUnit.Quarters,
+                    ],
+                    limitUnitMax: true,
+                },
+            },
+            expect: 'a minute ago',
+        },
+        {
+            it: 'returns just now for identical inputs',
+            input: {
+                fullDate: createFullDate(1_234_567_891_011, timezones['Africa/Banjul']),
+                relativeTo: createFullDate(1_234_567_891_011, timezones['Africa/Banjul']),
+            },
+            expect: 'just now',
+        },
+        {
+            it: 'calculates one month away from February correctly',
+            input: {
+                relativeTo: {
+                    day: 5,
+                    month: 2,
+                    year: 2023,
+                    hour: 23,
+                    minute: 11,
+                    second: 11,
+                    millisecond: 111,
+                    timezone: utcTimezone,
+                },
+                fullDate: {
+                    day: 5,
+                    month: 3,
+                    year: 2023,
+                    hour: 11,
+                    minute: 11,
+                    second: 11,
+                    millisecond: 111,
+                    timezone: utcTimezone,
+                },
+            },
+            expect: 'in a month',
+        },
+    ]);
+});
