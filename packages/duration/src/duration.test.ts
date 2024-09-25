@@ -10,8 +10,8 @@ describe('Duration', () => {
 
     it('picks multiple units', () => {
         assert.tsType<Duration<DurationUnit.Days | DurationUnit.Weeks>>().slowEquals<{
-            days: number;
-            weeks: number;
+            [DurationUnit.Days]: number;
+            [DurationUnit.Weeks]: number;
         }>();
     });
 

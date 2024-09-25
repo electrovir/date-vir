@@ -1,5 +1,5 @@
 import type {RequireAtLeastOne, UnionToIntersection} from 'type-fest';
-import {type DurationUnit} from './duration-unit.js';
+import {DurationUnit} from './duration-unit.js';
 
 /** Copied from `@augment-vir/common` so this package doesn't depend on augment-vir. */
 type RequiredAndNotNull<T> = {
@@ -12,17 +12,7 @@ type RequiredAndNotNull<T> = {
  *
  * @category Duration : Util
  */
-export type AnyDuration = {
-    years?: number | undefined;
-    quarters?: number | undefined;
-    months?: number | undefined;
-    weeks?: number | undefined;
-    days?: number | undefined;
-    hours?: number | undefined;
-    minutes?: number | undefined;
-    seconds?: number | undefined;
-    milliseconds?: number | undefined;
-};
+export type AnyDuration = Partial<Record<DurationUnit, number | undefined>>;
 
 /**
  * Requires at least one duration unit to be set.
@@ -53,6 +43,30 @@ export type Duration<DurationKeys extends DurationUnit | true> = UnionToIntersec
     DurationKeys extends true
         ? AnyDuration
         : DurationKeys extends DurationUnit
-          ? Pick<AllDurations, `${DurationKeys}`>
+          ? Pick<AllDurations, DurationKeys>
           : never
 >;
+
+/**
+ * An object with all {@link DurationUnit} keys set to `0`.
+ *
+ * @category Zero
+ */
+export const emptyDuration = {
+    years: 0,
+    quarters: 0,
+    months: 0,
+    weeks: 0,
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    milliseconds: 0,
+} as const satisfies Readonly<AllDurations>;
+
+/**
+ * An object with all {@link DurationUnit} keys set to `0`.
+ *
+ * @category Zero
+ */
+export const zeroDuration = emptyDuration;
