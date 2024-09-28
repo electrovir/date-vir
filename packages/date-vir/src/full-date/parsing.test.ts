@@ -2,8 +2,8 @@ import {assert, assertWrap} from '@augment-vir/assert';
 import {pickObjectKeys} from '@augment-vir/common';
 import {describe, it, itCases, testWeb} from '@augment-vir/test';
 import {html} from 'element-vir';
-import {timezones} from '../timezone/timezones.js';
-import {FullDatePartEnum} from './full-date-shape.js';
+import {Timezone} from '../timezone/timezones.js';
+import {FullDatePart} from './full-date-parts.js';
 import {exampleFullDateUtc} from './full-date.mock.js';
 import {parseInputElementValue, parseStrangeString} from './parsing.js';
 
@@ -13,7 +13,7 @@ describe(parseInputElementValue.name, () => {
             it: 'reads a valid html input date string',
             inputs: [
                 '1999-05-06',
-                timezones['Africa/Bissau'],
+                Timezone['Africa/Bissau'],
             ],
             expect: {
                 hour: 0,
@@ -25,14 +25,14 @@ describe(parseInputElementValue.name, () => {
                 month: 5,
                 day: 6,
 
-                timezone: timezones['Africa/Bissau'],
+                timezone: Timezone['Africa/Bissau'],
             },
         },
         {
             it: 'returns undefined on a missing input element',
             inputs: [
                 undefined,
-                timezones['Africa/Bujumbura'],
+                Timezone['Africa/Bujumbura'],
             ],
             expect: undefined,
         },
@@ -40,13 +40,13 @@ describe(parseInputElementValue.name, () => {
             it: 'returns undefined with an invalid input',
             inputs: [
                 'not a date',
-                timezones['Africa/Bujumbura'],
+                Timezone['Africa/Bujumbura'],
             ],
             expect: undefined,
         },
     ]);
 
-    async function setupInputElementTest(type: FullDatePartEnum, value: string) {
+    async function setupInputElementTest(type: FullDatePart, value: string) {
         const inputElement = await testWeb.render(html`
             <input type=${type} value=${value} />
         `);
@@ -57,12 +57,12 @@ describe(parseInputElementValue.name, () => {
     }
 
     it('reads from user input times', async () => {
-        const inputElement = await setupInputElementTest(FullDatePartEnum.Time, '06:09');
+        const inputElement = await setupInputElementTest(FullDatePart.Time, '06:09');
 
         assert.deepEquals(
             pickObjectKeys(
                 assertWrap.isDefined(
-                    parseInputElementValue(inputElement, timezones['Africa/Accra']),
+                    parseInputElementValue(inputElement, Timezone['Africa/Accra']),
                 ),
                 [
                     'hour',
@@ -78,17 +78,17 @@ describe(parseInputElementValue.name, () => {
                 second: 0,
                 millisecond: 0,
 
-                timezone: timezones['Africa/Accra'],
+                timezone: Timezone['Africa/Accra'],
             },
         );
     });
     it('reads from user input times with seconds', async () => {
-        const inputElement = await setupInputElementTest(FullDatePartEnum.Time, '06:09:45');
+        const inputElement = await setupInputElementTest(FullDatePart.Time, '06:09:45');
 
         assert.deepEquals(
             pickObjectKeys(
                 assertWrap.isDefined(
-                    parseInputElementValue(inputElement, timezones['Africa/Accra']),
+                    parseInputElementValue(inputElement, Timezone['Africa/Accra']),
                 ),
                 [
                     'hour',
@@ -104,18 +104,18 @@ describe(parseInputElementValue.name, () => {
                 second: 45,
                 millisecond: 0,
 
-                timezone: timezones['Africa/Accra'],
+                timezone: Timezone['Africa/Accra'],
             },
         );
     });
 
     it('reads from user input dates', async () => {
-        const inputElement = await setupInputElementTest(FullDatePartEnum.Date, '2023-05-04');
+        const inputElement = await setupInputElementTest(FullDatePart.Date, '2023-05-04');
 
         assert.deepEquals(
             pickObjectKeys(
                 assertWrap.isDefined(
-                    parseInputElementValue(inputElement, timezones['Africa/Accra']),
+                    parseInputElementValue(inputElement, Timezone['Africa/Accra']),
                 ),
                 [
                     'year',
@@ -129,18 +129,15 @@ describe(parseInputElementValue.name, () => {
                 month: 5,
                 day: 4,
 
-                timezone: timezones['Africa/Accra'],
+                timezone: Timezone['Africa/Accra'],
             },
         );
     });
 
     it('reads from user input datetime values', async () => {
-        const inputElement = await setupInputElementTest(
-            FullDatePartEnum.DateTime,
-            '2023-05-04T05:06',
-        );
+        const inputElement = await setupInputElementTest(FullDatePart.DateTime, '2023-05-04T05:06');
 
-        assert.deepEquals(parseInputElementValue(inputElement, timezones['Africa/Accra']), {
+        assert.deepEquals(parseInputElementValue(inputElement, Timezone['Africa/Accra']), {
             year: 2023,
             month: 5,
             day: 4,
@@ -149,7 +146,7 @@ describe(parseInputElementValue.name, () => {
             millisecond: 0,
             second: 0,
 
-            timezone: timezones['Africa/Accra'],
+            timezone: Timezone['Africa/Accra'],
         });
     });
 });

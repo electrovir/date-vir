@@ -1,5 +1,5 @@
 import {DateTime} from 'luxon';
-import {Timezone} from '../timezone/timezone-names.js';
+import {Timezone} from '../timezone/timezones.js';
 
 /**
  * These formats are for luxon, documented here:
@@ -14,6 +14,11 @@ const knownStringFormats: ReadonlyArray<string> = [
     'LLLL-y',
 ];
 
+/**
+ * Tries extra known formats for parsing dates, even those that browsers do not natively support.
+ *
+ * @category Util
+ */
 export function parseDateString(dateString: string, timezone: Timezone): DateTime | undefined {
     const isoAttempt = DateTime.fromISO(dateString, {zone: timezone});
 

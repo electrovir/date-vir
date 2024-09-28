@@ -61,7 +61,7 @@
         "prettier-plugin-sort-json": "^4.0.0",
         "prettier-plugin-toml": "^2.0.1",
         "typescript-eslint": "^8.7.0",
-        "virmator": "^13.4.0"
+        "virmator": "^13.4.1"
     },
     "engines": {
         "node": ">=22"

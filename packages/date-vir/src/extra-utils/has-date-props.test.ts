@@ -1,8 +1,8 @@
 import {describe, itCases} from '@augment-vir/test';
-import {assertHasDateProps, hasDateProps} from './has-date-props.js';
+import {assertHasFullDateKeys, hasFullDateKeys} from './has-date-props.js';
 
-describe(assertHasDateProps.name, () => {
-    itCases(assertHasDateProps, [
+describe(assertHasFullDateKeys.name, () => {
+    itCases(assertHasFullDateKeys, [
         {
             it: 'accepts single present key',
             inputs: [
@@ -57,8 +57,8 @@ describe(assertHasDateProps.name, () => {
     ]);
 });
 
-describe(hasDateProps.name, () => {
-    itCases(hasDateProps, [
+describe(hasFullDateKeys.name, () => {
+    itCases(hasFullDateKeys, [
         {
             it: 'accepts single present key',
             inputs: [

@@ -1,10 +1,19 @@
-import {ArrayElement} from '@augment-vir/common';
+/**
+ * The list of timezone names in this file was generated from Firefox 106.0.2 (which gave me the
+ * longest list out of all the browsers I had immediately available to me at the time) with the
+ * following code:
+ *
+ * ```ts
+ * Intl.supportedValuesOf('timeZone')
+ *     .map((zone) => `'${zone}'`)
+ *     .join(',');
+ * ```
+ */
 
 /**
- * This list was generated from Firefox 106.0.2 (which gave me the longest list out of all the
- * browsers I had immediately available to me at the time) with the following code:
+ * All valid timezone names.
  *
- * Intl.supportedValuesOf('timeZone').map(zone => `'${zone}'`).join(',')
+ * @category Timezone
  */
 export const allTimezoneNames = [
     'Africa/Abidjan',
@@ -476,5 +485,3 @@ export const allTimezoneNames = [
     'UTC',
     'WET',
 ] as const;
-
-export type Timezone = ArrayElement<typeof allTimezoneNames>;

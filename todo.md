@@ -4,3 +4,4 @@
 -   add docs to each string formatter so that it's easy to see what the output looks like
 -   better doc categories
 -   add readonly to all inputs
+-   remove chai dependency

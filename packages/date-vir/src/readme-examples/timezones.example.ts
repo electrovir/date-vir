@@ -1,8 +1,8 @@
-import {timezones, userTimezone, utcTimezone} from '../index.js';
+import {Timezone, userTimezone, utcTimezone} from '../index.js';
 
-timezones['Africa/Abidjan'];
-timezones['America/Los_Angeles'];
-timezones['Etc/GMT+1'];
+Timezone['Africa/Abidjan'];
+Timezone['America/Los_Angeles'];
+Timezone['Etc/GMT+1'];
 
 utcTimezone;
 userTimezone;

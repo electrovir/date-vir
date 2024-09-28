@@ -1,12 +1,8 @@
-import {getEnumTypedValues} from '@augment-vir/common';
-import {assertHasDateProps} from '../extra-utils/has-date-props.js';
-import {
-    FullDate,
-    FullDatePartEnum,
-    OnlyDatePart,
-    OnlyHourMinutePart,
-    OnlyHourMinuteSecondPart,
-} from '../full-date/full-date-shape.js';
+import {getEnumValues} from '@augment-vir/common';
+import {assertHasFullDateKeys} from '../extra-utils/has-date-props.js';
+import {type toNewTimezone} from '../full-date/create-full-date.js';
+import {FullDatePart} from '../full-date/full-date-parts.js';
+import {DatePart, FullDate} from '../full-date/full-date-shape.js';
 import {toSimpleDatePartString, toSimpleTimePartString} from './simple-strings.js';
 import {
     DateTimeString,
@@ -17,50 +13,63 @@ import {
 } from './string-format-types.js';
 
 /**
- * Converts a FullDate object into a string that is understood by type="date" or type="time"
- * HTMLInputElement instances. Can optionally include seconds as well for type="time".
+ * Only the date part of a {@link FullDate}, without timezone.
  *
- * This function ignores the timezone, the literal stored date and time numbers are simply
- * concatenated into a string. If you wish to convert time zones, first call toNewTimezone on your
- * FullDate object.
+ * @category Internals
  */
+export type OnlyDatePart = Omit<DatePart, 'timezone'>;
+
+/**
+ * Only the hour and minute part of a {@link FullDate}, made optional.
+ *
+ * @category Internals
+ */
+export type OnlyHourMinutePart = Pick<Partial<FullDate>, 'hour' | 'minute'>;
+
+/**
+ * Only the hour, minute, and second part of a {@link FullDate}, made optional.
+ *
+ * @category Internals
+ */
+export type OnlyHourMinuteSecondPart = Pick<Partial<FullDate>, 'hour' | 'minute' | 'second'>;
+
 export function toHtmlInputString(
     fullDate: Omit<FullDate, 'timezone'>,
-    inputType: FullDatePartEnum.DateTime,
+    inputType: FullDatePart.DateTime,
     includeSeconds: true,
 ): DateTimeWithSeconds;
 export function toHtmlInputString(
     fullDate: Omit<FullDate, 'timezone'>,
-    inputType: FullDatePartEnum.DateTime,
+    inputType: FullDatePart.DateTime,
     includeSeconds?: false | undefined,
 ): DateTimeString;
 export function toHtmlInputString(
     fullDate: OnlyDatePart,
-    inputType: FullDatePartEnum.Date,
+    inputType: FullDatePart.Date,
 ): JustDateString;
 export function toHtmlInputString(
     fullDate: OnlyHourMinutePart,
-    inputType: FullDatePartEnum.Time,
+    inputType: FullDatePart.Time,
     includeSeconds?: false | undefined,
 ): JustTimeString;
 export function toHtmlInputString(
     fullDate: OnlyHourMinuteSecondPart,
-    inputType: FullDatePartEnum.Time,
+    inputType: FullDatePart.Time,
     includeSeconds: true,
 ): JustTimeWithSecondsString;
 export function toHtmlInputString(
     fullDate: OnlyHourMinutePart | OnlyHourMinuteSecondPart,
-    inputType: FullDatePartEnum.Time,
+    inputType: FullDatePart.Time,
     includeSeconds?: boolean | undefined,
 ): JustTimeWithSecondsString | JustTimeString;
 export function toHtmlInputString(
     fullDate: OnlyHourMinuteSecondPart | OnlyDatePart,
-    inputType: FullDatePartEnum,
+    inputType: FullDatePart,
     includeSeconds: true,
 ): JustDateString | JustTimeWithSecondsString;
 export function toHtmlInputString(
     fullDate: OnlyHourMinutePart | OnlyDatePart,
-    inputType: FullDatePartEnum,
+    inputType: FullDatePart,
     includeSeconds?: false | undefined,
 ): JustDateString | JustTimeString;
 export function toHtmlInputString(
@@ -69,7 +78,7 @@ export function toHtmlInputString(
         | OnlyHourMinutePart
         | OnlyHourMinuteSecondPart
         | OnlyDatePart,
-    inputType: FullDatePartEnum,
+    inputType: FullDatePart,
     includeSeconds?: boolean | undefined,
 ):
     | JustDateString
@@ -77,13 +86,27 @@ export function toHtmlInputString(
     | JustTimeString
     | DateTimeWithSeconds
     | DateTimeString;
+/**
+ * Converts a {@link FullDate} instance into a string that is understood by
+ * [`type="date"`](https://developer.mozilla.org/docs/Web/HTML/Element/input/date) or
+ * [`type="time"`](https://developer.mozilla.org/docs/Web/HTML/Element/input/time) instances of
+ * [`HTMLInputElement`](https://developer.mozilla.org/docs/Web/HTML/Element/input). This can
+ * optionally include seconds as well for `type="time"`.
+ *
+ * This function ignores timezone, the literal stored date and time numbers are simply concatenated
+ * into a string. If you wish to convert time zones, first call {@link toNewTimezone} on your
+ * {@link FullDate} instance.
+ *
+ * @category HTML
+ * @category Formatting
+ */
 export function toHtmlInputString(
     fullDate:
         | Omit<FullDate, 'timezone'>
         | OnlyHourMinutePart
         | OnlyHourMinuteSecondPart
         | OnlyDatePart,
-    inputType: FullDatePartEnum,
+    inputType: FullDatePart,
     includeSeconds?: boolean | undefined,
 ):
     | JustDateString
@@ -93,36 +116,36 @@ export function toHtmlInputString(
     | DateTimeString {
     const internalFullDate = fullDate as Omit<Partial<FullDate>, 'timezone'>;
 
-    if (inputType === FullDatePartEnum.Date) {
-        assertHasDateProps(internalFullDate, [
+    if (inputType === FullDatePart.Date) {
+        assertHasFullDateKeys(internalFullDate, [
             'year',
             'month',
             'day',
         ]);
 
         return toSimpleDatePartString(internalFullDate);
-    } else if (inputType === FullDatePartEnum.Time) {
+    } else if (inputType === FullDatePart.Time) {
         if (includeSeconds && internalFullDate.second == undefined) {
             throw new Error(
                 'Tried to include seconds in the time string but no seconds were provided.',
             );
         }
 
-        assertHasDateProps(internalFullDate, [
+        assertHasFullDateKeys(internalFullDate, [
             'hour',
             'minute',
         ]);
 
         return toSimpleTimePartString(internalFullDate, !!includeSeconds);
-    } else if (inputType === FullDatePartEnum.DateTime) {
-        const datePart = toHtmlInputString(fullDate, FullDatePartEnum.Date);
-        const timePart = toHtmlInputString(fullDate, FullDatePartEnum.Time, includeSeconds);
+    } else if ((inputType as FullDatePart) === FullDatePart.DateTime) {
+        const datePart = toHtmlInputString(fullDate, FullDatePart.Date);
+        const timePart = toHtmlInputString(fullDate, FullDatePart.Time, includeSeconds);
 
         return `${datePart}T${timePart}` as DateTimeWithSeconds | DateTimeString;
     } else {
         throw new Error(
-            `Unexpected inputTyped: '${inputType}'. Expected usage of FullDatePartEnum or one of ${getEnumTypedValues(
-                FullDatePartEnum,
+            `Unexpected inputTyped: '${String(inputType)}'. Expected usage of FullDatePart, one of ${getEnumValues(
+                FullDatePart,
             ).join(', ')}.`,
         );
     }

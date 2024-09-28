@@ -1,12 +1,11 @@
-import {RequiredBy} from '@augment-vir/common';
-import {describe, it, itCases} from '@augment-vir/test';
-
 import {assert} from '@augment-vir/assert';
-import {SetOptional} from 'type-fest';
+import {describe, it, itCases} from '@augment-vir/test';
+import {SetOptional, type SetRequired} from 'type-fest';
 import {createFullDate, toNewTimezone} from '../full-date/create-full-date.js';
-import {DatePart, FullDate, FullDatePartEnum} from '../full-date/full-date-shape.js';
+import {FullDatePart} from '../full-date/full-date-parts.js';
+import {DatePart, FullDate} from '../full-date/full-date-shape.js';
 import {exampleFullDateUtc} from '../full-date/full-date.mock.js';
-import {timezones, utcTimezone} from '../timezone/timezones.js';
+import {Timezone, utcTimezone} from '../timezone/timezones.js';
 import {toHtmlInputString} from './html-input.js';
 import {
     DateTimeString,
@@ -22,15 +21,15 @@ describe(toHtmlInputString.name, () => {
             it: 'creates date strings in UTC',
             inputs: [
                 createFullDate('2023-06-05T14:19:00.870Z', utcTimezone),
-                FullDatePartEnum.Date,
+                FullDatePart.Date,
             ],
             expect: '2023-06-05',
         },
         {
             it: 'creates date strings in shifted timezones',
             inputs: [
-                toNewTimezone(exampleFullDateUtc, timezones['America/Chicago']),
-                FullDatePartEnum.Date,
+                toNewTimezone(exampleFullDateUtc, Timezone['America/Chicago']),
+                FullDatePart.Date,
             ],
             expect: '2023-06-05',
         },
@@ -40,9 +39,9 @@ describe(toHtmlInputString.name, () => {
                 createFullDate(
                     '2023-06-05T14:19:00.870Z',
                     // this timezone will create a date that is a day later
-                    timezones['Etc/GMT-11'],
+                    Timezone['Etc/GMT-11'],
                 ),
-                FullDatePartEnum.Date,
+                FullDatePart.Date,
             ],
             expect: '2023-06-06',
         },
@@ -50,7 +49,7 @@ describe(toHtmlInputString.name, () => {
             it: 'creates time strings in UTC',
             inputs: [
                 createFullDate('2023-06-05T14:19:00.870Z', utcTimezone),
-                FullDatePartEnum.Time,
+                FullDatePart.Time,
             ],
             expect: '14:19',
         },
@@ -61,7 +60,7 @@ describe(toHtmlInputString.name, () => {
                     hour: 13,
                     minute: 26,
                 },
-                FullDatePartEnum.Time,
+                FullDatePart.Time,
             ],
             expect: '13:26',
         },
@@ -73,7 +72,7 @@ describe(toHtmlInputString.name, () => {
                     minute: 26,
                     second: 6,
                 },
-                FullDatePartEnum.Time,
+                FullDatePart.Time,
                 true,
             ],
             expect: '13:26:06',
@@ -86,7 +85,7 @@ describe(toHtmlInputString.name, () => {
                     month: 10,
                     day: 24,
                 },
-                FullDatePartEnum.Date,
+                FullDatePart.Date,
             ],
             expect: '2023-10-24',
         },
@@ -98,7 +97,7 @@ describe(toHtmlInputString.name, () => {
                     month: 10,
                     day: 24,
                 },
-                FullDatePartEnum.Date,
+                FullDatePart.Date,
             ],
             expect: '2023-10-24',
         },
@@ -110,7 +109,7 @@ describe(toHtmlInputString.name, () => {
                     month: 10,
                 } as SetOptional<DatePart,
                     'timezone'>,
-                FullDatePartEnum.Date,
+                FullDatePart.Date,
             ],
             throws: {
                 matchConstructor: Error,
@@ -124,7 +123,7 @@ describe(toHtmlInputString.name, () => {
                     day: 24,
                 } as SetOptional<DatePart,
                     'timezone'>,
-                FullDatePartEnum.Date,
+                FullDatePart.Date,
             ],
             throws: {
                 matchConstructor: Error,
@@ -138,7 +137,7 @@ describe(toHtmlInputString.name, () => {
                     day: 24,
                 } as SetOptional<DatePart,
                     'timezone'>,
-                FullDatePartEnum.Date,
+                FullDatePart.Date,
             ],
             throws: {
                 matchConstructor: Error,
@@ -150,13 +149,13 @@ describe(toHtmlInputString.name, () => {
                 {
                     hour: 12,
                     minute: 53,
-                } as RequiredBy<
+                } as SetRequired<
                     Partial<FullDate>,
                     | 'hour'
                     | 'minute'
                     | 'second'
                 >,
-                FullDatePartEnum.Time,
+                FullDatePart.Time,
                 true,
             ],
             throws: {
@@ -168,12 +167,12 @@ describe(toHtmlInputString.name, () => {
             inputs: [
                 {
                     hour: 12,
-                } as RequiredBy<
+                } as SetRequired<
                     Partial<FullDate>,
                     | 'hour'
                     | 'minute'
                 >,
-                FullDatePartEnum.Time,
+                FullDatePart.Time,
             ],
             throws: {
                 matchConstructor: Error,
@@ -184,12 +183,12 @@ describe(toHtmlInputString.name, () => {
             inputs: [
                 {
                     minute: 53,
-                } as RequiredBy<
+                } as SetRequired<
                     Partial<FullDate>,
                     | 'hour'
                     | 'minute'
                 >,
-                FullDatePartEnum.Time,
+                FullDatePart.Time,
             ],
             throws: {
                 matchConstructor: Error,
@@ -199,7 +198,7 @@ describe(toHtmlInputString.name, () => {
             it: 'creates time strings in UTC with seconds',
             inputs: [
                 createFullDate('2023-06-05T14:19:03.870Z', utcTimezone),
-                FullDatePartEnum.Time,
+                FullDatePart.Time,
                 true,
             ],
             expect: '14:19:03',
@@ -220,9 +219,9 @@ describe(toHtmlInputString.name, () => {
                 createFullDate(
                     '2023-06-05T14:19:03.870Z',
                     // this timezone will create a date that is a day later
-                    timezones['Etc/GMT-11'],
+                    Timezone['Etc/GMT-11'],
                 ),
-                FullDatePartEnum.Time,
+                FullDatePart.Time,
                 true,
             ],
             expect: '01:19:03',
@@ -231,7 +230,7 @@ describe(toHtmlInputString.name, () => {
             it: 'creates a datetime string without seconds',
             inputs: [
                 createFullDate('2023-06-05T14:19:03.870Z', utcTimezone),
-                FullDatePartEnum.DateTime,
+                FullDatePart.DateTime,
             ],
             expect: '2023-06-05T14:19',
         },
@@ -239,7 +238,7 @@ describe(toHtmlInputString.name, () => {
             it: 'creates a datetime string with seconds',
             inputs: [
                 createFullDate('2023-06-05T14:19:03.870Z', utcTimezone),
-                FullDatePartEnum.DateTime,
+                FullDatePart.DateTime,
                 true,
             ],
             expect: '2023-06-05T14:19:03',
@@ -248,48 +247,40 @@ describe(toHtmlInputString.name, () => {
 
     it('has proper types', () => {
         assert
-            .tsType(toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.DateTime))
+            .tsType(toHtmlInputString(exampleFullDateUtc, FullDatePart.DateTime))
             .equals<DateTimeString>();
         assert
-            .tsType(toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.DateTime, true))
+            .tsType(toHtmlInputString(exampleFullDateUtc, FullDatePart.DateTime, true))
             .equals<DateTimeWithSeconds>();
         assert
-            .tsType(toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.Date))
+            .tsType(toHtmlInputString(exampleFullDateUtc, FullDatePart.Date))
             .equals<JustDateString>();
         assert
-            .tsType(toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.Time))
+            .tsType(toHtmlInputString(exampleFullDateUtc, FullDatePart.Time))
             .equals<JustTimeString>();
         assert
-            .tsType(toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.Time, true))
+            .tsType(toHtmlInputString(exampleFullDateUtc, FullDatePart.Time, true))
             .equals<JustTimeWithSecondsString>();
         assert
             .tsType(
                 toHtmlInputString(
                     exampleFullDateUtc,
-                    FullDatePartEnum.Time,
+                    FullDatePart.Time,
                     true as boolean | undefined,
                 ),
             )
             .equals<JustTimeWithSecondsString | JustTimeString>();
         assert
-            .tsType(
-                toHtmlInputString(exampleFullDateUtc, FullDatePartEnum.Date as FullDatePartEnum),
-            )
+            .tsType(toHtmlInputString(exampleFullDateUtc, FullDatePart.Date as FullDatePart))
             .equals<JustDateString | JustTimeString>();
         assert
-            .tsType(
-                toHtmlInputString(
-                    exampleFullDateUtc,
-                    FullDatePartEnum.Date as FullDatePartEnum,
-                    true,
-                ),
-            )
+            .tsType(toHtmlInputString(exampleFullDateUtc, FullDatePart.Date as FullDatePart, true))
             .equals<JustDateString | JustTimeWithSecondsString>();
         assert
             .tsType(
                 toHtmlInputString(
                     exampleFullDateUtc,
-                    FullDatePartEnum.Date as FullDatePartEnum,
+                    FullDatePart.Date as FullDatePart,
                     false as boolean | undefined,
                 ),
             )

@@ -1,33 +1,12 @@
-import {ArrayElement, Overwrite, RequiredBy} from '@augment-vir/common';
+import {Overwrite, type SetRequired} from '@augment-vir/common';
 import {and, defineShape} from 'object-shape-tester';
-import {Timezone} from '../timezone/timezone-names.js';
-import {utcTimezone} from '../timezone/timezones.js';
+import {utcTimezone, type Timezone} from '../timezone/timezones.js';
 
 /**
- * Represents various parts of a FullDate. Each value is also a valid "type" attribute for an
- * <input> HTML element.
+ * Time part of {@link FullDate} represented in a shape definition.
+ *
+ * @category Shape
  */
-export enum FullDatePartEnum {
-    Date = 'date',
-    Time = 'time',
-    DateTime = 'datetime-local',
-}
-
-export const timeFullDateKeys = [
-    'hour',
-    'minute',
-    'second',
-    'millisecond',
-] as const satisfies ReadonlyArray<keyof typeof timePartShape.runTimeType>;
-export type TimeFullDateKeys = ArrayElement<typeof timeFullDateKeys>;
-
-export const dateFullDateKeys = [
-    'year',
-    'month',
-    'day',
-] as const satisfies ReadonlyArray<keyof typeof datePartShape.runTimeType>;
-export type DateFullDateKeys = ArrayElement<typeof dateFullDateKeys>;
-
 export const timePartShape = defineShape({
     /** Hour of the day in 24 time: 0-23 */
     hour: 14,
@@ -41,11 +20,21 @@ export const timePartShape = defineShape({
     timezone: utcTimezone as Timezone,
 });
 
-export type TimePart<SpecificTimezone extends Timezone = Timezone> = RequiredBy<
+/**
+ * Time part of a {@link FullDate}.
+ *
+ * @category Util
+ */
+export type TimePart<SpecificTimezone extends Timezone = Timezone> = SetRequired<
     Partial<FullDate<SpecificTimezone>>,
     keyof (typeof timePartShape)['runTimeType']
 >;
 
+/**
+ * Date part of {@link FullDate} represented in a shape definition.
+ *
+ * @category Shape
+ */
 export const datePartShape = defineShape({
     /**
      * The full, four digit year.
@@ -61,22 +50,46 @@ export const datePartShape = defineShape({
     timezone: utcTimezone as Timezone,
 });
 
-export type DatePart<SpecificTimezone extends Timezone = Timezone> = RequiredBy<
+/**
+ * Date part of {@link FullDate}.
+ *
+ * @category Util
+ */
+export type DatePart<SpecificTimezone extends Timezone = Timezone> = SetRequired<
     Partial<FullDate<SpecificTimezone>>,
     keyof (typeof datePartShape)['runTimeType']
 >;
 
+/**
+ * The complete {@link FullDate} represented in a shape definition.
+ *
+ * @category Shape
+ */
 export const fullDateShape = defineShape(and(datePartShape, timePartShape));
 
 /**
- * A easily serializable (it fits into plain JSON) object that completely defines how a date is to
- * be represented with minimal data.
+ * A serializable object that completely specifies how any given date should be represented,
+ * including its timezone, to millisecond accuracy.
+ *
+ * @category FullDate
+ * @example
+ *
+ * ```ts
+ * import {FullDate, timezones} from 'date-vir';
+ *
+ * const myDate: FullDate = {
+ *     year: 2024,
+ *     month: 6,
+ *     day: 2,
+ *     hour: 13,
+ *     minute: 32,
+ *     second: 12,
+ *     milliseconds: 94,
+ *     timezone: timezones['Australia/Brisbane'],
+ * };
+ * ```
  */
 export type FullDate<SpecificTimezone extends Timezone = Timezone> = Overwrite<
     (typeof fullDateShape)['runTimeType'],
     {timezone: SpecificTimezone}
 >;
-
-export type OnlyDatePart = Omit<DatePart, 'timezone'>;
-export type OnlyHourMinutePart = Pick<Partial<FullDate>, 'hour' | 'minute'>;
-export type OnlyHourMinuteSecondPart = Pick<Partial<FullDate>, 'hour' | 'minute' | 'second'>;

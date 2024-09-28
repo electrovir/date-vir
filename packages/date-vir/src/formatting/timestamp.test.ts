@@ -6,10 +6,11 @@ import {
     exampleTimestamp,
     nonUtcTimezone,
 } from '../full-date/full-date.mock.js';
-import {toIsoString, toTimestamp} from './timestamp.js';
+import {utcTimezone} from '../timezone/timezones.js';
+import {toTimestamp, toUtcIsoString} from './timestamp.js';
 
-describe(toIsoString.name, () => {
-    itCases(toIsoString, [
+describe(toUtcIsoString.name, () => {
+    itCases(toUtcIsoString, [
         {
             it: 'converts a UTC FullDate into an ISO string',
             input: exampleFullDateUtc,
@@ -19,6 +20,20 @@ describe(toIsoString.name, () => {
             it: 'converts a timezone shifted date to the same ISO string',
             input: createFullDate(exampleFullDateUtc, nonUtcTimezone),
             expect: exampleIsoString,
+        },
+        {
+            it: 'works on the example',
+            input: {
+                year: 2024,
+                month: 1,
+                day: 5,
+                hour: 1,
+                minute: 1,
+                second: 1,
+                millisecond: 1,
+                timezone: utcTimezone,
+            },
+            expect: '2024-01-05T01:01:01.001Z',
         },
     ]);
 });
@@ -34,6 +49,20 @@ describe(toTimestamp.name, () => {
             it: 'converts a timezone shifted FullDate into the same timestamp',
             input: createFullDate(exampleFullDateUtc, nonUtcTimezone),
             expect: exampleTimestamp,
+        },
+        {
+            it: 'works on the example',
+            input: {
+                year: 2024,
+                month: 1,
+                day: 5,
+                hour: 1,
+                minute: 1,
+                second: 1,
+                millisecond: 1,
+                timezone: utcTimezone,
+            },
+            expect: 1_704_416_461_001,
         },
     ]);
 });

@@ -1,22 +1,16 @@
 import {assert} from '@augment-vir/assert';
-import {omitObjectKeys} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
 import {DateTime} from 'luxon';
-import {timezones, userTimezone, utcTimezone} from '../timezone/timezones.js';
+import {Timezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
 import {
     createFullDate,
     createFullDateInUserTimezone,
     createUtcFullDate,
-    getNowFullDate,
     toNewTimezone,
 } from './create-full-date.js';
 import {fullDateShape, type FullDate} from './full-date-shape.js';
-import {
-    exampleFullDateUtc,
-    exampleIsoString,
-    exampleTimestamp,
-    nonUserTimezone,
-} from './full-date.mock.js';
+import {exampleFullDateUtc, exampleIsoString, exampleTimestamp} from './full-date.mock.js';
+import {assertValidFullDate} from './is-valid-full-date.js';
 
 describe(createFullDateInUserTimezone.name, () => {
     itCases(createFullDateInUserTimezone, [
@@ -26,6 +20,18 @@ describe(createFullDateInUserTimezone.name, () => {
             expect: createFullDate(fullDateShape.defaultValue, userTimezone),
         },
     ]);
+
+    it('works on the examples', () => {
+        const exampleInputs = [
+            'June 1, 2024',
+            new Date(),
+            112_300_120,
+        ];
+
+        exampleInputs.forEach((example) => {
+            assertValidFullDate(createFullDateInUserTimezone(example));
+        });
+    });
 });
 
 describe(createUtcFullDate.name, () => {
@@ -39,6 +45,18 @@ describe(createUtcFullDate.name, () => {
             },
         },
     ]);
+
+    it('works on the examples', () => {
+        const exampleInputs = [
+            'June 1, 2024',
+            new Date(),
+            112_300_120,
+        ];
+
+        exampleInputs.forEach((example) => {
+            assertValidFullDate(createUtcFullDate(example));
+        });
+    });
 });
 
 describe(createFullDate.name, () => {
@@ -140,13 +158,13 @@ describe(createFullDate.name, () => {
             it: 'handles a full ISO string with Z for a different time zone',
             inputs: [
                 exampleIsoString,
-                timezones['Australia/Brisbane'],
+                Timezone['Australia/Brisbane'],
             ],
             expect: {
                 ...exampleFullDateUtc,
                 day: 6,
                 hour: 0,
-                timezone: timezones['Australia/Brisbane'],
+                timezone: Timezone['Australia/Brisbane'],
             },
         },
         {
@@ -161,49 +179,49 @@ describe(createFullDate.name, () => {
             it: 'handles an ISO string with a timezone that changes the date',
             inputs: [
                 exampleIsoString,
-                timezones['Etc/GMT-11'],
+                Timezone['Etc/GMT-11'],
             ],
             expect: {
                 ...exampleFullDateUtc,
                 day: 6,
                 hour: 1,
-                timezone: timezones['Etc/GMT-11'],
+                timezone: Timezone['Etc/GMT-11'],
             },
         },
         {
             it: 'handles a non UTC timezone for an ISO string without Z',
             inputs: [
                 exampleIsoString.slice(0, -1),
-                timezones['Australia/Brisbane'],
+                Timezone['Australia/Brisbane'],
             ],
             expect: {
                 ...exampleFullDateUtc,
-                timezone: timezones['Australia/Brisbane'],
+                timezone: Timezone['Australia/Brisbane'],
             },
         },
         {
             it: 'handles a luxon DateTime object',
             inputs: [
                 DateTime.fromMillis(exampleTimestamp),
-                timezones['Australia/Brisbane'],
+                Timezone['Australia/Brisbane'],
             ],
             expect: {
                 ...exampleFullDateUtc,
                 day: 6,
                 hour: 0,
-                timezone: timezones['Australia/Brisbane'],
+                timezone: Timezone['Australia/Brisbane'],
             },
         },
         {
             it: 'converts FullDate time zones',
             inputs: [
                 exampleIsoString,
-                timezones['Etc/GMT-1'],
+                Timezone['Etc/GMT-1'],
             ],
             expect: {
                 ...exampleFullDateUtc,
                 hour: exampleFullDateUtc.hour + 1,
-                timezone: timezones['Etc/GMT-1'],
+                timezone: Timezone['Etc/GMT-1'],
             },
         },
         {
@@ -221,20 +239,20 @@ describe(createFullDate.name, () => {
             it: 'handles a numeric input in a different time zone',
             inputs: [
                 Number(new Date(exampleIsoString)),
-                timezones['Australia/Brisbane'],
+                Timezone['Australia/Brisbane'],
             ],
             expect: {
                 ...exampleFullDateUtc,
                 day: 6,
                 hour: 0,
-                timezone: timezones['Australia/Brisbane'],
+                timezone: Timezone['Australia/Brisbane'],
             },
         },
         {
             it: 'rejects an invalid date number',
             inputs: [
                 Infinity,
-                timezones['Australia/Brisbane'],
+                Timezone['Australia/Brisbane'],
             ],
             throws: {
                 matchMessage: 'Failed to parse date input',
@@ -244,7 +262,7 @@ describe(createFullDate.name, () => {
             it: 'rejects an invalid date string',
             inputs: [
                 'foobar',
-                timezones['Australia/Brisbane'],
+                Timezone['Australia/Brisbane'],
             ],
             throws: {
                 matchMessage: "Failed to parse date input 'foobar'",
@@ -254,7 +272,7 @@ describe(createFullDate.name, () => {
             it: 'rejects an invalid date string',
             inputs: [
                 new Date('foobar'),
-                timezones['Australia/Brisbane'],
+                Timezone['Australia/Brisbane'],
             ],
             throws: {
                 matchMessage: 'Failed to parse date input',
@@ -267,7 +285,7 @@ describe(createFullDate.name, () => {
                     ...exampleFullDateUtc,
                     day: 99,
                 },
-                timezones['Australia/Brisbane'],
+                Timezone['Australia/Brisbane'],
             ],
             throws: {
                 matchMessage: 'Failed to parse date input',
@@ -278,7 +296,7 @@ describe(createFullDate.name, () => {
 
 describe(toNewTimezone.name, () => {
     it('adjusts a timezone without modifying the original', () => {
-        const myDate = createFullDate(exampleIsoString, timezones['Etc/GMT+3']);
+        const myDate = createFullDate(exampleIsoString, Timezone['Etc/GMT+3']);
 
         const shiftedDate = toNewTimezone(myDate, utcTimezone);
 
@@ -292,24 +310,27 @@ describe(toNewTimezone.name, () => {
 
         assert.deepEquals(shiftedDate, myDate);
     });
-});
+    it('works on the example', () => {
+        const exampleDate: FullDate = {
+            year: 2024,
+            month: 1,
+            day: 5,
+            hour: 1,
+            minute: 1,
+            second: 1,
+            millisecond: 1,
+            timezone: 'UTC',
+        };
 
-describe(getNowFullDate.name, () => {
-    it('gets the right current time', () => {
-        const nowFromDate = omitObjectKeys(createFullDate(Date.now(), userTimezone), [
-            'second',
-            'millisecond',
-        ]);
-        const nowFullDateUserTimezone = omitObjectKeys(getNowFullDate(userTimezone), [
-            'second',
-            'millisecond',
-        ]);
-        const nowFullDateOtherTimezone = omitObjectKeys(getNowFullDate(nonUserTimezone), [
-            'second',
-            'millisecond',
-        ]);
-
-        assert.deepEquals(nowFromDate, nowFullDateUserTimezone);
-        assert.notDeepEquals(nowFromDate, nowFullDateOtherTimezone);
+        assert.deepEquals(toNewTimezone(exampleDate, Timezone['Australia/Brisbane']), {
+            year: 2024,
+            month: 1,
+            day: 5,
+            hour: 11,
+            minute: 1,
+            second: 1,
+            millisecond: 1,
+            timezone: Timezone['Australia/Brisbane'],
+        });
     });
 });
