@@ -1,5 +1,5 @@
-import {pickObjectKeys, typedObjectFromEntries} from '@augment-vir/common';
-import {timeFullDateKeys} from '../full-date/full-date-parts.js';
+import {getEnumValues, pickObjectKeys, typedObjectFromEntries} from '@augment-vir/common';
+import {TimeKey} from '../full-date/full-date-parts.js';
 import {FullDate, TimePart} from '../full-date/full-date-shape.js';
 import {Timezone} from '../timezone/timezones.js';
 import {overrideDateParts} from './override-date.js';
@@ -7,7 +7,7 @@ import {overrideDateParts} from './override-date.js';
 /**
  * A {@link FullDate} instance that has the lowest, valid, non-negative, value for each property.
  *
- * @category Zero
+ * @category Constants
  */
 export const zeroDate = {
     year: 0,
@@ -24,21 +24,21 @@ export const zeroDate = {
  * A {@link FullDate} instance that has the lowest, valid, non-negative, value for each property.
  * Alias for {@link zeroDate}.
  *
- * @category Zero
+ * @category Constants
  */
 export const emptyDate = zeroDate;
 
 /**
  * An object that contains the time parts of {@link FullDate} all set to `0`.
  *
- * @category Zero
+ * @category Constants
  */
-export const zeroTime = pickObjectKeys(zeroDate, timeFullDateKeys);
+export const zeroTime = pickObjectKeys(zeroDate, getEnumValues(TimeKey));
 
 /**
  * Clear the time parts of a {@link FullDate}, setting them all to `0`.
  *
- * @category Zero
+ * @category Clear
  * @example
  *
  * ```ts
@@ -62,14 +62,14 @@ export const zeroTime = pickObjectKeys(zeroDate, timeFullDateKeys);
 export function clearTime<const SpecificTimezone extends Timezone>(
     inputFullDate: Readonly<FullDate<SpecificTimezone>>,
 ): FullDate<SpecificTimezone> {
-    return clearParts(inputFullDate, timeFullDateKeys);
+    return clearParts(inputFullDate, getEnumValues(TimeKey));
 }
 
 /**
  * Clear all the selected parts of {@link FullDate} by setting them each to their lowest, valid
  * value. See {@link zeroDate} for the lowest valid values for each property.
  *
- * @category Zero
+ * @category Clear
  * @example
  *
  * ```ts
@@ -104,7 +104,7 @@ export function clearParts<const SpecificTimezone extends Timezone>(
                 zeroDate[keyName],
             ];
         }),
-    );
+    ) as Partial<FullDate<SpecificTimezone>>;
 
     return overrideDateParts<SpecificTimezone>(inputFullDate, clearParts);
 }
