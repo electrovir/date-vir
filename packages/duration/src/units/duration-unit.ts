@@ -21,7 +21,7 @@ export enum DurationUnit {
 /**
  * A mapping of {@link DurationUnit} to to all of its values' singular duration names in English.
  *
- * @category Util
+ * @category Internal
  */
 export const singularDurationUnitNames = {
     [DurationUnit.Years]: 'year',
@@ -41,7 +41,7 @@ export const singularDurationUnitNames = {
 /**
  * A mapping of {@link DurationUnit} to to all of its values' abbreviations in English.
  *
- * @category Util
+ * @category Internal
  */
 export const durationUnitNameAbbreviations = {
     [DurationUnit.Years]: 'yr',
@@ -62,7 +62,7 @@ export const durationUnitNameAbbreviations = {
  * Array of sorted {@link DurationUnit} possibilities: from smallest unit (milliseconds at index 0)
  * to longest unit (years).
  *
- * @category Util
+ * @category Internal
  */
 export const orderedDurationUnits = [
     DurationUnit.Milliseconds,
@@ -80,7 +80,7 @@ export const orderedDurationUnits = [
  * The maximum value, exclusive, for each duration unit before it should roll-over into the next
  * duration unit.
  *
- * @category Util
+ * @category Internal
  */
 export const maxDurations: Readonly<Record<DurationUnit, number>> = {
     [DurationUnit.Milliseconds]: 1000,

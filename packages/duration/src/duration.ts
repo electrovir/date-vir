@@ -10,7 +10,7 @@ type RequiredAndNotNull<T> = {
  * A looser type with all possible options, based on the stricter {@link Duration} type. Matches the
  * DurationObjectUnits type from the luxon package.
  *
- * @category Util
+ * @category Duration
  */
 export type AnyDuration = Partial<Record<DurationUnit, number | undefined>>;
 
@@ -50,7 +50,7 @@ export type Duration<DurationKeys extends DurationUnit | true> = UnionToIntersec
 /**
  * An object with all {@link DurationUnit} keys set to `0`.
  *
- * @category Zero
+ * @category Constants
  */
 export const zeroDuration = {
     years: 0,
@@ -67,6 +67,6 @@ export const zeroDuration = {
 /**
  * An object with all {@link DurationUnit} keys set to `0`. Alias for {@link zeroDuration}.
  *
- * @category Zero
+ * @category Constants
  */
 export const emptyDuration = zeroDuration;

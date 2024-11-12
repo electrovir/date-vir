@@ -23,7 +23,7 @@ export enum DateUnit {
 /**
  * All {@link DateUnit} values that are zero indexed (start at 0, like seconds).
  *
- * @category Util
+ * @category Internal
  */
 export const zeroIndexedDateUnits = [
     DateUnit.Year,
@@ -36,7 +36,7 @@ export const zeroIndexedDateUnits = [
 /**
  * All {@link DateUnit} values that are one indexed (start at 1, like days of a month).
  *
- * @category Util
+ * @category Internal
  */
 export const oneIndexedDateUnits = [
     DateUnit.Quarter,
@@ -48,7 +48,7 @@ export const oneIndexedDateUnits = [
 /**
  * All {@link DateUnit} values in an array ordered from smallest to largest.
  *
- * @category Util
+ * @category Internal
  */
 export const orderedDateUnit = [
     DateUnit.Millisecond,

@@ -1,6 +1,6 @@
 {
     "name": "@date-vir/mono-root",
-    "version": "6.0.1",
+    "version": "7.0.0",
     "private": true,
     "homepage": "https://github.com/electrovir/date-vir",
     "bugs": {
@@ -21,6 +21,7 @@
     ],
     "scripts": {
         "compile": "virmator compile",
+        "docs": "npm run compile && npm run --workspace=date-vir docs",
         "format": "virmator format",
         "lint": "virmator lint fix",
         "publish": "virmator publish npm run test:all",

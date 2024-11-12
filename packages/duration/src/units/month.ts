@@ -28,7 +28,7 @@ export type MonthNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 /**
  * Bounds for valid month numbers.
  *
- * @category Util
+ * @category Internal
  */
 export const monthNumberBounds = {
     min: 1,
@@ -76,7 +76,7 @@ export type DayOfMonth =
 /**
  * Bounds for valid day of the month numbers.
  *
- * @category Util
+ * @category Internal
  */
 export const dayOfMonthBounds = {
     min: 1,

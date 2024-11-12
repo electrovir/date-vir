@@ -15,6 +15,7 @@ export const typeDocConfig: Partial<TypeDocOptions> = {
     intentionallyNotExported: [],
     defaultCategory: 'MISSING CATEGORY',
     categoryOrder: [
+        'FullDate',
         '*',
         'Util',
         'Internal',

@@ -108,7 +108,7 @@ export type Second = Minute;
 /**
  * Bounds for valid hour numbers.
  *
- * @category Util
+ * @category Internal
  */
 export const hourBounds = {
     min: 0,
@@ -118,7 +118,7 @@ export const hourBounds = {
 /**
  * Bounds for valid minute numbers.
  *
- * @category Util
+ * @category Internal
  */
 export const minuteBounds = {
     min: 0,
@@ -128,7 +128,7 @@ export const minuteBounds = {
 /**
  * Bounds for valid second numbers.
  *
- * @category Util
+ * @category Internal
  */
 export const secondBounds = {
     min: 0,
@@ -138,7 +138,7 @@ export const secondBounds = {
 /**
  * Bounds for valid millisecond numbers.
  *
- * @category Util
+ * @category Internal
  */
 export const millisecondsBounds = {
     min: 0,

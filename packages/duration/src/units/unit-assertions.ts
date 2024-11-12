@@ -15,7 +15,7 @@ import {
 /**
  * Checks if input is a valid quarter number.
  *
- * @category Util
+ * @category Assertion
  */
 export function isValidQuarter(input: number): input is Quarter {
     return (
@@ -31,7 +31,7 @@ export function isValidQuarter(input: number): input is Quarter {
 /**
  * Checks if input is a valid month number.
  *
- * @category Util
+ * @category Assertion
  */
 export function isValidMonthNumber(input: number): input is MonthNumber {
     return (
@@ -42,7 +42,7 @@ export function isValidMonthNumber(input: number): input is MonthNumber {
 /**
  * Checks if input is a valid day of the week index.
  *
- * @category Util
+ * @category Assertion
  */
 export function isValidDayOfWeekIndex(input: number): input is DayOfWeekIndex {
     return (
@@ -55,7 +55,7 @@ export function isValidDayOfWeekIndex(input: number): input is DayOfWeekIndex {
 /**
  * Checks if input is a valid day of month number.
  *
- * @category Util
+ * @category Assertion
  */
 export function isValidDayOfMonth(input: number): input is DayOfMonth {
     return (
@@ -66,7 +66,7 @@ export function isValidDayOfMonth(input: number): input is DayOfMonth {
 /**
  * Checks if input is a valid hour number.
  *
- * @category Util
+ * @category Assertion
  */
 export function isValidHour(input: number): input is Hour {
     return Number.isInteger(input) && hourBounds.min <= input && input <= hourBounds.max;
@@ -75,7 +75,7 @@ export function isValidHour(input: number): input is Hour {
 /**
  * Checks if input is a valid minute number.
  *
- * @category Util
+ * @category Assertion
  */
 export function isValidMinute(input: number): input is Minute {
     return Number.isInteger(input) && minuteBounds.min <= input && input <= minuteBounds.max;
@@ -84,7 +84,7 @@ export function isValidMinute(input: number): input is Minute {
 /**
  * Checks if input is a valid second number.
  *
- * @category Util
+ * @category Assertion
  */
 export function isValidSecond(input: number): input is Second {
     return Number.isInteger(input) && secondBounds.min <= input && input <= secondBounds.max;
@@ -93,7 +93,7 @@ export function isValidSecond(input: number): input is Second {
 /**
  * Checks if input is a valid millisecond number.
  *
- * @category Util
+ * @category Assertion
  */
 export function isValidMillisecond(input: number) {
     return (
@@ -106,7 +106,7 @@ export function isValidMillisecond(input: number) {
 /**
  * Asserts that the input is a valid quarter number.
  *
- * @category Util
+ * @category Assertion
  * @returns The input if the assertion succeeds.
  * @throws `AssertionError` If the assertion fails.
  */
@@ -121,7 +121,7 @@ export function assertWrapQuarter(input: number, failureMessage?: string | undef
 /**
  * Asserts that the input is a valid month number.
  *
- * @category Util
+ * @category Assertion
  * @returns The input if the assertion succeeds.
  * @throws `AssertionError` If the assertion fails.
  */
@@ -139,7 +139,7 @@ export function assertWrapMonthNumber(
 /**
  * Asserts that the input is a valid day of the week index.
  *
- * @category Util
+ * @category Assertion
  * @returns The input if the assertion succeeds.
  * @throws `AssertionError` If the assertion fails.
  */
@@ -157,7 +157,7 @@ export function assertWrapDayOfWeekIndex(
 /**
  * Asserts that the input is a valid day of month number.
  *
- * @category Util
+ * @category Assertion
  * @returns The input if the assertion succeeds.
  * @throws `AssertionError` If the assertion fails.
  */
@@ -175,7 +175,7 @@ export function assertWrapDayOfMonth(
 /**
  * Asserts that the input is a valid hour number.
  *
- * @category Util
+ * @category Assertion
  * @returns The input if the assertion succeeds.
  * @throws `AssertionError` If the assertion fails.
  */
@@ -190,7 +190,7 @@ export function assertWrapHour(input: number, failureMessage?: string | undefine
 /**
  * Asserts that the input is a valid minute number.
  *
- * @category Util
+ * @category Assertion
  * @returns The input if the assertion succeeds.
  * @throws `AssertionError` If the assertion fails.
  */
@@ -205,7 +205,7 @@ export function assertWrapMinute(input: number, failureMessage?: string | undefi
 /**
  * Asserts that the input is a valid second number.
  *
- * @category Util
+ * @category Assertion
  * @returns The input if the assertion succeeds.
  * @throws `AssertionError` If the assertion fails.
  */
@@ -220,7 +220,7 @@ export function assertWrapSecond(input: number, failureMessage?: string | undefi
 /**
  * Asserts that the input is a valid millisecond number.
  *
- * @category Util
+ * @category Assertion
  * @returns The input if the assertion succeeds.
  * @throws `AssertionError` If the assertion fails.
  */

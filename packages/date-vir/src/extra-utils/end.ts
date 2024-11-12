@@ -1,3 +1,4 @@
+import type {TimeKey} from '../full-date/full-date-parts.js';
 import type {FullDate} from '../full-date/full-date-shape.js';
 
 /**
@@ -10,4 +11,4 @@ export const endTime = {
     minute: 59,
     second: 59,
     millisecond: 999,
-} as const satisfies Partial<FullDate>;
+} as const satisfies Pick<FullDate, TimeKey>;

@@ -5,13 +5,13 @@ import {defineShape, exact, isValidShape, or} from 'object-shape-tester';
 import {createFullDate} from '../full-date/create-full-date.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
-import type {Timezone} from '../timezone/timezones.js';
+import {Timezone} from '../timezone/timezones.js';
 import {diffDates} from './diff-dates.js';
 
 /**
- * Get the the {@link DateUnit} value of a {@link FullDate}.
+ * Get the {@link DateUnit} value of a {@link FullDate}.
  *
- * @category Unit
+ * @category Calculation
  * @example
  *
  * ```ts
@@ -20,16 +20,18 @@ import {diffDates} from './diff-dates.js';
  * getDateUnit(
  *     {
  *         year: 2024,
- *         month: 4,
- *         day: 6,
+ *         month: 11,
+ *         day: 7,
+ *
  *         hour: 12,
- *         minute: 23,
- *         second: 0,
- *         millisecond: 0,
+ *         minute: 12,
+ *         second: 12,
+ *         millisecond: 12,
+ *
  *         timezone: utcTimezone,
  *     },
  *     DateUnit.Week,
- * ); // outputs `14`
+ * ); // outputs `45`
  * ```
  */
 export function getDateUnit(date: Readonly<FullDate>, unit: DateUnit): number {
@@ -42,7 +44,33 @@ export function getDateUnit(date: Readonly<FullDate>, unit: DateUnit): number {
     }
 }
 
-export function getStartDateOf<const SpecificTimezone extends Timezone>(
+/**
+ * Get the start date of a specific {@link DateUnit} based on a given {@link FullDate}.
+ *
+ * @category Calculation
+ * @example
+ *
+ * ```ts
+ * import {getStartDate, DateUnit, utcTimezone} from 'date-vir';
+ *
+ * getStartDate(
+ *     {
+ *         year: 2024,
+ *         month: 11,
+ *         day: 7,
+ *
+ *         hour: 12,
+ *         minute: 12,
+ *         second: 12,
+ *         millisecond: 12,
+ *
+ *         timezone: utcTimezone,
+ *     },
+ *     DateUnit.Month,
+ * ); // outputs {year: 2024, month: 11, day: 1, hour: 0, minute: 0, second: 0, millisecond: 0, timezone: utcTimezone}
+ * ```
+ */
+export function getStartDate<const SpecificTimezone extends Timezone>(
     date: Readonly<FullDate<SpecificTimezone>>,
     unit: DateUnit,
 ): FullDate<SpecificTimezone> {
@@ -51,7 +79,33 @@ export function getStartDateOf<const SpecificTimezone extends Timezone>(
     return createFullDate(luxonInstance.startOf(unit), date.timezone);
 }
 
-export function getEndDateOf<const SpecificTimezone extends Timezone>(
+/**
+ * Get the end date of a specific {@link DateUnit} based on a given {@link FullDate}.
+ *
+ * @category Calculation
+ * @example
+ *
+ * ```ts
+ * import {getEndDate, DateUnit, utcTimezone} from 'date-vir';
+ *
+ * getEndDate(
+ *     {
+ *         year: 2024,
+ *         month: 11,
+ *         day: 7,
+ *
+ *         hour: 12,
+ *         minute: 12,
+ *         second: 12,
+ *         millisecond: 12,
+ *
+ *         timezone: utcTimezone,
+ *     },
+ *     DateUnit.Month,
+ * ); // outputs {year: 2024, month: 11, day: 30, hour: 23, minute: 59, second: 59, millisecond: 999, timezone: utcTimezone}
+ * ```
+ */
+export function getEndDate<const SpecificTimezone extends Timezone>(
     date: Readonly<FullDate<SpecificTimezone>>,
     unit: DateUnit,
 ): FullDate<SpecificTimezone> {
@@ -60,6 +114,11 @@ export function getEndDateOf<const SpecificTimezone extends Timezone>(
     return createFullDate(luxonInstance.endOf(unit), date.timezone);
 }
 
+/**
+ * Shape definition for all valid date position calculations. Used for {@link calculateDatePosition}.
+ *
+ * @category Internal
+ */
 export const datePositionCalculationShape = defineShape(
     or(
         {
@@ -128,6 +187,11 @@ export const datePositionCalculationShape = defineShape(
     ),
 );
 
+/**
+ * All valid date position calculations. Used for {@link calculateDatePosition}.
+ *
+ * @category Internal
+ */
 export type DatePositionCalculation = typeof datePositionCalculationShape.runtimeType;
 
 /**
@@ -171,7 +235,7 @@ export function calculateDatePosition(
         );
     }
 
-    const start = getStartDateOf(date, calculation.in);
+    const start = getStartDate(date, calculation.in);
     const diffUnit: `${DateUnit}s` = `${calculation.get}s`;
     const diff = diffDates({start, end: date}, {[diffUnit]: true});
 

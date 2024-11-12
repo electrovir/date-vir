@@ -5,7 +5,7 @@ import {endTime} from '../extra-utils/end.js';
 import {zeroDate} from '../extra-utils/zero.js';
 import type {FullDate} from '../full-date/full-date-shape.js';
 import {utcTimezone} from '../timezone/timezones.js';
-import {calculateDatePosition, getDateUnit, getEndDateOf, getStartDateOf} from './date-position.js';
+import {calculateDatePosition, getDateUnit, getEndDate, getStartDate} from './date-position.js';
 
 const exampleDate = {
     year: 2024,
@@ -65,8 +65,8 @@ describe(calculateDatePosition.name, () => {
     ]);
 });
 
-describe(getStartDateOf.name, () => {
-    itCases(getStartDateOf, [
+describe(getStartDate.name, () => {
+    itCases(getStartDate, [
         {
             it: 'gets the start of a month',
             inputs: [
@@ -83,8 +83,8 @@ describe(getStartDateOf.name, () => {
     ]);
 });
 
-describe(getEndDateOf.name, () => {
-    itCases(getEndDateOf, [
+describe(getEndDate.name, () => {
+    itCases(getEndDate, [
         {
             it: 'gets the end of a month',
             inputs: [

@@ -23,7 +23,7 @@ export type DayOfWeekIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 /**
  * Bounds for valid day of the week indexes.
  *
- * @category Util
+ * @category Internal
  */
 export const dayOfWeekIndexBounds = {
     min: 0,
