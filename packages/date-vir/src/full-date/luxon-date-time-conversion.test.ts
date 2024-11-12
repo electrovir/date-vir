@@ -19,6 +19,7 @@ describe(toLuxonDateTime.name, () => {
             it: 'fails on invalid dates',
             input: {
                 ...fullDateShape.defaultValue,
+                // @ts-expect-error: intentionally incorrect day
                 day: 321,
             },
             throws: {

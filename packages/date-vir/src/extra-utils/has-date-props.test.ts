@@ -6,7 +6,9 @@ describe(assertHasFullDateKeys.name, () => {
         {
             it: 'accepts single present key',
             inputs: [
-                {day: 0},
+                {
+                    day: 1,
+                },
                 ['day'],
             ],
             throws: undefined,
@@ -15,7 +17,7 @@ describe(assertHasFullDateKeys.name, () => {
             it: 'accepts single key amongst others',
             inputs: [
                 {
-                    day: 0,
+                    day: 1,
                     minute: 0,
                 },
                 ['day'],
@@ -26,7 +28,7 @@ describe(assertHasFullDateKeys.name, () => {
             it: 'accepts multiple required keys',
             inputs: [
                 {
-                    day: 0,
+                    day: 1,
                     minute: 0,
                     hour: 0,
                 },
@@ -42,7 +44,7 @@ describe(assertHasFullDateKeys.name, () => {
             it: 'rejects missing keys',
             inputs: [
                 {
-                    day: 0,
+                    day: 1,
                 },
                 [
                     'day',
@@ -62,7 +64,9 @@ describe(hasFullDateKeys.name, () => {
         {
             it: 'accepts single present key',
             inputs: [
-                {day: 0},
+                {
+                    day: 1,
+                },
                 ['day'],
             ],
             expect: true,
@@ -71,7 +75,7 @@ describe(hasFullDateKeys.name, () => {
             it: 'accepts single key amongst others',
             inputs: [
                 {
-                    day: 0,
+                    day: 1,
                     minute: 0,
                 },
                 ['day'],
@@ -82,7 +86,7 @@ describe(hasFullDateKeys.name, () => {
             it: 'accepts multiple required keys',
             inputs: [
                 {
-                    day: 0,
+                    day: 1,
                     minute: 0,
                     hour: 0,
                 },
@@ -98,7 +102,7 @@ describe(hasFullDateKeys.name, () => {
             it: 'rejects missing keys',
             inputs: [
                 {
-                    day: 0,
+                    day: 1,
                 },
                 [
                     'day',

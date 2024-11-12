@@ -41,6 +41,7 @@ describe(assertValidFullDate.name, () => {
                 it: 'rejects an invalid hour',
                 input: {
                     ...fullDateShape.defaultValue,
+                    // @ts-expect-error: intentionally incorrect hour
                     hour: 24,
                 },
                 throws: {
@@ -51,6 +52,7 @@ describe(assertValidFullDate.name, () => {
                 it: 'rejects an invalid minute',
                 input: {
                     ...fullDateShape.defaultValue,
+                    // @ts-expect-error: intentionally incorrect minute
                     minute: 60,
                 },
                 throws: {
@@ -61,6 +63,7 @@ describe(assertValidFullDate.name, () => {
                 it: 'rejects an invalid second',
                 input: {
                     ...fullDateShape.defaultValue,
+                    // @ts-expect-error: intentionally incorrect second
                     second: 60,
                 },
                 throws: {
@@ -81,6 +84,7 @@ describe(assertValidFullDate.name, () => {
                 it: 'rejects an invalid month',
                 input: {
                     ...fullDateShape.defaultValue,
+                    // @ts-expect-error: intentionally incorrect month
                     month: 0,
                 },
                 throws: {
@@ -91,6 +95,7 @@ describe(assertValidFullDate.name, () => {
                 it: 'rejects an invalid day',
                 input: {
                     ...fullDateShape.defaultValue,
+                    // @ts-expect-error: intentionally incorrect day
                     day: 42,
                 },
                 throws: {

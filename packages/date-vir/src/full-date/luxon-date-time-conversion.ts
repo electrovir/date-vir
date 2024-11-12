@@ -1,4 +1,12 @@
 import {omitObjectKeys} from '@augment-vir/common';
+import {
+    assertWrapDayOfMonth,
+    assertWrapHour,
+    assertWrapMillisecond,
+    assertWrapMinute,
+    assertWrapMonthNumber,
+    assertWrapSecond,
+} from '@date-vir/duration';
 import {DateTime} from 'luxon';
 import {Timezone} from '../timezone/timezones.js';
 import {FullDate} from './full-date-shape.js';
@@ -40,13 +48,13 @@ export function parseLuxonDateTime<const SpecificTimezone extends Timezone>(
     }
 
     return {
-        day: dateTimeInput.day,
-        month: dateTimeInput.month,
+        day: assertWrapDayOfMonth(dateTimeInput.day),
+        month: assertWrapMonthNumber(dateTimeInput.month),
         year: dateTimeInput.year,
-        hour: dateTimeInput.hour,
-        minute: dateTimeInput.minute,
-        second: dateTimeInput.second,
-        millisecond: dateTimeInput.millisecond,
+        hour: assertWrapHour(dateTimeInput.hour),
+        minute: assertWrapMinute(dateTimeInput.minute),
+        second: assertWrapSecond(dateTimeInput.second),
+        millisecond: assertWrapMillisecond(dateTimeInput.millisecond),
         timezone: forcedTimezone ?? (dateTimeInput.zoneName as SpecificTimezone),
     };
 }

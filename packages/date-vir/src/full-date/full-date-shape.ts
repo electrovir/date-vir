@@ -1,5 +1,19 @@
 import {Overwrite, type SetRequired} from '@augment-vir/common';
-import {and, defineShape} from 'object-shape-tester';
+import {
+    dayOfMonthBounds,
+    hourBounds,
+    millisecondsBounds,
+    minuteBounds,
+    monthNumberBounds,
+    secondBounds,
+    type DayOfMonth,
+    type Hour,
+    type Minute,
+    type MonthNumber,
+    type Second,
+} from '@date-vir/duration';
+import {and, defineShape, numericRange} from 'object-shape-tester';
+import type {Simplify} from 'type-fest';
 import {utcTimezone, type Timezone} from '../timezone/timezones.js';
 
 /**
@@ -9,13 +23,13 @@ import {utcTimezone, type Timezone} from '../timezone/timezones.js';
  */
 export const timePartShape = defineShape({
     /** Hour of the day in 24 time: 0-23 */
-    hour: 14,
+    hour: numericRange<Hour>(hourBounds.min, hourBounds.max),
     /** Minute of the hour: 0-59 */
-    minute: 19,
+    minute: numericRange<Minute>(minuteBounds.min, minuteBounds.max),
     /** Second of the minute: 0-59 */
-    second: 7,
+    second: numericRange<Second>(secondBounds.min, secondBounds.max),
     /** Millisecond of the second: 0-999 */
-    millisecond: 877,
+    millisecond: numericRange(millisecondsBounds.min, millisecondsBounds.max),
     /** The timezone that this date/time is meant for / originated from. */
     timezone: utcTimezone as Timezone,
 });
@@ -43,9 +57,9 @@ export const datePartShape = defineShape({
      */
     year: 2023,
     /** A month of the year: 1-12 */
-    month: 6,
+    month: numericRange<MonthNumber>(monthNumberBounds.min, monthNumberBounds.max),
     /** A day of the month: 1-31 depending on the month */
-    day: 5,
+    day: numericRange<DayOfMonth>(dayOfMonthBounds.min, dayOfMonthBounds.max),
     /** The timezone that this date/time is meant for / originated from. */
     timezone: utcTimezone as Timezone,
 });
@@ -90,7 +104,6 @@ export const fullDateShape = defineShape(and(datePartShape, timePartShape));
  * };
  * ```
  */
-export type FullDate<SpecificTimezone extends Timezone = Timezone> = Overwrite<
-    (typeof fullDateShape)['runtimeType'],
-    {timezone: SpecificTimezone}
+export type FullDate<SpecificTimezone extends Timezone = Timezone> = Simplify<
+    Overwrite<(typeof fullDateShape)['runtimeType'], {timezone: SpecificTimezone}>
 >;

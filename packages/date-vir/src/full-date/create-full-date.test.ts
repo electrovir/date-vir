@@ -1,5 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
+import {assertWrapHour} from '@date-vir/duration';
 import {DateTime} from 'luxon';
 import {Timezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
 import {
@@ -220,7 +221,7 @@ describe(createFullDate.name, () => {
             ],
             expect: {
                 ...exampleFullDateUtc,
-                hour: exampleFullDateUtc.hour + 1,
+                hour: assertWrapHour(exampleFullDateUtc.hour + 1),
                 timezone: Timezone['Etc/GMT-1'],
             },
         },
@@ -281,6 +282,7 @@ describe(createFullDate.name, () => {
         {
             it: 'rejects an invalid full date object',
             inputs: [
+                // @ts-expect-error: intentionally invalid day
                 {
                     ...exampleFullDateUtc,
                     day: 99,

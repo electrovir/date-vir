@@ -8,11 +8,14 @@ describe(overrideDateParts.name, () => {
             it: 'overrides properties',
             inputs: [
                 exampleFullDateUtc,
-                {day: 0, year: 0},
+                {
+                    day: 1,
+                    year: 0,
+                },
             ],
             expect: {
                 ...exampleFullDateUtc,
-                day: 0,
+                day: 1,
                 year: 0,
             },
         },
