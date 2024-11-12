@@ -1,5 +1,4 @@
-import type {ArrayElement} from '@augment-vir/common';
-import {datePartShape, FullDate, timePartShape} from './full-date-shape.js';
+import {FullDate} from './full-date-shape.js';
 
 /**
  * Represents various parts of a {@link FullDate}. Each value is also a valid "type" attribute for an
@@ -30,32 +29,20 @@ export enum FullDatePart {
  *
  * @category Internal
  */
-export const timeFullDateKeys = [
-    'hour',
-    'minute',
-    'second',
-    'millisecond',
-] as const satisfies ReadonlyArray<keyof typeof timePartShape.runtimeType>;
-/**
- * {@link FullDate} keys used for telling time only.
- *
- * @category Internal
- */
-export type TimeFullDateKeys = ArrayElement<typeof timeFullDateKeys>;
+export enum TimeKey {
+    Hour = 'hour',
+    Minute = 'minute',
+    Second = 'second',
+    Millisecond = 'millisecond',
+}
 
 /**
  * {@link FullDate} keys used for telling the date only.
  *
  * @category Internal
  */
-export const dateFullDateKeys = [
-    'year',
-    'month',
-    'day',
-] as const satisfies ReadonlyArray<keyof typeof datePartShape.runtimeType>;
-/**
- * {@link FullDate} keys used for telling the date only.
- *
- * @category Internal
- */
-export type DateFullDateKeys = ArrayElement<typeof dateFullDateKeys>;
+export enum DateKey {
+    Year = 'year',
+    Month = 'month',
+    Day = 'day',
+}
