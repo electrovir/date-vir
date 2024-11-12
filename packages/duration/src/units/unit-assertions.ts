@@ -1,0 +1,233 @@
+import {AssertionError} from '@augment-vir/assert';
+import {Quarter} from './date-unit.js';
+import {DayOfWeekIndex, dayOfWeekIndexBounds} from './day-of-week.js';
+import {DayOfMonth, dayOfMonthBounds, monthNumberBounds, type MonthNumber} from './month.js';
+import {
+    Hour,
+    Minute,
+    Second,
+    hourBounds,
+    millisecondsBounds,
+    minuteBounds,
+    secondBounds,
+} from './time-units.js';
+
+/**
+ * Checks if input is a valid quarter number.
+ *
+ * @category Util
+ */
+export function isValidQuarter(input: number): input is Quarter {
+    return (
+        [
+            1,
+            2,
+            3,
+            4,
+        ] satisfies Quarter[] as number[]
+    ).includes(input);
+}
+
+/**
+ * Checks if input is a valid month number.
+ *
+ * @category Util
+ */
+export function isValidMonthNumber(input: number): input is MonthNumber {
+    return (
+        Number.isInteger(input) && monthNumberBounds.min <= input && input <= monthNumberBounds.max
+    );
+}
+
+/**
+ * Checks if input is a valid day of the week index.
+ *
+ * @category Util
+ */
+export function isValidDayOfWeekIndex(input: number): input is DayOfWeekIndex {
+    return (
+        Number.isInteger(input) &&
+        dayOfWeekIndexBounds.min <= input &&
+        input <= dayOfWeekIndexBounds.max
+    );
+}
+
+/**
+ * Checks if input is a valid day of month number.
+ *
+ * @category Util
+ */
+export function isValidDayOfMonth(input: number): input is DayOfMonth {
+    return (
+        Number.isInteger(input) && dayOfMonthBounds.min <= input && input <= dayOfMonthBounds.max
+    );
+}
+
+/**
+ * Checks if input is a valid hour number.
+ *
+ * @category Util
+ */
+export function isValidHour(input: number): input is Hour {
+    return Number.isInteger(input) && hourBounds.min <= input && input <= hourBounds.max;
+}
+
+/**
+ * Checks if input is a valid minute number.
+ *
+ * @category Util
+ */
+export function isValidMinute(input: number): input is Minute {
+    return Number.isInteger(input) && minuteBounds.min <= input && input <= minuteBounds.max;
+}
+
+/**
+ * Checks if input is a valid second number.
+ *
+ * @category Util
+ */
+export function isValidSecond(input: number): input is Second {
+    return Number.isInteger(input) && secondBounds.min <= input && input <= secondBounds.max;
+}
+
+/**
+ * Checks if input is a valid millisecond number.
+ *
+ * @category Util
+ */
+export function isValidMillisecond(input: number) {
+    return (
+        Number.isInteger(input) &&
+        millisecondsBounds.min <= input &&
+        input <= millisecondsBounds.max
+    );
+}
+
+/**
+ * Asserts that the input is a valid quarter number.
+ *
+ * @category Util
+ * @returns The input if the assertion succeeds.
+ * @throws `AssertionError` If the assertion fails.
+ */
+export function assertWrapQuarter(input: number, failureMessage?: string | undefined): Quarter {
+    if (!isValidQuarter(input)) {
+        throw new AssertionError(`${input} is not a valid date quarter number.`, failureMessage);
+    }
+
+    return input;
+}
+
+/**
+ * Asserts that the input is a valid month number.
+ *
+ * @category Util
+ * @returns The input if the assertion succeeds.
+ * @throws `AssertionError` If the assertion fails.
+ */
+export function assertWrapMonthNumber(
+    input: number,
+    failureMessage?: string | undefined,
+): MonthNumber {
+    if (!isValidMonthNumber(input)) {
+        throw new AssertionError(`${input} is not a valid month number.`, failureMessage);
+    }
+
+    return input;
+}
+
+/**
+ * Asserts that the input is a valid day of the week index.
+ *
+ * @category Util
+ * @returns The input if the assertion succeeds.
+ * @throws `AssertionError` If the assertion fails.
+ */
+export function assertWrapDayOfWeekIndex(
+    input: number,
+    failureMessage?: string | undefined,
+): DayOfWeekIndex {
+    if (!isValidDayOfWeekIndex(input)) {
+        throw new AssertionError(`${input} is not a valid day of week index.`, failureMessage);
+    }
+
+    return input;
+}
+
+/**
+ * Asserts that the input is a valid day of month number.
+ *
+ * @category Util
+ * @returns The input if the assertion succeeds.
+ * @throws `AssertionError` If the assertion fails.
+ */
+export function assertWrapDayOfMonth(
+    input: number,
+    failureMessage?: string | undefined,
+): DayOfMonth {
+    if (!isValidDayOfMonth(input)) {
+        throw new AssertionError(`${input} is not a valid day of month.`, failureMessage);
+    }
+
+    return input;
+}
+
+/**
+ * Asserts that the input is a valid hour number.
+ *
+ * @category Util
+ * @returns The input if the assertion succeeds.
+ * @throws `AssertionError` If the assertion fails.
+ */
+export function assertWrapHour(input: number, failureMessage?: string | undefined): Hour {
+    if (!isValidHour(input)) {
+        throw new AssertionError(`${input} is not a valid hour.`, failureMessage);
+    }
+
+    return input;
+}
+
+/**
+ * Asserts that the input is a valid minute number.
+ *
+ * @category Util
+ * @returns The input if the assertion succeeds.
+ * @throws `AssertionError` If the assertion fails.
+ */
+export function assertWrapMinute(input: number, failureMessage?: string | undefined): Minute {
+    if (!isValidMinute(input)) {
+        throw new AssertionError(`${input} is not a valid minute.`, failureMessage);
+    }
+
+    return input;
+}
+
+/**
+ * Asserts that the input is a valid second number.
+ *
+ * @category Util
+ * @returns The input if the assertion succeeds.
+ * @throws `AssertionError` If the assertion fails.
+ */
+export function assertWrapSecond(input: number, failureMessage?: string | undefined): Second {
+    if (!isValidSecond(input)) {
+        throw new AssertionError(`${input} is not a valid second.`, failureMessage);
+    }
+
+    return input;
+}
+
+/**
+ * Asserts that the input is a valid millisecond number.
+ *
+ * @category Util
+ * @returns The input if the assertion succeeds.
+ * @throws `AssertionError` If the assertion fails.
+ */
+export function assertWrapMillisecond(input: number, failureMessage?: string | undefined) {
+    if (!isValidMillisecond(input)) {
+        throw new AssertionError(`${input} is not a valid millisecond.`, failureMessage);
+    }
+
+    return input;
+}
