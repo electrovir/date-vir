@@ -1,8 +1,8 @@
 import {convertDuration} from './convert-duration.js';
 import {type DurationBySelection, type DurationUnitSelection} from './duration-selection.js';
-import {orderedDurationUnits} from './duration-unit.js';
 import type {AnyDuration} from './duration.js';
 import {RoundOptions} from './round-options.js';
+import {orderedDurationUnits} from './units/duration-unit.js';
 
 /**
  * Set each selected duration unit to the full value of the full given duration.

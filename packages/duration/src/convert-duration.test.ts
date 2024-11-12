@@ -1,8 +1,8 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
-import {AnyDuration, selectAllDurationUnits} from '@date-vir/duration';
 import {convertDuration, roundDuration} from './convert-duration.js';
-import {AtLeastOneDuration} from './duration.js';
+import {selectAllDurationUnits} from './duration-selection.js';
+import {AtLeastOneDuration, type AnyDuration} from './duration.js';
 
 describe(convertDuration.name, () => {
     it('has proper types', () => {

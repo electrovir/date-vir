@@ -1,7 +1,7 @@
 /**
  * All duration units supported by date-vir.
  *
- * @category Duration
+ * @category Unit
  */
 export enum DurationUnit {
     Years = 'years',

@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {DurationUnit} from './duration-unit.js';
 import {AnyDuration, Duration} from './duration.js';
+import {DurationUnit} from './units/duration-unit.js';
 
 describe('Duration', () => {
     it('picks a single unit', () => {

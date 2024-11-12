@@ -4,9 +4,9 @@ import {
     flattenUnitSelection,
     type DurationBySelection,
 } from './duration-selection.js';
-import {DurationUnit, orderedDurationUnits} from './duration-unit.js';
 import {AnyDuration} from './duration.js';
 import type {RoundOptions} from './round-options.js';
+import {DurationUnit, orderedDurationUnits} from './units/duration-unit.js';
 
 /**
  * This is mostly copied from `@augment-vir/common` so that the `@date-vir/duration` package doesn't

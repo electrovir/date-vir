@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
+import type {AnyDuration} from '../duration.js';
 import {DurationUnit} from './duration-unit.js';
-import {AnyDuration} from './duration.js';
 
 describe('DurationUnit', () => {
     it('has all props of AnyDuration', () => {
