@@ -195,8 +195,7 @@ export const datePositionCalculationShape = defineShape(
 export type DatePositionCalculation = typeof datePositionCalculationShape.runtimeType;
 
 /**
- * Calculate the position of the given date's day within the given date unit. Only date units larger
- * than a day are allowed.
+ * Calculate the position of the given date's day within the given date unit.
  *
  * @category Calculation
  * @example
