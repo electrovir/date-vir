@@ -158,6 +158,6 @@ export function isDateAfter({
                 end: fullDate,
             },
             {milliseconds: true},
-        ).milliseconds >= 0
+        ).milliseconds > 0
     );
 }

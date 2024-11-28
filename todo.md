@@ -5,3 +5,4 @@
 -   better doc categories
 -   add readonly to all inputs
 -   remove chai dependency
+-   change `getStartDate` so that the start of the week is Sunday
