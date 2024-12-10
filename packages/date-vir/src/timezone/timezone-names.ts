@@ -422,7 +422,6 @@ export const allTimezoneNames = [
     'Europe/Zagreb',
     'Europe/Zaporozhye',
     'Europe/Zurich',
-    'Factory',
     'HST',
     'Indian/Antananarivo',
     'Indian/Chagos',

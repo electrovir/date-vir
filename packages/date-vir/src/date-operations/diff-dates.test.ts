@@ -2,7 +2,9 @@ import {assert} from '@augment-vir/assert';
 import {randomInteger} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
 import {DurationUnit, selectAllDurationUnits} from '@date-vir/duration';
+import type {FullDate} from '../full-date/full-date-shape.js';
 import {exampleFullDateUtc} from '../full-date/full-date.mock.js';
+import {utcTimezone} from '../timezone/timezones.js';
 import {calculateRelativeDate} from './calculate-relative-date.js';
 import {diffDates, isDateAfter} from './diff-dates.js';
 
@@ -10,22 +12,51 @@ const secondsDiff = randomInteger({min: 1, max: 100_000_000});
 const exampleFullDateOffset = calculateRelativeDate(exampleFullDateUtc, {seconds: secondsDiff});
 
 describe(isDateAfter.name, () => {
+    const mockDate: FullDate = {
+        year: 2024,
+        month: 11,
+        day: 23,
+
+        hour: 1,
+        minute: 2,
+        second: 0,
+        millisecond: 900,
+
+        timezone: utcTimezone,
+    };
+
     itCases(isDateAfter, [
         {
             it: 'detects a date is after another',
             input: {
-                relativeTo: exampleFullDateUtc,
                 fullDate: exampleFullDateOffset,
+                relativeTo: exampleFullDateUtc,
             },
             expect: true,
         },
         {
             it: 'calculates the opposite if the inputs are swapped',
             input: {
-                relativeTo: exampleFullDateOffset,
                 fullDate: exampleFullDateUtc,
+                relativeTo: exampleFullDateOffset,
             },
             expect: false,
+        },
+        {
+            it: 'works with mock dates a day apart',
+            input: {
+                fullDate: mockDate,
+                relativeTo: calculateRelativeDate(mockDate, {days: -1}),
+            },
+            expect: true,
+        },
+        {
+            it: 'works with mock dates two days apart',
+            input: {
+                fullDate: mockDate,
+                relativeTo: calculateRelativeDate(mockDate, {days: -2}),
+            },
+            expect: true,
         },
     ]);
 });
