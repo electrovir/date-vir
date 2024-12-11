@@ -99,6 +99,193 @@ describe(toRelativeString.name, () => {
             expect: '48 hours ago',
         },
         {
+            it: 'handles exact time without just now',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: exampleFullDateUtc,
+                },
+                {
+                    weeks: true,
+                    hours: true,
+                    seconds: true,
+                },
+                {
+                    blockJustNow: true,
+                    useOnlyLargestUnit: true,
+                },
+            ],
+            expect: '',
+        },
+        {
+            it: 'uses custom minutes just now thresholds',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {minutes: 5}),
+                },
+                {
+                    minutes: true,
+                    seconds: true,
+                    milliseconds: true,
+                },
+                {
+                    useOnlyLargestUnit: true,
+                    justNowThresholds: {
+                        minutes: 10,
+                        seconds: 100,
+                        milliseconds: 10_000,
+                    },
+                },
+            ],
+            expect: 'just now',
+        },
+        {
+            it: 'uses default minutes just now thresholds',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {minutes: 1}),
+                },
+                {
+                    minutes: true,
+                    seconds: true,
+                    milliseconds: true,
+                },
+                {
+                    useOnlyLargestUnit: true,
+                },
+            ],
+            expect: 'just now',
+        },
+        {
+            it: 'does not use default minutes just now thresholds',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {minutes: 50}),
+                },
+                {
+                    minutes: true,
+                    seconds: true,
+                    milliseconds: true,
+                },
+                {
+                    useOnlyLargestUnit: true,
+                },
+            ],
+            expect: 'in 50 minutes',
+        },
+        {
+            it: 'uses custom seconds just now thresholds',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {seconds: 50}),
+                },
+                {
+                    seconds: true,
+                    milliseconds: true,
+                },
+                {
+                    useOnlyLargestUnit: true,
+                    justNowThresholds: {
+                        minutes: 10,
+                        seconds: 100,
+                        milliseconds: 10_000,
+                    },
+                },
+            ],
+            expect: 'just now',
+        },
+        {
+            it: 'uses default seconds just now thresholds',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {seconds: 1}),
+                },
+                {
+                    seconds: true,
+                    milliseconds: true,
+                },
+                {
+                    useOnlyLargestUnit: true,
+                },
+            ],
+            expect: 'just now',
+        },
+        {
+            it: 'does not use default seconds just now thresholds',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {seconds: 100}),
+                },
+                {
+                    seconds: true,
+                    milliseconds: true,
+                },
+                {
+                    useOnlyLargestUnit: true,
+                },
+            ],
+            expect: 'in 100 seconds',
+        },
+        {
+            it: 'uses custom milliseconds just now thresholds',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 5000}),
+                },
+                {
+                    milliseconds: true,
+                },
+                {
+                    useOnlyLargestUnit: true,
+                    justNowThresholds: {
+                        minutes: 10,
+                        seconds: 100,
+                        milliseconds: 10_000,
+                    },
+                },
+            ],
+            expect: 'just now',
+        },
+        {
+            it: 'uses default milliseconds just now thresholds',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 50}),
+                },
+                {
+                    milliseconds: true,
+                },
+                {
+                    useOnlyLargestUnit: true,
+                },
+            ],
+            expect: 'just now',
+        },
+        {
+            it: 'does not use default milliseconds just now thresholds',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 5000}),
+                },
+                {
+                    milliseconds: true,
+                },
+                {
+                    useOnlyLargestUnit: true,
+                },
+            ],
+            expect: 'in 5000 milliseconds',
+        },
+        {
             it: 'blocks future days',
             inputs: [
                 {

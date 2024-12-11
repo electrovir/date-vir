@@ -37,7 +37,28 @@ export type RelativeStringOptions = PartialWithUndefined<{
      * @default 0
      */
     allowedDecimals: number;
+    /**
+     * Any values below this will trigger "just now".
+     *
+     * @default {
+     *
+     *         minutes: 1.5,
+     *         seconds: 5,
+     *         milliseconds: 500,
+     * }
+     */
+    justNowThresholds: {
+        minutes: number;
+        seconds: number;
+        milliseconds: number;
+    };
 }>;
+
+const defaultJustNowThresholds: NonNullable<RelativeStringOptions['justNowThresholds']> = {
+    minutes: 1.5,
+    seconds: 5,
+    milliseconds: 500,
+};
 
 /**
  * This function starts with a duration (either by being directly passed a duration or by diffing
@@ -100,16 +121,28 @@ export function toRelativeString(
         check.isTruthy,
     ).reverse();
 
+    const justNowThresholds = options.justNowThresholds || defaultJustNowThresholds;
+
     const shouldUseJustNow =
         !options.blockJustNow &&
         (!check.isLengthAtLeast(unitValues, 1) ||
-            (unitValues[0].unit === DurationUnit.Minutes && (diff.minutes || 0) < 1.5) ||
-            (unitValues[0].unit === DurationUnit.Seconds && (diff.seconds || 0) < 11) ||
-            (unitValues[0].unit === DurationUnit.Milliseconds && (diff.milliseconds || 0) < 750));
+            (unitValues[0].unit === DurationUnit.Minutes &&
+                /* node:coverage ignore next 1 */
+                (diff.minutes || 0) < justNowThresholds.minutes) ||
+            (unitValues[0].unit === DurationUnit.Seconds &&
+                /* node:coverage ignore next 1 */
+                (diff.seconds || 0) < justNowThresholds.seconds) ||
+            (unitValues[0].unit === DurationUnit.Milliseconds &&
+                /* node:coverage ignore next 1 */
+                (diff.milliseconds || 0) < justNowThresholds.milliseconds));
 
     if (shouldUseJustNow) {
         return 'just now';
     } else if (options.useOnlyLargestUnit) {
+        if (!unitValues[0]) {
+            return '';
+        }
+
         return toRelativeString(
             datesOrDuration,
             {[unitValues[0].unit]: true},
