@@ -128,13 +128,13 @@ export function toRelativeString(
         (!check.isLengthAtLeast(unitValues, 1) ||
             (unitValues[0].unit === DurationUnit.Minutes &&
                 /* node:coverage ignore next 1 */
-                (diff.minutes || 0) < justNowThresholds.minutes) ||
+                Math.abs(diff.minutes || 0) < justNowThresholds.minutes) ||
             (unitValues[0].unit === DurationUnit.Seconds &&
                 /* node:coverage ignore next 1 */
-                (diff.seconds || 0) < justNowThresholds.seconds) ||
+                Math.abs(diff.seconds || 0) < justNowThresholds.seconds) ||
             (unitValues[0].unit === DurationUnit.Milliseconds &&
                 /* node:coverage ignore next 1 */
-                (diff.milliseconds || 0) < justNowThresholds.milliseconds));
+                Math.abs(diff.milliseconds || 0) < justNowThresholds.milliseconds));
 
     if (shouldUseJustNow) {
         return 'just now';
