@@ -1,4 +1,4 @@
-import {Overwrite, type SetRequired} from '@augment-vir/common';
+import {makeWritable, Overwrite, type SetRequired} from '@augment-vir/common';
 import {
     dayOfMonthBounds,
     hourBounds,
@@ -12,9 +12,9 @@ import {
     type MonthNumber,
     type Second,
 } from '@date-vir/duration';
-import {and, defineShape, numericRange} from 'object-shape-tester';
+import {and, defineShape, enumShape, numericRange} from 'object-shape-tester';
 import type {Simplify} from 'type-fest';
-import {utcTimezone, type Timezone} from '../timezone/timezones.js';
+import {Timezone, utcTimezone} from '../timezone/timezones.js';
 
 /**
  * Time part of {@link FullDate} represented in a shape definition.
@@ -31,7 +31,7 @@ export const timePartShape = defineShape({
     /** Millisecond of the second: 0-999 */
     millisecond: numericRange(millisecondsBounds.min, millisecondsBounds.max),
     /** The timezone that this date/time is meant for / originated from. */
-    timezone: utcTimezone as Timezone,
+    timezone: enumShape(Timezone),
 });
 
 /**
@@ -80,6 +80,7 @@ export type DatePart<SpecificTimezone extends Timezone = Timezone> = SetRequired
  * @category Shape
  */
 export const fullDateShape = defineShape(and(datePartShape, timePartShape));
+makeWritable(fullDateShape.defaultValue).timezone = utcTimezone;
 
 /**
  * A serializable object that completely specifies how any given date should be represented,
@@ -96,14 +97,22 @@ export const fullDateShape = defineShape(and(datePartShape, timePartShape));
  *     year: 2024,
  *     month: 6,
  *     day: 2,
+ *
  *     hour: 13,
  *     minute: 32,
  *     second: 12,
+ *
  *     milliseconds: 94,
  *     timezone: timezones['Australia/Brisbane'],
  * };
  * ```
  */
 export type FullDate<SpecificTimezone extends Timezone = Timezone> = Simplify<
-    Overwrite<(typeof fullDateShape)['runtimeType'], {timezone: SpecificTimezone}>
+    Overwrite<
+        (typeof fullDateShape)['runtimeType'],
+        {
+            second: Second;
+            timezone: SpecificTimezone;
+        }
+    >
 >;
