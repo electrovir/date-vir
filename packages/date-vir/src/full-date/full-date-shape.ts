@@ -1,4 +1,4 @@
-import {makeWritable, Overwrite, type SetRequired} from '@augment-vir/common';
+import {Overwrite, type SetRequired} from '@augment-vir/common';
 import {
     dayOfMonthBounds,
     hourBounds,
@@ -31,7 +31,7 @@ export const timePartShape = defineShape({
     /** Millisecond of the second: 0-999 */
     millisecond: numericRange(millisecondsBounds.min, millisecondsBounds.max),
     /** The timezone that this date/time is meant for / originated from. */
-    timezone: enumShape(Timezone),
+    timezone: enumShape(Timezone, utcTimezone),
 });
 
 /**
@@ -80,7 +80,6 @@ export type DatePart<SpecificTimezone extends Timezone = Timezone> = SetRequired
  * @category Shape
  */
 export const fullDateShape = defineShape(and(datePartShape, timePartShape));
-makeWritable(fullDateShape.defaultValue).timezone = utcTimezone;
 
 /**
  * A serializable object that completely specifies how any given date should be represented,
