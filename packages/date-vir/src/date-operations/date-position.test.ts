@@ -35,7 +35,73 @@ describe(calculateDatePosition.name, () => {
                     in: DateUnit.Month,
                 },
             ],
-            expect: 1.93,
+            expect: 1.22,
+        },
+        {
+            it: 'gets comment example week number in year',
+            inputs: [
+                {
+                    day: 5,
+                    month: 4,
+                    year: 2020,
+
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+
+                    timezone: utcTimezone,
+                },
+                {
+                    get: DateUnit.Week,
+                    in: DateUnit.Year,
+                },
+            ],
+            expect: 14.14,
+        },
+        {
+            it: 'gets first week of the year',
+            inputs: [
+                {
+                    day: 1,
+                    month: 1,
+                    year: 2020,
+
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+
+                    timezone: utcTimezone,
+                },
+                {
+                    get: DateUnit.Week,
+                    in: DateUnit.Year,
+                },
+            ],
+            expect: 0.57,
+        },
+        {
+            it: 'gets comment example day number in week',
+            inputs: [
+                {
+                    day: 5,
+                    month: 4,
+                    year: 2020,
+
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+
+                    timezone: utcTimezone,
+                },
+                {
+                    get: DateUnit.Day,
+                    in: DateUnit.Week,
+                },
+            ],
+            expect: 0,
         },
         {
             it: 'gets hour number in month',
@@ -80,6 +146,54 @@ describe(getStartDate.name, () => {
                 timezone: exampleDate.timezone,
             },
         },
+        {
+            it: 'gets the start of a year',
+            inputs: [
+                {
+                    day: 5,
+                    month: 4,
+                    year: 2020,
+
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+
+                    timezone: utcTimezone,
+                },
+                DateUnit.Year,
+            ],
+            expect: {
+                ...zeroDate,
+                year: 2020,
+                timezone: utcTimezone,
+            },
+        },
+        {
+            it: 'gets the start of a week',
+            inputs: [
+                {
+                    day: 5,
+                    month: 4,
+                    year: 2020,
+
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+
+                    timezone: utcTimezone,
+                },
+                DateUnit.Week,
+            ],
+            expect: {
+                ...zeroDate,
+                day: 5,
+                month: 4,
+                year: 2020,
+                timezone: utcTimezone,
+            },
+        },
     ]);
 });
 
@@ -97,6 +211,31 @@ describe(getEndDate.name, () => {
                 month: exampleDate.month,
                 day: 30,
                 timezone: exampleDate.timezone,
+            },
+        },
+        {
+            it: 'gets the end of a week',
+            inputs: [
+                {
+                    day: 5,
+                    month: 4,
+                    year: 2020,
+
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+
+                    timezone: utcTimezone,
+                },
+                DateUnit.Week,
+            ],
+            expect: {
+                ...endTime,
+                year: 2020,
+                month: 4,
+                day: 11,
+                timezone: utcTimezone,
             },
         },
     ]);
@@ -125,6 +264,44 @@ describe(getDateUnit.name, () => {
             inputs: [
                 exampleDate,
                 DateUnit.Quarter,
+            ],
+            expect: 4,
+        },
+        {
+            it: 'gets comment example week',
+            inputs: [
+                {
+                    day: 5,
+                    month: 4,
+                    year: 2020,
+
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+
+                    timezone: utcTimezone,
+                },
+                DateUnit.Week,
+            ],
+            expect: 14,
+        },
+        {
+            it: 'gets comment example month',
+            inputs: [
+                {
+                    day: 5,
+                    month: 4,
+                    year: 2020,
+
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+
+                    timezone: utcTimezone,
+                },
+                DateUnit.Month,
             ],
             expect: 4,
         },

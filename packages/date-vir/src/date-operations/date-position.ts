@@ -6,6 +6,7 @@ import {createFullDate} from '../full-date/create-full-date.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
 import {Timezone} from '../timezone/timezones.js';
+import {calculateRelativeDate} from './calculate-relative-date.js';
 import {diffDates} from './diff-dates.js';
 
 /**
@@ -74,9 +75,23 @@ export function getStartDate<const SpecificTimezone extends Timezone>(
     date: Readonly<FullDate<SpecificTimezone>>,
     unit: DateUnit,
 ): FullDate<SpecificTimezone> {
-    const luxonInstance = toLuxonDateTime(date);
-
-    return createFullDate(luxonInstance.startOf(unit), date.timezone);
+    /**
+     * This package treats Sunday as the first day of the week, but Luxon treats Monday as the first
+     * day of the week.
+     */
+    if (unit === DateUnit.Week) {
+        return calculateRelativeDate(
+            createFullDate(
+                toLuxonDateTime(calculateRelativeDate(date, {days: 1})).startOf(unit),
+                date.timezone,
+            ),
+            {
+                days: -1,
+            },
+        );
+    } else {
+        return createFullDate(toLuxonDateTime(date).startOf(unit), date.timezone);
+    }
 }
 
 /**
@@ -109,9 +124,23 @@ export function getEndDate<const SpecificTimezone extends Timezone>(
     date: Readonly<FullDate<SpecificTimezone>>,
     unit: DateUnit,
 ): FullDate<SpecificTimezone> {
-    const luxonInstance = toLuxonDateTime(date);
-
-    return createFullDate(luxonInstance.endOf(unit), date.timezone);
+    /**
+     * This package treats Sunday as the first day of the week, but Luxon treats Monday as the first
+     * day of the week.
+     */
+    if (unit === DateUnit.Week) {
+        return calculateRelativeDate(
+            createFullDate(
+                toLuxonDateTime(calculateRelativeDate(date, {days: 1})).endOf(unit),
+                date.timezone,
+            ),
+            {
+                days: -1,
+            },
+        );
+    } else {
+        return createFullDate(toLuxonDateTime(date).endOf(unit), date.timezone);
+    }
 }
 
 /**
@@ -195,7 +224,7 @@ export const datePositionCalculationShape = defineShape(
 export type DatePositionCalculation = typeof datePositionCalculationShape.runtimeType;
 
 /**
- * Calculate the position of the given date's day within the given date unit.
+ * Calculate the position of the given date's "get" unit within the given "in" unit.
  *
  * @category Calculation
  * @example
@@ -205,23 +234,42 @@ export type DatePositionCalculation = typeof datePositionCalculationShape.runtim
  *
  * calculateDatePosition(
  *     {
- *         day: 5,
- *         month: 4,
  *         year: 2020,
+ *         month: 4,
+ *         day: 5,
+ *
+ *         hour: 0,
+ *         minute: 0,
+ *         second: 0,
+ *         millisecond: 0,
+ *
+ *         timezone: utcTimezone,
  *     },
- *     DateUnit.Month,
+ *     {
+ *         get: DateUnit.Week,
+ *         in: DateUnit.Year,
+ *     },
  * );
- * // result is 5
+ * // result is ~14.14 (always round up for week in the year numbers, thus yielding week 15)
  *
  * calculateDatePosition(
  *     {
- *         day: 5,
- *         month: 4,
  *         year: 2020,
+ *         month: 4,
+ *         day: 5,
+ *
+ *         hour: 0,
+ *         minute: 0,
+ *         second: 0,
+ *         millisecond: 0,
+ *         timezone: utcTimezone,
  *     },
- *     DateUnit.Week,
+ *     {
+ *         get: DateUnit.Day,
+ *         in: DateUnit.Week,
+ *     },
  * );
- * // result is
+ * // result is 0 (Sunday)
  * ```
  */
 export function calculateDatePosition(
@@ -235,12 +283,24 @@ export function calculateDatePosition(
     }
 
     const start = getStartDate(date, calculation.in);
+    const startWithOffset =
+        calculation.get === DateUnit.Week
+            ? calculateRelativeDate(start, {
+                  days: calculateDatePosition(start, {
+                      get: DateUnit.Day,
+                      in: DateUnit.Week,
+                  }),
+              })
+            : start;
+
     const diffUnit: `${DateUnit}s` = `${calculation.get}s`;
-    const diff = diffDates({start, end: date}, {[diffUnit]: true});
+    const diff = diffDates({start: startWithOffset, end: date}, {[diffUnit]: true});
 
     const value = diff[diffUnit];
 
-    if (check.isIn(calculation.get, oneIndexedDateUnits)) {
+    const isDayOfWeek = calculation.get === DateUnit.Day && calculation.in === DateUnit.Week;
+
+    if (!isDayOfWeek && check.isIn(calculation.get, oneIndexedDateUnits)) {
         return value + 1;
     } else {
         return value;
