@@ -19,6 +19,26 @@ export enum MonthName {
 }
 
 /**
+ * All English month names in order.
+ *
+ * @category Unit
+ */
+export const orderedMonthNames = [
+    MonthName.January,
+    MonthName.February,
+    MonthName.March,
+    MonthName.April,
+    MonthName.May,
+    MonthName.June,
+    MonthName.July,
+    MonthName.August,
+    MonthName.September,
+    MonthName.October,
+    MonthName.November,
+    MonthName.December,
+] as const;
+
+/**
  * A type for all valid month numbers. (1-12)
  *
  * @category Unit
