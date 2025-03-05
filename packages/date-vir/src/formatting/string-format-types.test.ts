@@ -1,7 +1,10 @@
-import {describe, itCases} from '@augment-vir/test';
+import {assert} from '@augment-vir/assert';
+import {describe, it, itCases} from '@augment-vir/test';
+import {defineShape, isValidShape} from 'object-shape-tester';
+import {getNowInIsoString} from '../extra-utils/now.js';
 import {createFullDate} from '../full-date/create-full-date.js';
 import {utcTimezone} from '../timezone/timezones.js';
-import {isValidIsoString} from './string-format-types.js';
+import {isValidIsoString, utcIsoStringShape} from './string-format-types.js';
 import {toUtcIsoString} from './timestamp.js';
 
 describe(isValidIsoString.name, () => {
@@ -27,4 +30,33 @@ describe(isValidIsoString.name, () => {
             expect: true,
         },
     ]);
+});
+
+describe('utcIsoStringShape', () => {
+    itCases(
+        (input: unknown) => isValidShape(input, utcIsoStringShape),
+        [
+            {
+                it: 'matches a valid UTC ISO string',
+                input: getNowInIsoString(),
+                expect: true,
+            },
+            {
+                it: 'rejects an invalid UTC ISO string',
+                input: 'lol',
+                expect: false,
+            },
+        ],
+    );
+
+    it('accepts a nested value', () => {
+        assert.isTrue(
+            isValidShape(
+                {now: new Date().toISOString()},
+                defineShape({
+                    now: utcIsoStringShape,
+                }),
+            ),
+        );
+    });
 });

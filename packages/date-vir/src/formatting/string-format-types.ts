@@ -1,4 +1,5 @@
 import {DateTime} from 'luxon';
+import {customShape, defineShape} from 'object-shape-tester';
 
 /**
  * A string that represents only date parts of a date. It's intended to be used like this:
@@ -48,6 +49,21 @@ export type DateTimeString = `${JustDateString}T${JustTimeString}`;
  * - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format
  */
 export type UtcIsoString = `${JustDateString}T${JustTimeWithSecondsString}.${number}Z`;
+
+/**
+ * A shape definition for {@link UtcIsoString}.
+ *
+ * @category ISO
+ */
+export const utcIsoStringShape = defineShape(
+    customShape({
+        defaultValue: new Date().toISOString() as UtcIsoString,
+        customName: 'UtcIsoString',
+        checker(value) {
+            return isValidIsoString(value);
+        },
+    }),
+);
 
 /**
  * Checks if the input is a valid UTC ISO string and type guards the input.
