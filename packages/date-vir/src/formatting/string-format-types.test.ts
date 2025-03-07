@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
-import {defineShape, isValidShape} from 'object-shape-tester';
+import {defineShape, isValidShape, or} from 'object-shape-tester';
 import {getNowInIsoString} from '../extra-utils/now.js';
 import {createFullDate} from '../full-date/create-full-date.js';
 import {utcTimezone} from '../timezone/timezones.js';
@@ -52,9 +52,23 @@ describe('utcIsoStringShape', () => {
     it('accepts a nested value', () => {
         assert.isTrue(
             isValidShape(
-                {now: new Date().toISOString()},
+                {
+                    now: new Date().toISOString(),
+                },
                 defineShape({
                     now: utcIsoStringShape,
+                }),
+            ),
+        );
+    });
+    it('accepts an or nested value', () => {
+        assert.isTrue(
+            isValidShape(
+                {
+                    now: new Date().toISOString(),
+                },
+                defineShape({
+                    now: or(undefined, null, utcIsoStringShape),
                 }),
             ),
         );

@@ -24,8 +24,7 @@ describe(assertValidFullDate.name, () => {
                     timezone: 'not a real timezone' as Timezone,
                 },
                 throws: {
-                    matchMessage:
-                        "Subject does not match shape definition at key top level -> 'timezone'",
+                    matchMessage: 'Subject does not match shape definition at key top level',
                 },
             },
             {
