@@ -1,5 +1,5 @@
 import {toTimestamp} from '../formatting/timestamp.js';
-import {FullDate} from '../full-date/full-date-shape.js';
+import {type FullDate} from '../full-date/full-date-shape.js';
 
 /**
  * Convert a {@link FullDate} from a built-in JS

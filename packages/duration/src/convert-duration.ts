@@ -1,11 +1,11 @@
 import {Duration as LuxonDuration} from 'luxon';
 import {
-    DurationUnitSelection,
     flattenUnitSelection,
     type DurationBySelection,
+    type DurationUnitSelection,
 } from './duration-selection.js';
-import {AnyDuration} from './duration.js';
-import type {RoundOptions} from './round-options.js';
+import {type AnyDuration} from './duration.js';
+import {type RoundOptions} from './round-options.js';
 import {DurationUnit, orderedDurationUnits} from './units/duration-unit.js';
 
 /**

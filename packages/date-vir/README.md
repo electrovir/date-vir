@@ -9,7 +9,7 @@ Full docs: http://electrovir.github.io/date-vir
 <!-- example-link: src/readme-examples/full-date.example.ts -->
 
 ```TypeScript
-import {FullDate, utcTimezone} from 'date-vir';
+import {type FullDate, utcTimezone} from 'date-vir';
 
 const myDate: FullDate = {
     year: 2023,

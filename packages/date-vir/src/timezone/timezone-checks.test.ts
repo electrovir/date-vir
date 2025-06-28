@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {describe, FunctionTestCase, itCases} from '@augment-vir/test';
+import {describe, type FunctionTestCase, itCases} from '@augment-vir/test';
 import {assertValidTimezone, isValidTimezone} from './timezone-checks.js';
 
 const testCases: ReadonlyArray<FunctionTestCase<typeof assertValidTimezone>> = [

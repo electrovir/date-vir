@@ -2,9 +2,9 @@ import {DateTime} from 'luxon';
 
 import {check} from '@augment-vir/assert';
 import {stringify} from '@augment-vir/common';
-import {Timezone, UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
-import {DateLike} from './date-like.js';
-import {FullDate} from './full-date-shape.js';
+import {type Timezone, type UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
+import {type DateLike} from './date-like.js';
+import {type FullDate} from './full-date-shape.js';
 import {isValidFullDate} from './is-valid-full-date.js';
 import {parseLuxonDateTime, toLuxonDateTime} from './luxon-date-time-conversion.js';
 import {parseDateString} from './string-parsing.js';

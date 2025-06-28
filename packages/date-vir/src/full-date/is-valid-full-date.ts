@@ -1,7 +1,7 @@
 import {assertValidShape} from 'object-shape-tester';
 import {assertValidTimezone} from '../timezone/timezone-checks.js';
-import {Timezone} from '../timezone/timezones.js';
-import {FullDate, fullDateShape} from './full-date-shape.js';
+import {type Timezone} from '../timezone/timezones.js';
+import {type FullDate, fullDateShape} from './full-date-shape.js';
 import {toLuxonDateTime} from './luxon-date-time-conversion.js';
 
 /**

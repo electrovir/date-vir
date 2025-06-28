@@ -4,9 +4,9 @@ import {describe, it} from '@augment-vir/test';
 import {diffDates} from '../date-operations/diff-dates.js';
 import {toUtcIsoString} from '../formatting/timestamp.js';
 import {createFullDate} from '../full-date/create-full-date.js';
-import {FullDate} from '../full-date/full-date-shape.js';
+import {type FullDate} from '../full-date/full-date-shape.js';
 import {nonUserTimezone} from '../full-date/full-date.mock.js';
-import {UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
+import {type UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
 import {
     getNowFullDate,
     getNowInIsoString,

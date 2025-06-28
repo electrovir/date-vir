@@ -3,15 +3,15 @@ import {getObjectTypedKeys, omitObjectKeys} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
 import {FullDatePart} from '../full-date/full-date-parts.js';
 import {
-    DatePart,
-    FullDate,
-    TimePart,
+    type DatePart,
+    type FullDate,
+    type TimePart,
     datePartShape,
     timePartShape,
 } from '../full-date/full-date-shape.js';
 import {exampleFullDateUtc, nonUserTimezone} from '../full-date/full-date.mock.js';
-import {userTimezone, type Timezone} from '../timezone/timezones.js';
-import {MaybeDatePart, combineDateParts} from './combine-dates.js';
+import {type Timezone, userTimezone} from '../timezone/timezones.js';
+import {type MaybeDatePart, combineDateParts} from './combine-dates.js';
 
 describe(combineDateParts.name, () => {
     itCases(combineDateParts, [

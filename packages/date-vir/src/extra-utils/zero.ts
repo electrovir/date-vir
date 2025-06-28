@@ -1,7 +1,7 @@
 import {getEnumValues, pickObjectKeys, typedObjectFromEntries} from '@augment-vir/common';
 import {TimeKey} from '../full-date/full-date-parts.js';
-import {FullDate, TimePart} from '../full-date/full-date-shape.js';
-import {Timezone} from '../timezone/timezones.js';
+import {type FullDate, type TimePart} from '../full-date/full-date-shape.js';
+import {type Timezone} from '../timezone/timezones.js';
 import {overrideDateParts} from './override-date.js';
 
 /**

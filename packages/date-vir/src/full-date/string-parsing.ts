@@ -1,5 +1,5 @@
 import {DateTime} from 'luxon';
-import {Timezone} from '../timezone/timezones.js';
+import {type Timezone} from '../timezone/timezones.js';
 
 /**
  * These formats are for luxon, documented here:

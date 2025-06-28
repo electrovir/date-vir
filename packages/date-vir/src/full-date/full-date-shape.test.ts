@@ -1,11 +1,11 @@
 import {describe, it} from '@augment-vir/test';
 import {assertValidShape, defineShape, exact} from 'object-shape-tester';
-import {ReadonlyDeep} from 'type-fest';
+import {type ReadonlyDeep} from 'type-fest';
 import {userTimezone, utcTimezone} from '../timezone/timezones.js';
 import {
-    DatePart,
-    FullDate,
-    TimePart,
+    type DatePart,
+    type FullDate,
+    type TimePart,
     datePartShape,
     fullDateShape,
     timePartShape,

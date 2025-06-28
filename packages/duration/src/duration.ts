@@ -1,5 +1,5 @@
-import type {RequireAtLeastOne, UnionToIntersection} from 'type-fest';
-import {DurationUnit} from './units/duration-unit.js';
+import {type RequireAtLeastOne, type UnionToIntersection} from 'type-fest';
+import {type DurationUnit} from './units/duration-unit.js';
 
 /** Copied from `@augment-vir/common` so this package doesn't depend on augment-vir. */
 type RequiredAndNotNull<T> = {

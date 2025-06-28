@@ -1,9 +1,9 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
 import {createFullDate} from '../full-date/create-full-date.js';
-import {FullDate} from '../full-date/full-date-shape.js';
+import {type FullDate} from '../full-date/full-date-shape.js';
 import {exampleFullDateUtc, exampleTimestamp} from '../full-date/full-date.mock.js';
-import {UtcTimezone, utcTimezone} from '../timezone/timezones.js';
+import {type UtcTimezone, utcTimezone} from '../timezone/timezones.js';
 import {getNowInUtcTimezone} from './now.js';
 import {clearParts, clearTime, zeroTime} from './zero.js';
 

@@ -1,5 +1,5 @@
 import {describe, itCases} from '@augment-vir/test';
-import {DurationUnitSelection} from './duration-selection.js';
+import {type DurationUnitSelection} from './duration-selection.js';
 import {equalizeDuration} from './equalize-duration.js';
 
 describe(equalizeDuration.name, () => {

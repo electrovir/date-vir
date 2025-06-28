@@ -1,7 +1,7 @@
-import {FullDate} from '../full-date/full-date-shape.js';
+import {type FullDate} from '../full-date/full-date-shape.js';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
 import {utcTimezone} from '../timezone/timezones.js';
-import {UtcIsoString} from './string-format-types.js';
+import {type UtcIsoString} from './string-format-types.js';
 
 /**
  * Convert a FullDate into a unix timestamp with milliseconds.

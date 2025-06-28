@@ -1,5 +1,5 @@
 import {AssertionError} from '@augment-vir/assert';
-import {describe, FunctionTestCase, itCases} from '@augment-vir/test';
+import {describe, type FunctionTestCase, itCases} from '@augment-vir/test';
 import {
     assertWrapDayOfMonth,
     assertWrapDayOfWeekIndex,

@@ -1,6 +1,6 @@
 import {AssertionError} from '@augment-vir/assert';
 import {Info} from 'luxon';
-import {Timezone} from './timezones.js';
+import {type Timezone} from './timezones.js';
 
 /**
  * Asserts that the given input is a valid timezone name.

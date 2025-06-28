@@ -1,8 +1,8 @@
 import {check} from '@augment-vir/assert';
 import {DateTime} from 'luxon';
-import {Timezone} from '../timezone/timezones.js';
+import {type Timezone} from '../timezone/timezones.js';
 import {createFullDate} from './create-full-date.js';
-import {FullDate} from './full-date-shape.js';
+import {type FullDate} from './full-date-shape.js';
 import {parseLuxonDateTime} from './luxon-date-time-conversion.js';
 
 /**

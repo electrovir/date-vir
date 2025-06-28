@@ -1,13 +1,13 @@
 import {isValidShape} from 'object-shape-tester';
-import type {FullDatePart} from '../full-date/full-date-parts.js';
+import {type FullDatePart} from '../full-date/full-date-parts.js';
 import {
-    DatePart,
-    FullDate,
-    TimePart,
+    type DatePart,
+    type FullDate,
+    type TimePart,
     datePartShape,
     timePartShape,
 } from '../full-date/full-date-shape.js';
-import type {Timezone} from '../timezone/timezones.js';
+import {type Timezone} from '../timezone/timezones.js';
 
 /**
  * An object containing date and/or time parts or neither. Used for {@link combineDateParts}

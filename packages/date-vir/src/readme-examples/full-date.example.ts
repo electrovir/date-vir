@@ -1,4 +1,4 @@
-import {FullDate, utcTimezone} from '../index.js';
+import {type FullDate, utcTimezone} from '../index.js';
 
 const myDate: FullDate = {
     year: 2023,

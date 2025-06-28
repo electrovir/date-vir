@@ -2,8 +2,8 @@ import {describe, it, itCases} from '@augment-vir/test';
 import {ShapeMismatchError} from 'object-shape-tester';
 
 import {assert} from '@augment-vir/assert';
-import {Timezone, UtcTimezone, utcTimezone} from '../timezone/timezones.js';
-import {FullDate, fullDateShape} from './full-date-shape.js';
+import {type Timezone, type UtcTimezone, utcTimezone} from '../timezone/timezones.js';
+import {type FullDate, fullDateShape} from './full-date-shape.js';
 import {exampleFullDateUtc, nonUtcTimezone} from './full-date.mock.js';
 import {assertValidFullDate, hasTimezone} from './is-valid-full-date.js';
 

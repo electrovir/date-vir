@@ -2,14 +2,14 @@ import {getEnumValues} from '@augment-vir/common';
 import {assertHasFullDateKeys} from '../extra-utils/has-date-props.js';
 import {type toNewTimezone} from '../full-date/create-full-date.js';
 import {FullDatePart} from '../full-date/full-date-parts.js';
-import {DatePart, FullDate} from '../full-date/full-date-shape.js';
+import {type DatePart, type FullDate} from '../full-date/full-date-shape.js';
 import {toSimpleDatePartString, toSimpleTimePartString} from './simple-strings.js';
 import {
-    DateTimeString,
-    DateTimeWithSeconds,
-    JustDateString,
-    JustTimeString,
-    JustTimeWithSecondsString,
+    type DateTimeString,
+    type DateTimeWithSeconds,
+    type JustDateString,
+    type JustTimeString,
+    type JustTimeWithSecondsString,
 } from './string-format-types.js';
 
 /**

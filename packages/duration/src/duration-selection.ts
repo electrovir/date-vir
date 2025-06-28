@@ -1,5 +1,5 @@
 import {type AllDurations, type Duration} from './duration.js';
-import {DurationUnit, orderedDurationUnits} from './units/duration-unit.js';
+import {type DurationUnit, orderedDurationUnits} from './units/duration-unit.js';
 
 /**
  * Select a set of duration units to use in {@link DurationBySelection}.

@@ -1,7 +1,7 @@
-import type {AnyDuration} from '@date-vir/duration';
-import {FullDate} from '../full-date/full-date-shape.js';
+import {type AnyDuration} from '@date-vir/duration';
+import {type FullDate} from '../full-date/full-date-shape.js';
 import {parseLuxonDateTime, toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
-import {Timezone} from '../timezone/timezones.js';
+import {type Timezone} from '../timezone/timezones.js';
 
 /**
  * Calculates a new date starting at the given fullDate and adding the given offsets. Offsets can be

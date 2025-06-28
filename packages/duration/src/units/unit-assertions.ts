@@ -1,11 +1,11 @@
 import {AssertionError} from '@augment-vir/assert';
-import {Quarter} from './date-unit.js';
-import {DayOfWeekIndex, dayOfWeekIndexBounds} from './day-of-week.js';
-import {DayOfMonth, dayOfMonthBounds, monthNumberBounds, type MonthNumber} from './month.js';
+import {type Quarter} from './date-unit.js';
+import {type DayOfWeekIndex, dayOfWeekIndexBounds} from './day-of-week.js';
+import {type DayOfMonth, type MonthNumber, dayOfMonthBounds, monthNumberBounds} from './month.js';
 import {
-    Hour,
-    Minute,
-    Second,
+    type Hour,
+    type Minute,
+    type Second,
     hourBounds,
     millisecondsBounds,
     minuteBounds,

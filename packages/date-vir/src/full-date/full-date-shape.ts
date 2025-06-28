@@ -1,4 +1,4 @@
-import {Overwrite, type SetRequired} from '@augment-vir/common';
+import {type Overwrite, type SetRequired} from '@augment-vir/common';
 import {
     dayOfMonthBounds,
     hourBounds,
@@ -13,7 +13,7 @@ import {
     type Second,
 } from '@date-vir/duration';
 import {and, defineShape, enumShape, numericRange} from 'object-shape-tester';
-import type {Simplify} from 'type-fest';
+import {type Simplify} from 'type-fest';
 import {Timezone, utcTimezone} from '../timezone/timezones.js';
 
 /**

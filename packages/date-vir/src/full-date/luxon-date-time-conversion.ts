@@ -8,8 +8,8 @@ import {
     assertWrapSecond,
 } from '@date-vir/duration';
 import {DateTime} from 'luxon';
-import {Timezone} from '../timezone/timezones.js';
-import {FullDate} from './full-date-shape.js';
+import {type Timezone} from '../timezone/timezones.js';
+import {type FullDate} from './full-date-shape.js';
 
 /**
  * Converts a {@link FullDate} object into a Luxon DateTime library. This is only needed if you need

@@ -1,5 +1,5 @@
-import {FullDate} from '../full-date/full-date-shape.js';
-import {Timezone} from '../timezone/timezones.js';
+import {type FullDate} from '../full-date/full-date-shape.js';
+import {type Timezone} from '../timezone/timezones.js';
 
 /**
  * Override the initial provided FullDate with all subsequent FullDate parts.

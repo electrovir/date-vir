@@ -3,7 +3,7 @@ import {describe, itCases} from '@augment-vir/test';
 import {DateUnit} from '@date-vir/duration';
 import {endTime} from '../extra-utils/end.js';
 import {zeroDate} from '../extra-utils/zero.js';
-import type {FullDate} from '../full-date/full-date-shape.js';
+import {type FullDate} from '../full-date/full-date-shape.js';
 import {utcTimezone} from '../timezone/timezones.js';
 import {calculateDatePosition, getDateUnit, getEndDate, getStartDate} from './date-position.js';
 

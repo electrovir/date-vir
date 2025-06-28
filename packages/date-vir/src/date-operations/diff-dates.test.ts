@@ -1,8 +1,8 @@
 import {assert} from '@augment-vir/assert';
 import {randomInteger} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
-import {DurationUnit, selectAllDurationUnits} from '@date-vir/duration';
-import type {FullDate} from '../full-date/full-date-shape.js';
+import {type DurationUnit, selectAllDurationUnits} from '@date-vir/duration';
+import {type FullDate} from '../full-date/full-date-shape.js';
 import {exampleFullDateUtc} from '../full-date/full-date.mock.js';
 import {utcTimezone} from '../timezone/timezones.js';
 import {calculateRelativeDate} from './calculate-relative-date.js';

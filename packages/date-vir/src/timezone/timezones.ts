@@ -1,4 +1,4 @@
-import type {ArrayElement} from '@augment-vir/common';
+import {type ArrayElement} from '@augment-vir/common';
 import {Settings} from 'luxon';
 import {allTimezoneNames} from './timezone-names.js';
 

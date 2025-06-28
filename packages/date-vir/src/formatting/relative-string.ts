@@ -1,15 +1,15 @@
 import {check} from '@augment-vir/assert';
 import {arrayToObject, filterMap, type PartialWithUndefined} from '@augment-vir/common';
 import {
-    AnyDuration,
-    DurationUnit,
-    DurationUnitSelection,
+    type AnyDuration,
     convertDuration,
+    DurationUnit,
+    type DurationUnitSelection,
     flattenUnitSelection,
     singularDurationUnitNames,
 } from '@date-vir/duration';
 import {diffDates} from '../date-operations/diff-dates.js';
-import {FullDate} from '../full-date/full-date-shape.js';
+import {type FullDate} from '../full-date/full-date-shape.js';
 
 /**
  * Options for {@link toRelativeString}.
@@ -139,6 +139,7 @@ export function toRelativeString(
     if (shouldUseJustNow) {
         return 'just now';
     } else if (options.useOnlyLargestUnit) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!unitValues[0]) {
             return '';
         }

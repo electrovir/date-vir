@@ -5,7 +5,7 @@ import {defineShape, exact, isValidShape, or} from 'object-shape-tester';
 import {createFullDate} from '../full-date/create-full-date.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
-import {Timezone} from '../timezone/timezones.js';
+import {type Timezone} from '../timezone/timezones.js';
 import {calculateRelativeDate} from './calculate-relative-date.js';
 import {diffDates} from './diff-dates.js';
 

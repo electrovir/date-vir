@@ -6,8 +6,8 @@ import {
     type DurationUnitSelection,
     type RoundOptions,
 } from '@date-vir/duration';
-import {ConversionAccuracy} from 'luxon';
-import {FullDate} from '../full-date/full-date-shape.js';
+import {type ConversionAccuracy} from 'luxon';
+import {type FullDate} from '../full-date/full-date-shape.js';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
 
 const conversionAccuracies: Readonly<Record<DurationUnit, ConversionAccuracy>> = {

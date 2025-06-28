@@ -1,8 +1,8 @@
-import {UtcIsoString} from '../formatting/string-format-types.js';
+import {type UtcIsoString} from '../formatting/string-format-types.js';
 import {toUtcIsoString} from '../formatting/timestamp.js';
 import {createFullDate} from '../full-date/create-full-date.js';
-import {FullDate} from '../full-date/full-date-shape.js';
-import {Timezone, UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
+import {type FullDate} from '../full-date/full-date-shape.js';
+import {type Timezone, type UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
 
 /**
  * Get the time right now as a UTC ISO.

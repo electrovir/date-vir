@@ -1,7 +1,11 @@
 import {check} from '@augment-vir/assert';
-import type {SetOptionalAndNullable} from '@augment-vir/common';
-import {FullDate} from '../full-date/full-date-shape.js';
-import {JustDateString, JustTimeString, JustTimeWithSecondsString} from './string-format-types.js';
+import {type SetOptionalAndNullable} from '@augment-vir/common';
+import {type FullDate} from '../full-date/full-date-shape.js';
+import {
+    type JustDateString,
+    type JustTimeString,
+    type JustTimeWithSecondsString,
+} from './string-format-types.js';
 
 /**
  * Create a string based on just the date parts of a FullDate.

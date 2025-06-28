@@ -1,7 +1,7 @@
 import {convertDuration} from './convert-duration.js';
 import {type DurationBySelection, type DurationUnitSelection} from './duration-selection.js';
-import type {AnyDuration} from './duration.js';
-import {RoundOptions} from './round-options.js';
+import {type AnyDuration} from './duration.js';
+import {type RoundOptions} from './round-options.js';
 import {orderedDurationUnits} from './units/duration-unit.js';
 
 /**

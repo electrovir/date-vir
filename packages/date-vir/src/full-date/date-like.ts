@@ -1,6 +1,6 @@
-import {DateTime} from 'luxon';
-import {Timezone} from '../timezone/timezones.js';
-import {FullDate} from './full-date-shape.js';
+import {type DateTime} from 'luxon';
+import {type Timezone} from '../timezone/timezones.js';
+import {type FullDate} from './full-date-shape.js';
 
 /**
  * Types that can be converted into {@link FullDate} instances.

@@ -1,5 +1,5 @@
 import {Timezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
-import type {FullDate} from './full-date-shape.js';
+import {type FullDate} from './full-date-shape.js';
 
 /** The following values represent the same date and time. */
 export const exampleIsoString = '2023-06-05T14:19:07.877Z';
