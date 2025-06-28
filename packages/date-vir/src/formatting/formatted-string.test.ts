@@ -55,5 +55,13 @@ describe(toFormattedString.name, () => {
             ],
             expect: 'Jun-2023',
         },
+        {
+            it: 'matches gmail date format',
+            inputs: [
+                exampleFullDateUtc,
+                'ccc, dd LLL y HH:mm:ss ZZZ (z)',
+            ],
+            expect: 'Mon, 05 Jun 2023 14:19:07 +0000 (UTC)',
+        },
     ]);
 });

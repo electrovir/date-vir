@@ -1,6 +1,6 @@
 {
     "name": "date-vir",
-    "version": "7.3.1",
+    "version": "7.3.2",
     "description": "Easy and explicit dates and times.",
     "keywords": [
         "date",
@@ -36,7 +36,7 @@
     "dependencies": {
         "@augment-vir/assert": "^31.26.0",
         "@augment-vir/common": "^31.26.0",
-        "@date-vir/duration": "^7.3.1",
+        "@date-vir/duration": "^7.3.2",
         "@types/luxon": "^3.6.2",
         "luxon": "^3.6.1",
         "object-shape-tester": "^5.1.6",

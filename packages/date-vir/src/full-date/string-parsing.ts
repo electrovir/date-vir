@@ -12,6 +12,18 @@ const knownStringFormats: ReadonlyArray<string> = [
     'LLL-y',
     // january-2021
     'LLLL-y',
+    // no padding
+    // Sat, 1 Jun 2025 6:23:21 +0000 (UTC)
+    'ccc, d LLL y H:mm:ss ZZZ (z)',
+    // all padding
+    // Sat, 01 Jun 2025 06:23:21 +0000 (UTC)
+    'ccc, dd LLL y HH:mm:ss ZZZ (z)',
+    // padded day
+    // Sat, 01 Jun 2025 6:23:21 +0000 (UTC)
+    'ccc, dd LLL y H:mm:ss ZZZ (z)',
+    // padded hour
+    // Sat, 01 Jun 2025 6:23:21 +0000 (UTC)
+    'ccc, d LLL y HH:mm:ss ZZZ (z)',
 ];
 
 /**
