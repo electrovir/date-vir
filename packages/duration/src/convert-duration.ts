@@ -65,22 +65,26 @@ export function convertDuration<const SelectedUnits extends Readonly<DurationUni
     const hasInfinity = Object.values(duration).includes(Infinity);
     const hasNegativeInfinity = Object.values(duration).includes(-Infinity);
 
+    const selectedUnits = flattenUnitSelection(units).reverse();
+
+    if (hasInfinity || hasNegativeInfinity) {
+        selectedUnits.forEach((unit) => {
+            finalDuration[unit] = hasInfinity ? Infinity : -Infinity;
+        });
+
+        return finalDuration as DurationBySelection<SelectedUnits>;
+    }
+
     let millisecondsRemaining: number = LuxonDuration.fromObject(duration).as(
         DurationUnit.Milliseconds,
     );
-
-    const selectedUnits = flattenUnitSelection(units).reverse();
 
     const finalDurationSign = getSign(millisecondsRemaining);
 
     selectedUnits.forEach((durationUnit, index) => {
         const isLastUnit = index === selectedUnits.length - 1;
 
-        if ((hasInfinity && hasNegativeInfinity) || hasInfinity) {
-            finalDuration[durationUnit] = Infinity;
-        } else if (hasNegativeInfinity) {
-            finalDuration[durationUnit] = -Infinity;
-        } else if (durationUnit === DurationUnit.Milliseconds) {
+        if (durationUnit === DurationUnit.Milliseconds) {
             finalDuration.milliseconds = round(millisecondsRemaining, options);
         } else {
             const rawQuantity = LuxonDuration.fromObject({milliseconds: millisecondsRemaining}).as(

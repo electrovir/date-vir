@@ -2,6 +2,7 @@ export * from './date-operations/calculate-relative-date.js';
 export * from './date-operations/combine-dates.js';
 export * from './date-operations/date-position.js';
 export * from './date-operations/diff-dates.js';
+export * from './duration-shape.js';
 export * from './extra-utils/end.js';
 export * from './extra-utils/has-date-props.js';
 export * from './extra-utils/js-date-conversion.js';

@@ -1,6 +1,6 @@
 {
     "name": "@date-vir/mono-root",
-    "version": "7.3.2",
+    "version": "7.4.0",
     "private": true,
     "homepage": "https://github.com/electrovir/date-vir",
     "bugs": {
@@ -35,6 +35,9 @@
         "test:lint": "virmator lint",
         "test:spelling": "virmator spellcheck",
         "test:update": "mono-vir for-each-async npm run test:update"
+    },
+    "overrides": {
+        "@web/dev-server-rollup": "0.6.1"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.1",
