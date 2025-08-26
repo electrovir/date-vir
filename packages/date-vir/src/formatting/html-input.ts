@@ -144,7 +144,7 @@ export function toHtmlInputString(
         return `${datePart}T${timePart}` as DateTimeWithSeconds | DateTimeString;
     } else {
         throw new Error(
-            `Unexpected inputTyped: '${String(inputType)}'. Expected usage of FullDatePart, one of ${getEnumValues(
+            `Unexpected inputTyped: '${inputType}'. Expected usage of FullDatePart, one of ${getEnumValues(
                 FullDatePart,
             ).join(', ')}.`,
         );
