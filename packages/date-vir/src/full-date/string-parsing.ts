@@ -24,6 +24,18 @@ const knownStringFormats: ReadonlyArray<string> = [
     // padded hour
     // Sat, 01 Jun 2025 6:23:21 +0000 (UTC)
     'ccc, d LLL y HH:mm:ss ZZZ (z)',
+    // no padding
+    // Sat, 1 Jun 2025 6:23:21 +0000
+    'ccc, d LLL y H:mm:ss ZZZ',
+    // all padding
+    // Sat, 01 Jun 2025 06:23:21 +0000
+    'ccc, dd LLL y HH:mm:ss ZZZ',
+    // padded day
+    // Sat, 01 Jun 2025 6:23:21 +0000
+    'ccc, dd LLL y H:mm:ss ZZZ',
+    // padded hour
+    // Sat, 01 Jun 2025 6:23:21 +0000
+    'ccc, d LLL y HH:mm:ss ZZZ',
 ];
 
 /**
@@ -42,7 +54,7 @@ export function parseDateString(dateString: string, timezone: Timezone): DateTim
     let finalizedDateTime: DateTime | undefined;
 
     knownStringFormats.some((format) => {
-        const dateTimeAttempt = DateTime.fromFormat(dateString, format, {zone: timezone});
+        const dateTimeAttempt = DateTime.fromFormat(dateString.trim(), format, {zone: timezone});
 
         if (!dateTimeAttempt.isValid) {
             return false;

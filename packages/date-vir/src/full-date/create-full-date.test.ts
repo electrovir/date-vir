@@ -88,6 +88,23 @@ describe(createFullDate.name, () => {
             },
         },
         {
+            it: 'handles a gmail date header without timezone',
+            inputs: [
+                'Sat, 28 Jun 2025 18:23:21 +0000',
+                utcTimezone,
+            ],
+            expect: {
+                year: 2025,
+                month: 6,
+                day: 28,
+                hour: 18,
+                minute: 23,
+                second: 21,
+                millisecond: 0,
+                timezone: utcTimezone,
+            },
+        },
+        {
             it: 'works on short month-year string',
             inputs: [
                 'jan-2021',

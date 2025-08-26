@@ -1,6 +1,6 @@
 {
     "name": "@date-vir/duration",
-    "version": "7.4.0",
+    "version": "7.4.1",
     "description": "Durations units an utils for date-vir.",
     "keywords": [
         "duration",
