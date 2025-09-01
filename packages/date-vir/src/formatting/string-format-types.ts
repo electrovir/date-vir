@@ -1,5 +1,5 @@
 import {DateTime} from 'luxon';
-import {customShape, defineShape} from 'object-shape-tester';
+import {createCustomShape} from 'object-shape-tester';
 
 /**
  * A string that represents only date parts of a date. It's intended to be used like this:
@@ -55,15 +55,13 @@ export type UtcIsoString = `${JustDateString}T${JustTimeWithSecondsString}.${num
  *
  * @category ISO
  */
-export const utcIsoStringShape = defineShape(
-    customShape({
-        defaultValue: new Date().toISOString() as UtcIsoString,
-        customName: 'UtcIsoString',
-        checker(value) {
-            return isValidIsoString(value);
-        },
-    }),
-);
+export const utcIsoStringShape = createCustomShape<UtcIsoString>({
+    default: new Date().toISOString() as UtcIsoString,
+    name: 'UtcIsoString',
+    checkValue(value) {
+        return isValidIsoString(value);
+    },
+});
 
 /**
  * Checks if the input is a valid UTC ISO string and type guards the input.

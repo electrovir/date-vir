@@ -17,8 +17,8 @@ describe(createFullDateInUserTimezone.name, () => {
     itCases(createFullDateInUserTimezone, [
         {
             it: 'creates a full date in the user timezone',
-            input: fullDateShape.defaultValue,
-            expect: createFullDate(fullDateShape.defaultValue, userTimezone),
+            input: fullDateShape.default,
+            expect: createFullDate(fullDateShape.default, userTimezone),
         },
     ]);
 
@@ -39,9 +39,9 @@ describe(createUtcFullDate.name, () => {
     itCases(createUtcFullDate, [
         {
             it: 'creates a full date in the utc timezone',
-            input: fullDateShape.defaultValue,
+            input: fullDateShape.default,
             expect: {
-                ...fullDateShape.defaultValue,
+                ...fullDateShape.default,
                 timezone: utcTimezone,
             },
         },

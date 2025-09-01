@@ -1,5 +1,5 @@
 import {describe, it} from '@augment-vir/test';
-import {assertValidShape, defineShape, exact} from 'object-shape-tester';
+import {assertValidShape, defineShape, exactShape} from 'object-shape-tester';
 import {type ReadonlyDeep} from 'type-fest';
 import {userTimezone, utcTimezone} from '../timezone/timezones.js';
 import {
@@ -56,7 +56,7 @@ describe('FullDate', () => {
 
     it('is assignable to readonly versions of itself', () => {
         const myShape = defineShape({
-            deployLocation: exact('github'),
+            deployLocation: exactShape('github'),
             gitBranch: {
                 branchName: '',
                 branchUrl: '',
@@ -69,7 +69,7 @@ describe('FullDate', () => {
 
         function acceptDate(date: ReadonlyDeep<FullDate>) {}
 
-        acceptDate(myShape.defaultValue.gitBranch.commitDate);
+        acceptDate(myShape.default.gitBranch.commitDate);
     });
 
     it('is composable', () => {

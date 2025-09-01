@@ -31,8 +31,8 @@ describe('exampleUtcFullDate', () => {
 
 describe('example dates', () => {
     it('should all be equal', () => {
-        const fromString = createFullDate(exampleIsoString, fullDateShape.defaultValue.timezone);
-        const fromTimestamp = createFullDate(exampleTimestamp, fullDateShape.defaultValue.timezone);
+        const fromString = createFullDate(exampleIsoString, fullDateShape.default.timezone);
+        const fromTimestamp = createFullDate(exampleTimestamp, fullDateShape.default.timezone);
 
         assert.deepEquals(exampleFullDateUtc, fromTimestamp);
         assert.deepEquals(exampleFullDateUtc, fromString);

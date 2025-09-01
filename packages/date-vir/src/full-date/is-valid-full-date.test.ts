@@ -1,7 +1,6 @@
+import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
 import {ShapeMismatchError} from 'object-shape-tester';
-
-import {assert} from '@augment-vir/assert';
 import {type Timezone, type UtcTimezone, utcTimezone} from '../timezone/timezones.js';
 import {type FullDate, fullDateShape} from './full-date-shape.js';
 import {exampleFullDateUtc, nonUtcTimezone} from './full-date.mock.js';
@@ -14,23 +13,23 @@ describe(assertValidFullDate.name, () => {
         [
             {
                 it: 'accepts the shape default value',
-                input: fullDateShape.defaultValue,
+                input: fullDateShape.default,
                 throws: undefined,
             },
             {
                 it: 'rejects an invalid timezone',
                 input: {
-                    ...fullDateShape.defaultValue,
+                    ...fullDateShape.default,
                     timezone: 'not a real timezone' as Timezone,
                 },
                 throws: {
-                    matchMessage: 'Shape mismatch at top level',
+                    matchMessage: '/timezone: Expected union value',
                 },
             },
             {
                 it: 'rejects a missing timezone object',
                 input: {
-                    ...fullDateShape.defaultValue,
+                    ...fullDateShape.default,
                     timezone: undefined as unknown as Timezone,
                 },
                 throws: {
@@ -40,7 +39,7 @@ describe(assertValidFullDate.name, () => {
             {
                 it: 'rejects an invalid hour',
                 input: {
-                    ...fullDateShape.defaultValue,
+                    ...fullDateShape.default,
                     // @ts-expect-error: intentionally incorrect hour
                     hour: 24,
                 },
@@ -51,7 +50,7 @@ describe(assertValidFullDate.name, () => {
             {
                 it: 'rejects an invalid minute',
                 input: {
-                    ...fullDateShape.defaultValue,
+                    ...fullDateShape.default,
                     // @ts-expect-error: intentionally incorrect minute
                     minute: 60,
                 },
@@ -62,7 +61,7 @@ describe(assertValidFullDate.name, () => {
             {
                 it: 'rejects an invalid second',
                 input: {
-                    ...fullDateShape.defaultValue,
+                    ...fullDateShape.default,
                     // @ts-expect-error: intentionally incorrect second
                     second: 60,
                 },
@@ -73,7 +72,7 @@ describe(assertValidFullDate.name, () => {
             {
                 it: 'rejects an invalid millisecond',
                 input: {
-                    ...fullDateShape.defaultValue,
+                    ...fullDateShape.default,
                     millisecond: 1001,
                 },
                 throws: {
@@ -83,7 +82,7 @@ describe(assertValidFullDate.name, () => {
             {
                 it: 'rejects an invalid month',
                 input: {
-                    ...fullDateShape.defaultValue,
+                    ...fullDateShape.default,
                     // @ts-expect-error: intentionally incorrect month
                     month: 0,
                 },
@@ -94,7 +93,7 @@ describe(assertValidFullDate.name, () => {
             {
                 it: 'rejects an invalid day',
                 input: {
-                    ...fullDateShape.defaultValue,
+                    ...fullDateShape.default,
                     // @ts-expect-error: intentionally incorrect day
                     day: 42,
                 },
@@ -105,7 +104,7 @@ describe(assertValidFullDate.name, () => {
             {
                 it: 'rejects February 30',
                 input: {
-                    ...fullDateShape.defaultValue,
+                    ...fullDateShape.default,
                     month: 2,
                     day: 30,
                 },

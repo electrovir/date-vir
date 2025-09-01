@@ -8,7 +8,7 @@ describe(toLuxonDateTime.name, () => {
         {
             it: 'fails on invalid timezone',
             input: {
-                ...fullDateShape.defaultValue,
+                ...fullDateShape.default,
                 timezone: 'not a real time zone' as Timezone,
             },
             throws: {
@@ -18,7 +18,7 @@ describe(toLuxonDateTime.name, () => {
         {
             it: 'fails on invalid dates',
             input: {
-                ...fullDateShape.defaultValue,
+                ...fullDateShape.default,
                 // @ts-expect-error: intentionally incorrect day
                 day: 321,
             },

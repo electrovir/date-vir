@@ -30,7 +30,7 @@ describe(combineDateParts.name, () => {
             },
             expect: omitObjectKeys(
                 exampleFullDateUtc,
-                getObjectTypedKeys(datePartShape.defaultValue).filter(
+                getObjectTypedKeys(datePartShape.default).filter(
                     (
                         key,
                     ): key is Exclude<keyof (typeof datePartShape)['runtimeType'], 'timezone'> =>
@@ -45,7 +45,7 @@ describe(combineDateParts.name, () => {
             },
             expect: omitObjectKeys(
                 exampleFullDateUtc,
-                getObjectTypedKeys(timePartShape.defaultValue).filter(
+                getObjectTypedKeys(timePartShape.default).filter(
                     (
                         key,
                     ): key is Exclude<keyof (typeof timePartShape)['runtimeType'], 'timezone'> =>

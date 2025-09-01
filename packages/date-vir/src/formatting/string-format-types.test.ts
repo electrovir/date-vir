@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
-import {defineShape, isValidShape, or} from 'object-shape-tester';
+import {checkValidShape, defineShape, unionShape} from 'object-shape-tester';
 import {getNowInIsoString} from '../extra-utils/now.js';
 import {createFullDate} from '../full-date/create-full-date.js';
 import {utcTimezone} from '../timezone/timezones.js';
@@ -34,7 +34,7 @@ describe(isValidIsoString.name, () => {
 
 describe('utcIsoStringShape', () => {
     itCases(
-        (input: unknown) => isValidShape(input, utcIsoStringShape),
+        (input: unknown) => checkValidShape(input, utcIsoStringShape()),
         [
             {
                 it: 'matches a valid UTC ISO string',
@@ -51,24 +51,24 @@ describe('utcIsoStringShape', () => {
 
     it('accepts a nested value', () => {
         assert.isTrue(
-            isValidShape(
+            checkValidShape(
                 {
                     now: new Date().toISOString(),
                 },
                 defineShape({
-                    now: utcIsoStringShape,
+                    now: utcIsoStringShape(),
                 }),
             ),
         );
     });
-    it('accepts an or nested value', () => {
+    it('accepts a union nested value', () => {
         assert.isTrue(
-            isValidShape(
+            checkValidShape(
                 {
                     now: new Date().toISOString(),
                 },
                 defineShape({
-                    now: or(undefined, null, utcIsoStringShape),
+                    now: unionShape(undefined, null, utcIsoStringShape()),
                 }),
             ),
         );

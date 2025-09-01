@@ -1,7 +1,7 @@
 import {check} from '@augment-vir/assert';
 import {stringify} from '@augment-vir/common';
 import {DateUnit, oneIndexedDateUnits} from '@date-vir/duration';
-import {defineShape, exact, isValidShape, or} from 'object-shape-tester';
+import {checkValidShape, defineShape, exactShape, unionShape} from 'object-shape-tester';
 import {createFullDate} from '../full-date/create-full-date.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
@@ -149,68 +149,72 @@ export function getEndDate<const SpecificTimezone extends Timezone>(
  * @category Internal
  */
 export const datePositionCalculationShape = defineShape(
-    or(
+    unionShape(
         {
-            get: exact(DateUnit.Month),
-            in: or(exact(DateUnit.Year), exact(DateUnit.Quarter)),
+            get: exactShape(DateUnit.Month),
+            in: unionShape(exactShape(DateUnit.Year), exactShape(DateUnit.Quarter)),
         },
         {
-            get: exact(DateUnit.Week),
-            in: or(exact(DateUnit.Year), exact(DateUnit.Quarter), exact(DateUnit.Month)),
-        },
-        {
-            get: exact(DateUnit.Day),
-            in: or(
-                exact(DateUnit.Year),
-                exact(DateUnit.Quarter),
-                exact(DateUnit.Month),
-                exact(DateUnit.Week),
+            get: exactShape(DateUnit.Week),
+            in: unionShape(
+                exactShape(DateUnit.Year),
+                exactShape(DateUnit.Quarter),
+                exactShape(DateUnit.Month),
             ),
         },
         {
-            get: exact(DateUnit.Hour),
-            in: or(
-                exact(DateUnit.Year),
-                exact(DateUnit.Quarter),
-                exact(DateUnit.Month),
-                exact(DateUnit.Week),
-                exact(DateUnit.Day),
+            get: exactShape(DateUnit.Day),
+            in: unionShape(
+                exactShape(DateUnit.Year),
+                exactShape(DateUnit.Quarter),
+                exactShape(DateUnit.Month),
+                exactShape(DateUnit.Week),
             ),
         },
         {
-            get: exact(DateUnit.Minute),
-            in: or(
-                exact(DateUnit.Year),
-                exact(DateUnit.Quarter),
-                exact(DateUnit.Month),
-                exact(DateUnit.Week),
-                exact(DateUnit.Day),
-                exact(DateUnit.Hour),
+            get: exactShape(DateUnit.Hour),
+            in: unionShape(
+                exactShape(DateUnit.Year),
+                exactShape(DateUnit.Quarter),
+                exactShape(DateUnit.Month),
+                exactShape(DateUnit.Week),
+                exactShape(DateUnit.Day),
             ),
         },
         {
-            get: exact(DateUnit.Second),
-            in: or(
-                exact(DateUnit.Year),
-                exact(DateUnit.Quarter),
-                exact(DateUnit.Month),
-                exact(DateUnit.Week),
-                exact(DateUnit.Day),
-                exact(DateUnit.Hour),
-                exact(DateUnit.Minute),
+            get: exactShape(DateUnit.Minute),
+            in: unionShape(
+                exactShape(DateUnit.Year),
+                exactShape(DateUnit.Quarter),
+                exactShape(DateUnit.Month),
+                exactShape(DateUnit.Week),
+                exactShape(DateUnit.Day),
+                exactShape(DateUnit.Hour),
             ),
         },
         {
-            get: exact(DateUnit.Millisecond),
-            in: or(
-                exact(DateUnit.Year),
-                exact(DateUnit.Quarter),
-                exact(DateUnit.Month),
-                exact(DateUnit.Week),
-                exact(DateUnit.Day),
-                exact(DateUnit.Hour),
-                exact(DateUnit.Minute),
-                exact(DateUnit.Second),
+            get: exactShape(DateUnit.Second),
+            in: unionShape(
+                exactShape(DateUnit.Year),
+                exactShape(DateUnit.Quarter),
+                exactShape(DateUnit.Month),
+                exactShape(DateUnit.Week),
+                exactShape(DateUnit.Day),
+                exactShape(DateUnit.Hour),
+                exactShape(DateUnit.Minute),
+            ),
+        },
+        {
+            get: exactShape(DateUnit.Millisecond),
+            in: unionShape(
+                exactShape(DateUnit.Year),
+                exactShape(DateUnit.Quarter),
+                exactShape(DateUnit.Month),
+                exactShape(DateUnit.Week),
+                exactShape(DateUnit.Day),
+                exactShape(DateUnit.Hour),
+                exactShape(DateUnit.Minute),
+                exactShape(DateUnit.Second),
             ),
         },
     ),
@@ -276,7 +280,7 @@ export function calculateDatePosition(
     date: Readonly<FullDate>,
     calculation: Readonly<DatePositionCalculation>,
 ): number {
-    if (!isValidShape(calculation, datePositionCalculationShape)) {
+    if (!checkValidShape(calculation, datePositionCalculationShape)) {
         throw new Error(
             `Invalid date position calculation for '${stringify(date)}': cannot get ${calculation.get} in ${calculation.in}.`,
         );

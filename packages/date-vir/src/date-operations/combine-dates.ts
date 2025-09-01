@@ -1,4 +1,4 @@
-import {isValidShape} from 'object-shape-tester';
+import {checkValidShape} from 'object-shape-tester';
 import {type FullDatePart} from '../full-date/full-date-parts.js';
 import {
     type DatePart,
@@ -80,7 +80,7 @@ export function combineDateParts<const SpecificTimezone extends Timezone>(
 export function combineDateParts<const SpecificTimezone extends Timezone>(
     maybeDateParts: MaybeDateParts<SpecificTimezone>,
 ): MaybeDatePart<SpecificTimezone> {
-    const timePart: TimePart<SpecificTimezone> | undefined = isValidShape(
+    const timePart: TimePart<SpecificTimezone> | undefined = checkValidShape(
         maybeDateParts.time,
         timePartShape,
         {
@@ -96,7 +96,7 @@ export function combineDateParts<const SpecificTimezone extends Timezone>(
           }
         : undefined;
 
-    const datePart: DatePart<SpecificTimezone> | undefined = isValidShape(
+    const datePart: DatePart<SpecificTimezone> | undefined = checkValidShape(
         maybeDateParts.date,
         datePartShape,
         {

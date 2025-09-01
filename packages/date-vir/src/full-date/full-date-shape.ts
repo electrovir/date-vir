@@ -12,7 +12,7 @@ import {
     type MonthNumber,
     type Second,
 } from '@date-vir/duration';
-import {and, defineShape, enumShape, numericRange} from 'object-shape-tester';
+import {defineShape, enumShape, intersectShape, rangeShape} from 'object-shape-tester';
 import {type Simplify} from 'type-fest';
 import {Timezone, utcTimezone} from '../timezone/timezones.js';
 
@@ -23,13 +23,13 @@ import {Timezone, utcTimezone} from '../timezone/timezones.js';
  */
 export const timePartShape = defineShape({
     /** Hour of the day in 24 time: 0-23 */
-    hour: numericRange<Hour>(hourBounds.min, hourBounds.max),
+    hour: rangeShape<Hour>({...hourBounds, default: hourBounds.min}),
     /** Minute of the hour: 0-59 */
-    minute: numericRange<Minute>(minuteBounds.min, minuteBounds.max),
+    minute: rangeShape<Minute>({...minuteBounds, default: minuteBounds.min}),
     /** Second of the minute: 0-59 */
-    second: numericRange<Second>(secondBounds.min, secondBounds.max),
+    second: rangeShape<Second>({...secondBounds, default: secondBounds.min}),
     /** Millisecond of the second: 0-999 */
-    millisecond: numericRange(millisecondsBounds.min, millisecondsBounds.max),
+    millisecond: rangeShape({...millisecondsBounds, default: millisecondsBounds.min}),
     /** The timezone that this date/time is meant for / originated from. */
     timezone: enumShape(Timezone, utcTimezone),
 });
@@ -57,11 +57,11 @@ export const datePartShape = defineShape({
      */
     year: 2023,
     /** A month of the year: 1-12 */
-    month: numericRange<MonthNumber>(monthNumberBounds.min, monthNumberBounds.max),
+    month: rangeShape<MonthNumber>({...monthNumberBounds, default: monthNumberBounds.min}),
     /** A day of the month: 1-31 depending on the month */
-    day: numericRange<DayOfMonth>(dayOfMonthBounds.min, dayOfMonthBounds.max),
+    day: rangeShape<DayOfMonth>({...dayOfMonthBounds, default: dayOfMonthBounds.min}),
     /** The timezone that this date/time is meant for / originated from. */
-    timezone: utcTimezone as Timezone,
+    timezone: enumShape(Timezone, utcTimezone),
 });
 
 /**
@@ -79,7 +79,7 @@ export type DatePart<SpecificTimezone extends Timezone = Timezone> = SetRequired
  *
  * @category Shape
  */
-export const fullDateShape = defineShape(and(datePartShape, timePartShape));
+export const fullDateShape = defineShape(intersectShape(datePartShape, timePartShape));
 
 /**
  * A serializable object that completely specifies how any given date should be represented,

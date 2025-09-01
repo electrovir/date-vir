@@ -1,13 +1,13 @@
 import {DurationUnit} from '@date-vir/duration';
-import {enumShape, indexedKeys} from 'object-shape-tester';
+import {enumShape, recordShape} from 'object-shape-tester';
 
 /**
  * A shape definition for `AnyDuration`.
  *
  * @category Duration
  */
-export const anyDurationShape = indexedKeys({
+export const anyDurationShape = recordShape({
     keys: enumShape(DurationUnit),
     values: -1,
-    required: false,
+    partial: true,
 });
