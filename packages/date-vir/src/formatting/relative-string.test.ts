@@ -591,5 +591,27 @@ describe(toRelativeString.name, () => {
             ],
             expect: '4 months ago',
         },
+        {
+            it: 'works on a specific amount that was failing with empty string',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {days: -84}),
+                },
+                {
+                    years: true,
+                    months: true,
+                    days: true,
+                    hours: true,
+                    minutes: true,
+                    seconds: true,
+                },
+                {
+                    blockJustNow: true,
+                    useOnlyLargestUnit: true,
+                },
+            ],
+            expect: '3 months ago',
+        },
     ]);
 });
