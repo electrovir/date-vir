@@ -99,6 +99,31 @@ describe(diffDates.name, () => {
             },
         },
         {
+            it: 'uses months for large days',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {days: -108}),
+                },
+                {
+                    years: true,
+                    months: true,
+                    days: true,
+                    hours: true,
+                    minutes: true,
+                    seconds: true,
+                },
+            ],
+            expect: {
+                years: 0,
+                months: -3,
+                days: -19,
+                hours: 0,
+                minutes: 0,
+                seconds: 0,
+            },
+        },
+        {
             it: 'calculates two months ago',
             inputs: [
                 {

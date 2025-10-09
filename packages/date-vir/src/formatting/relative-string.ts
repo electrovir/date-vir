@@ -102,6 +102,7 @@ export function toRelativeString(
             roundToDigits: options.allowedDecimals || 0,
         },
     );
+
     const isDiffPositive = convertDuration(diff, {milliseconds: true}).milliseconds >= 0;
 
     const unitValues = filterMap(

@@ -569,5 +569,27 @@ describe(toRelativeString.name, () => {
             ],
             expect: 'in 1 month',
         },
+        {
+            it: 'uses months for large days',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {days: -108}),
+                },
+                {
+                    years: true,
+                    months: true,
+                    days: true,
+                    hours: true,
+                    minutes: true,
+                    seconds: true,
+                },
+                {
+                    blockJustNow: true,
+                    useOnlyLargestUnit: true,
+                },
+            ],
+            expect: '4 months ago',
+        },
     ]);
 });

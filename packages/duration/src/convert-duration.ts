@@ -6,7 +6,7 @@ import {
 } from './duration-selection.js';
 import {type AnyDuration} from './duration.js';
 import {type RoundOptions} from './round-options.js';
-import {DurationUnit, orderedDurationUnits} from './units/duration-unit.js';
+import {DurationUnit} from './units/duration-unit.js';
 
 /**
  * This is mostly copied from `@augment-vir/common` so that the `@date-vir/duration` package doesn't
@@ -62,6 +62,7 @@ export function convertDuration<const SelectedUnits extends Readonly<DurationUni
                 : Math.round(Math.abs(rawOptions.roundToDigits)),
     };
 
+    /** Handle infinite units. */
     const hasInfinity = Object.values(duration).includes(Infinity);
     const hasNegativeInfinity = Object.values(duration).includes(-Infinity);
 
@@ -122,28 +123,6 @@ export function convertDuration<const SelectedUnits extends Readonly<DurationUni
             }
         }
     });
-
-    let foundNonZero = false;
-    const removedUnits: DurationUnit[] = [];
-    const usedUnits = orderedDurationUnits.toReversed().filter((unit) => {
-        if (finalDuration[unit]) {
-            foundNonZero = true;
-            return true;
-        } else if (foundNonZero) {
-            removedUnits.push(unit);
-            return false;
-        }
-        return true;
-    });
-
-    if (usedUnits.length < selectedUnits.length) {
-        const newUnits: DurationUnitSelection = {};
-        usedUnits.forEach((unit) => (newUnits[unit] = true));
-
-        const recursiveConversion: AnyDuration = convertDuration(duration, newUnits, options);
-        removedUnits.forEach((unit) => (recursiveConversion[unit] = 0));
-        return recursiveConversion as DurationBySelection<SelectedUnits>;
-    }
 
     return finalDuration as DurationBySelection<SelectedUnits>;
 }

@@ -71,7 +71,7 @@ export function createFullDate<const SpecificTimezone extends Timezone>(
     const dateTime = convertDateLikeToLuxonDateTime(dateLike, timezone);
 
     if (!dateTime?.isValid) {
-        throw new Error(`Failed to parse date input ${stringify(dateLike)}`);
+        throw new Error(`Failed to parse date input '${stringify(dateLike)}'`);
     }
 
     return parseLuxonDateTime(dateTime, timezone);
