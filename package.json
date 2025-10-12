@@ -20,7 +20,7 @@
         "packages/*"
     ],
     "scripts": {
-        "compile": "virmator compile",
+        "compile": "npm run init && virmator compile",
         "docs": "npm run compile && NODE_OPTIONS=\"--import tsx\" npm run --workspace=date-vir docs",
         "format": "virmator format",
         "init": "tsx node_modules/@augment-vir/node/src/scripts/fix-ts-bin.script.ts",
