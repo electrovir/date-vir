@@ -1,12 +1,19 @@
 import {check} from '@augment-vir/assert';
-import {arrayToObject, filterMap, type PartialWithUndefined} from '@augment-vir/common';
 import {
-    type AnyDuration,
+    filterMap,
+    type PartialWithUndefined,
+    type RequiredAndNotNull,
+    type SelectFrom,
+} from '@augment-vir/common';
+import {
     convertDuration,
-    DurationUnit,
+    flattenUnitsSmallestToLargest,
+    getDateUnitString,
+    type AnyDuration,
+    type DurationUnit,
     type DurationUnitSelection,
-    flattenUnitSelection,
-    singularDurationUnitNames,
+    type LocaleOptions,
+    type RoundOptions,
 } from '@date-vir/duration';
 import {diffDates} from '../date-operations/diff-dates.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
@@ -18,10 +25,11 @@ import {type FullDate} from '../full-date/full-date-shape.js';
  */
 export type RelativeStringOptions = PartialWithUndefined<{
     /**
-     * Set this to `true` to prevent the `'just now'` relative string from being used when the two
-     * dates are very close.
+     * Set this to `true` to block a "just now" string to be used when the two dates are very close
+     * or the duration is very small (or 0).
      *
      * @default false // (`'just now'` is used)
+     * @see `RelativeStringOptions.justNowThresholds`
      */
     blockJustNow: boolean;
     /**
@@ -32,32 +40,79 @@ export type RelativeStringOptions = PartialWithUndefined<{
      */
     useOnlyLargestUnit: boolean;
     /**
-     * The number of decimals to allow for each duration unit's value.
-     *
-     * @default 0
-     */
-    allowedDecimals: number;
-    /**
      * Any values below this will trigger "just now".
      *
-     * @default {
-     *
-     *         minutes: 1.5,
-     *         seconds: 5,
-     *         milliseconds: 500,
-     * }
+     * @default `defaultJustNowThresholds`
+     * @see {@link defaultJustNowThresholds} .
      */
-    justNowThresholds: {
-        minutes: number;
-        seconds: number;
-        milliseconds: number;
-    };
-}>;
+    justNowThresholds: AnyDuration;
+    /**
+     * The separator between each unit.
+     *
+     * @default ', '
+     */
+    sep: string;
+    /**
+     * By default, when `blockJustNow` is `true` and there is no duration to print (the diff is 0),
+     * this will return the smallest selected unit set to 0 and use "0 <unit> ago". Set this
+     * property to `true` to instead use "in 0 <unit>".
+     *
+     * @default false
+     */
+    useFutureWhenNothing: boolean;
+    /**
+     * If `true`, unit names are abbreviated.
+     *
+     * @default false
+     */
+    abbreviate: boolean;
+    /**
+     * Customize translations. If this is not provided, or any property is missing, the default
+     * english phrases will be used.
+     */
+    i18n: Partial<{
+        /** Creates past relative strings like "5 seconds ago". */
+        timeAgo(
+            /**
+             * This will look like "5 seconds" or "1 year", translated to the configured locale (or
+             * the user's current locale.
+             */
+            unitString: string,
+        ): string;
+        /** Creates future relative strings like "in 5 seconds". */
+        timeIn(
+            /**
+             * This will look like "5 seconds" or "1 year", translated to the configured locale (or
+             * the user's current locale.
+             */
+            unitString: string,
+        ): string;
+        /** The string to be used when "just now" is chosen. */
+        justNow: string;
+    }>;
+}> &
+    RequiredAndNotNull<RoundOptions> &
+    LocaleOptions;
 
-const defaultJustNowThresholds: NonNullable<RelativeStringOptions['justNowThresholds']> = {
+const defaultRelativeStringI18n: Required<NonNullable<RelativeStringOptions['i18n']>> = {
+    justNow: 'just now',
+    timeAgo(unitString) {
+        return `${unitString} ago`;
+    },
+    timeIn(unitString) {
+        return `in ${unitString}`;
+    },
+};
+
+/**
+ * Default value for `RelativeStringOptions.justNowThresholds`.
+ *
+ * @category Internal
+ */
+export const defaultJustNowThresholds: AnyDuration = {
     minutes: 1.5,
     seconds: 5,
-    milliseconds: 500,
+    milliseconds: 200,
 };
 
 /**
@@ -78,6 +133,8 @@ const defaultJustNowThresholds: NonNullable<RelativeStringOptions['justNowThresh
  * toRelativeString({days: 1.6}, {days: true, hours: true}); // `'in 1 day, 14 hours'`
  * toRelativeString({seconds: 1}, selectAllDurationUnits); // `'just now'`
  * ```
+ *
+ * @throws If no units are selected
  */
 export function toRelativeString(
     datesOrDuration:
@@ -86,112 +143,212 @@ export function toRelativeString(
               end: Readonly<FullDate>;
           }>
         | Readonly<AnyDuration>,
+    /** The units to use in the relative string. */
     units: Readonly<DurationUnitSelection>,
-    options: Readonly<RelativeStringOptions> = {},
+    options: Readonly<RelativeStringOptions>,
 ): string {
-    const selectedUnits = flattenUnitSelection(units);
-    /** If there are no selected units, return nothing. */
-    if (!check.isLengthAtLeast(selectedUnits, 1)) {
-        return '';
+    /**
+     * Don't use Luxon's implementation of this (`DateTime.toRelative()`) because it's a hopeless
+     * mess.
+     */
+
+    const smallestToLargestSelectedUnit = flattenUnitsSmallestToLargest(units);
+    const smallestSelectedUnit = smallestToLargestSelectedUnit[0];
+    const largestToSmallestSelectedUnit = smallestToLargestSelectedUnit.toReversed();
+    if (smallestSelectedUnit == undefined) {
+        throw new Error('No units selected for relative string.');
     }
 
-    const diff: AnyDuration = convertDuration(
-        'start' in datesOrDuration ? diffDates(datesOrDuration, units) : datesOrDuration,
+    const diff = getRelativeStringDiff({
+        datesOrDuration,
+        options,
         units,
-        {
-            roundToDigits: options.allowedDecimals || 0,
-        },
-    );
+        largestToSmallestSelectedUnit,
+    });
 
+    const unitCounts: Partial<Record<DurationUnit, number>> = {};
     const isDiffPositive = convertDuration(diff, {milliseconds: true}).milliseconds >= 0;
 
-    const unitValues = filterMap(
-        selectedUnits,
-        (unit) => {
-            const quantity = diff[unit] || 0;
-
-            if (!quantity) {
-                return undefined;
-            }
-
-            return {
-                quantity,
-                unit,
-            };
-        },
-        check.isTruthy,
-    ).reverse();
-
-    const justNowThresholds = options.justNowThresholds || defaultJustNowThresholds;
-
-    const shouldUseJustNow =
-        !options.blockJustNow &&
-        (!check.isLengthAtLeast(unitValues, 1) ||
-            (unitValues[0].unit === DurationUnit.Minutes &&
-                /* node:coverage ignore next 1 */
-                Math.abs(diff.minutes || 0) < justNowThresholds.minutes) ||
-            (unitValues[0].unit === DurationUnit.Seconds &&
-                /* node:coverage ignore next 1 */
-                Math.abs(diff.seconds || 0) < justNowThresholds.seconds) ||
-            (unitValues[0].unit === DurationUnit.Milliseconds &&
-                /* node:coverage ignore next 1 */
-                Math.abs(diff.milliseconds || 0) < justNowThresholds.milliseconds));
-
-    if (shouldUseJustNow) {
-        return 'just now';
-    } else if (options.useOnlyLargestUnit) {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (!unitValues[0]) {
-            return '';
+    largestToSmallestSelectedUnit.forEach((unit) => {
+        if (options.useOnlyLargestUnit && Object.keys(unitCounts).length) {
+            return;
         }
 
-        return toRelativeString(
-            datesOrDuration,
-            {[unitValues[0].unit]: true},
-            {
-                ...options,
-                useOnlyLargestUnit: false,
+        const unitCount: number = diff[unit] || 0;
+
+        if (unitCount) {
+            unitCounts[unit] = unitCount;
+        }
+    });
+
+    const shouldUseJustNow = determineShouldUseJustNow({options, smallestSelectedUnit, unitCounts});
+
+    const i18n: typeof defaultRelativeStringI18n = {
+        ...defaultRelativeStringI18n,
+        ...options.i18n,
+    };
+
+    if (shouldUseJustNow) {
+        return i18n.justNow;
+    } else if (Object.keys(unitCounts).length) {
+        const unitStrings = filterMap(
+            largestToSmallestSelectedUnit,
+            (unit) => {
+                const unitCount = unitCounts[unit];
+                if (unitCount) {
+                    return getDateUnitString({
+                        count: Math.abs(unitCount),
+                        unit,
+                        locale: options.locale,
+                        abbreviate: options.abbreviate,
+                        decimalCount: options.decimalCount,
+                    });
+                } else {
+                    return undefined;
+                }
             },
+            check.isTruthy,
         );
-    } else if (unitValues.length < selectedUnits.length) {
-        /**
-         * If the finalized units are less than the selected units, rerun the whole calculation to
-         * make sure we're using the right accuracy.
-         */
-        return toRelativeString(
-            datesOrDuration,
-            arrayToObject(unitValues, ({unit}) => {
-                return {
-                    key: unit,
-                    value: true,
-                };
-            }),
-            options,
-        );
-    }
 
-    const unitsString = unitValues
-        .map(({quantity, unit}) => {
-            const absoluteQuantity = Math.abs(quantity);
+        const allUnitStrings = unitStrings.join(options.sep ?? ', ');
 
-            return [
-                absoluteQuantity,
-                ' ',
-                singularDurationUnitNames[unit],
-                absoluteQuantity > 1 ? 's' : '',
-            ].join('');
-        })
-        .join(', ');
-
-    if (isDiffPositive) {
-        return [
-            'in',
-            unitsString,
-        ].join(' ');
+        if (isDiffPositive) {
+            return i18n.timeIn(allUnitStrings);
+        } else {
+            return i18n.timeAgo(allUnitStrings);
+        }
     } else {
-        return [
-            unitsString,
-            'ago',
-        ].join(' ');
+        const unitString = getDateUnitString({
+            count: 0,
+            unit: smallestSelectedUnit,
+            locale: options.locale,
+            abbreviate: options.abbreviate,
+            decimalCount: options.decimalCount,
+        });
+
+        if (options.useFutureWhenNothing) {
+            return i18n.timeIn(unitString);
+        } else {
+            return i18n.timeAgo(unitString);
+        }
     }
+}
+
+function getRelativeStringDiff({
+    datesOrDuration,
+    units,
+    options,
+    largestToSmallestSelectedUnit,
+}: {
+    datesOrDuration:
+        | Readonly<{
+              start: Readonly<FullDate>;
+              end: Readonly<FullDate>;
+          }>
+        | Readonly<AnyDuration>;
+    units: Readonly<DurationUnitSelection>;
+    largestToSmallestSelectedUnit: DurationUnit[];
+    options: Readonly<
+        SelectFrom<RelativeStringOptions, {useOnlyLargestUnit: true; decimalCount: true}>
+    >;
+}): AnyDuration {
+    if (options.useOnlyLargestUnit) {
+        return findLargestDiff({datesOrDuration, largestToSmallestSelectedUnit, options});
+    } else {
+        return createDiff(datesOrDuration, {decimalCount: undefined}, units);
+    }
+}
+
+function createDiff(
+    datesOrDuration:
+        | Readonly<{
+              start: Readonly<FullDate>;
+              end: Readonly<FullDate>;
+          }>
+        | Readonly<AnyDuration>,
+    options: Readonly<RoundOptions> | undefined,
+    units: Readonly<DurationUnitSelection>,
+) {
+    return 'start' in datesOrDuration
+        ? diffDates(datesOrDuration, units, options)
+        : convertDuration(datesOrDuration, units, options);
+}
+
+function findLargestDiff({
+    datesOrDuration,
+    options,
+    largestToSmallestSelectedUnit,
+}: {
+    datesOrDuration:
+        | Readonly<{
+              start: Readonly<FullDate>;
+              end: Readonly<FullDate>;
+          }>
+        | Readonly<AnyDuration>;
+    largestToSmallestSelectedUnit: DurationUnit[];
+    options: Readonly<
+        SelectFrom<RelativeStringOptions, {useOnlyLargestUnit: true; decimalCount: true}>
+    >;
+}): AnyDuration {
+    for (const unit of largestToSmallestSelectedUnit) {
+        const innerDiff: AnyDuration = createDiff(datesOrDuration, options, {
+            [unit]: true,
+        });
+
+        if (innerDiff[unit]) {
+            return innerDiff;
+        }
+    }
+
+    return {};
+}
+
+function determineShouldUseJustNow({
+    options,
+    smallestSelectedUnit,
+    unitCounts,
+}: {
+    smallestSelectedUnit: DurationUnit;
+    unitCounts: Partial<Record<DurationUnit, number>>;
+    options: Readonly<
+        SelectFrom<
+            RelativeStringOptions,
+            {
+                justNowThresholds: true;
+                blockJustNow: true;
+            }
+        >
+    >;
+}): boolean {
+    if (options.blockJustNow) {
+        return false;
+    }
+
+    const thresholds: AnyDuration = {
+        ...defaultJustNowThresholds,
+        ...options.justNowThresholds,
+    };
+
+    if (!(smallestSelectedUnit in thresholds) || Object.keys(unitCounts).length > 1) {
+        return false;
+    }
+
+    if (!Object.keys(unitCounts).length || smallestSelectedUnit in unitCounts) {
+        /* node:coverage disable: these fallbacks aren't required at runtime but are required for type safety. */
+        /**
+         * We've already verify that `smallestSelectedUnit` is in `thresholds` so the `|| 0`
+         * fallback is safe.
+         */
+        const unitThreshold: number = thresholds[smallestSelectedUnit] || 0;
+        /**
+         * We've already verify that `smallestSelectedUnit` is in `unitCounts` so the `|| 0`
+         * fallback is safe.
+         */
+        const unitValue: number = unitCounts[smallestSelectedUnit] || 0;
+        /* node:coverage enable */
+
+        return unitValue <= unitThreshold;
+    }
+
+    return false;
 }

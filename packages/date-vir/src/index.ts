@@ -23,7 +23,6 @@ export * from './full-date/full-date-shape.js';
 export * from './full-date/is-valid-full-date.js';
 export * from './full-date/luxon-date-time-conversion.js';
 export * from './full-date/parsing.js';
-export * from './locales.js';
 export * from './timezone/timezone-checks.js';
 export * from './timezone/timezone-names.js';
 export * from './timezone/timezones.js';

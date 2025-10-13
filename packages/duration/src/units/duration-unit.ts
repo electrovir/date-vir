@@ -5,7 +5,6 @@
  */
 export enum DurationUnit {
     Years = 'years',
-    Quarters = 'quarters',
     Months = 'months',
 
     Weeks = 'weeks',
@@ -17,46 +16,6 @@ export enum DurationUnit {
 
     Milliseconds = 'milliseconds',
 }
-
-/**
- * A mapping of {@link DurationUnit} to to all of its values' singular duration names in English.
- *
- * @category Internal
- */
-export const singularDurationUnitNames = {
-    [DurationUnit.Years]: 'year',
-    [DurationUnit.Quarters]: 'quarter',
-    [DurationUnit.Months]: 'month',
-
-    [DurationUnit.Weeks]: 'week',
-    [DurationUnit.Days]: 'day',
-
-    [DurationUnit.Hours]: 'hour',
-    [DurationUnit.Minutes]: 'minute',
-    [DurationUnit.Seconds]: 'second',
-
-    [DurationUnit.Milliseconds]: 'millisecond',
-} as const satisfies Readonly<Record<DurationUnit, string>>;
-
-/**
- * A mapping of {@link DurationUnit} to to all of its values' abbreviations in English.
- *
- * @category Internal
- */
-export const durationUnitNameAbbreviations = {
-    [DurationUnit.Years]: 'yr',
-    [DurationUnit.Quarters]: 'q',
-    [DurationUnit.Months]: 'mo',
-
-    [DurationUnit.Weeks]: 'wk',
-    [DurationUnit.Days]: 'd',
-
-    [DurationUnit.Hours]: 'hr',
-    [DurationUnit.Minutes]: 'min',
-    [DurationUnit.Seconds]: 'sec',
-
-    [DurationUnit.Milliseconds]: 'ms',
-} as const satisfies Readonly<Record<DurationUnit, string>>;
 
 /**
  * Array of sorted {@link DurationUnit} possibilities: from smallest unit (milliseconds at index 0)
@@ -72,7 +31,6 @@ export const orderedDurationUnits = [
     DurationUnit.Days,
     DurationUnit.Weeks,
     DurationUnit.Months,
-    DurationUnit.Quarters,
     DurationUnit.Years,
 ] as const satisfies ReadonlyArray<DurationUnit>;
 
@@ -90,6 +48,5 @@ export const maxDurations: Readonly<Record<DurationUnit, number>> = {
     [DurationUnit.Days]: 30,
     [DurationUnit.Weeks]: 4,
     [DurationUnit.Months]: 12,
-    [DurationUnit.Quarters]: 4,
     [DurationUnit.Years]: Infinity,
 };

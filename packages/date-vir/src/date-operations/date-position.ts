@@ -1,4 +1,4 @@
-import {check} from '@augment-vir/assert';
+import {assertWrap, check} from '@augment-vir/assert';
 import {stringify} from '@augment-vir/common';
 import {DateUnit, oneIndexedDateUnits} from '@date-vir/duration';
 import {checkValidShape, defineShape, exactShape, unionShape} from 'object-shape-tester';
@@ -152,21 +152,16 @@ export const datePositionCalculationShape = defineShape(
     unionShape(
         {
             get: exactShape(DateUnit.Month),
-            in: unionShape(exactShape(DateUnit.Year), exactShape(DateUnit.Quarter)),
+            in: unionShape(exactShape(DateUnit.Year)),
         },
         {
             get: exactShape(DateUnit.Week),
-            in: unionShape(
-                exactShape(DateUnit.Year),
-                exactShape(DateUnit.Quarter),
-                exactShape(DateUnit.Month),
-            ),
+            in: unionShape(exactShape(DateUnit.Year), exactShape(DateUnit.Month)),
         },
         {
             get: exactShape(DateUnit.Day),
             in: unionShape(
                 exactShape(DateUnit.Year),
-                exactShape(DateUnit.Quarter),
                 exactShape(DateUnit.Month),
                 exactShape(DateUnit.Week),
             ),
@@ -175,7 +170,6 @@ export const datePositionCalculationShape = defineShape(
             get: exactShape(DateUnit.Hour),
             in: unionShape(
                 exactShape(DateUnit.Year),
-                exactShape(DateUnit.Quarter),
                 exactShape(DateUnit.Month),
                 exactShape(DateUnit.Week),
                 exactShape(DateUnit.Day),
@@ -185,7 +179,6 @@ export const datePositionCalculationShape = defineShape(
             get: exactShape(DateUnit.Minute),
             in: unionShape(
                 exactShape(DateUnit.Year),
-                exactShape(DateUnit.Quarter),
                 exactShape(DateUnit.Month),
                 exactShape(DateUnit.Week),
                 exactShape(DateUnit.Day),
@@ -196,7 +189,6 @@ export const datePositionCalculationShape = defineShape(
             get: exactShape(DateUnit.Second),
             in: unionShape(
                 exactShape(DateUnit.Year),
-                exactShape(DateUnit.Quarter),
                 exactShape(DateUnit.Month),
                 exactShape(DateUnit.Week),
                 exactShape(DateUnit.Day),
@@ -208,7 +200,6 @@ export const datePositionCalculationShape = defineShape(
             get: exactShape(DateUnit.Millisecond),
             in: unionShape(
                 exactShape(DateUnit.Year),
-                exactShape(DateUnit.Quarter),
                 exactShape(DateUnit.Month),
                 exactShape(DateUnit.Week),
                 exactShape(DateUnit.Day),
@@ -298,9 +289,14 @@ export function calculateDatePosition(
             : start;
 
     const diffUnit: `${DateUnit}s` = `${calculation.get}s`;
-    const diff = diffDates({start: startWithOffset, end: date}, {[diffUnit]: true});
+    const diff = diffDates(
+        {start: startWithOffset, end: date},
+        {
+            [diffUnit]: true,
+        },
+    );
 
-    const value = diff[diffUnit];
+    const value = assertWrap.isDefined(diff[diffUnit]);
 
     const isDayOfWeek = calculation.get === DateUnit.Day && calculation.in === DateUnit.Week;
 

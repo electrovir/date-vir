@@ -260,14 +260,6 @@ describe(getDateUnit.name, () => {
             expect: exampleDate.month,
         },
         {
-            it: 'gets the quarter number',
-            inputs: [
-                exampleDate,
-                DateUnit.Quarter,
-            ],
-            expect: 4,
-        },
-        {
             it: 'gets comment example week',
             inputs: [
                 {

@@ -14,7 +14,7 @@ import {orderedDurationUnits} from './units/duration-unit.js';
  * import {equalizeDuration} from 'date-vir';
  *
  * equalizeDuration({seconds: 5_356_800}, {weeks: true, seconds: true});
- * // `{weeks: 8, seconds: 518_400}`
+ * // `{weeks: 8, seconds: 5_356_800}`
  * ```
  */
 export function equalizeDuration<const SelectedUnits extends Readonly<DurationUnitSelection>>(

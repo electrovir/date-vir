@@ -1,21 +1,25 @@
+import {type Subtract} from 'type-fest';
+import {userLocale, type LocaleOptions} from '../locale.js';
+
 /**
- * Names of all months in English.
+ * Names of all months in English. Don't use this for strings shown to the user, instead use
+ * {@link getMonthNames}.
  *
  * @category Unit
  */
 export enum MonthName {
-    January = 'January',
-    February = 'February',
-    March = 'March',
-    April = 'April',
-    May = 'May',
-    June = 'June',
-    July = 'July',
-    August = 'August',
-    September = 'September',
-    October = 'October',
-    November = 'November',
-    December = 'December',
+    January = 'january',
+    February = 'february',
+    March = 'march',
+    April = 'april',
+    May = 'may',
+    June = 'june',
+    July = 'july',
+    August = 'august',
+    September = 'september',
+    October = 'october',
+    November = 'november',
+    December = 'december',
 }
 
 /**
@@ -44,6 +48,13 @@ export const orderedMonthNames = [
  * @category Unit
  */
 export type MonthNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+
+/**
+ * A type for all valid month indexes. (0-11)
+ *
+ * @category Unit
+ */
+export type MonthIndex = Subtract<MonthNumber, 1>;
 
 /**
  * Bounds for valid month numbers.
@@ -102,3 +113,44 @@ export const dayOfMonthBounds = {
     min: 1,
     max: 31,
 } as const satisfies Record<'min' | 'max', DayOfMonth>;
+
+/**
+ * Gets all month names in various formats with the given locale. Defaults to the current user's
+ * locale.
+ *
+ * @category Language
+ */
+export function getMonthNames(options: Readonly<LocaleOptions> = {}) {
+    return {
+        long: getAbbreviatedMonthNames('long', options),
+        short: getAbbreviatedMonthNames('short', options),
+        narrow: getAbbreviatedMonthNames('narrow', options),
+    };
+}
+
+function getAbbreviatedMonthNames(
+    abbreviation: 'long' | 'short' | 'narrow',
+    options: Readonly<LocaleOptions>,
+) {
+    const formatter = new Intl.DateTimeFormat(options.locale || userLocale, {month: abbreviation});
+
+    const numbered: Record<MonthNumber, string> = {} as Record<MonthNumber, string>;
+    const keyed: Record<MonthName, string> = {} as Record<MonthName, string>;
+    const indexed: Record<MonthIndex, string> = {} as Record<MonthIndex, string>;
+
+    for (const [
+        i,
+        orderedMonthName,
+    ] of orderedMonthNames.entries()) {
+        const day = formatter.format(new Date(2020, i, 1));
+        numbered[(i + 1) as MonthNumber] = day;
+        keyed[orderedMonthName as MonthName] = day;
+        indexed[i as MonthIndex] = day;
+    }
+
+    return {
+        numbered,
+        keyed,
+        indexed,
+    };
+}

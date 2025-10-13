@@ -1,7 +1,7 @@
 import {type PartialWithUndefined} from '@augment-vir/common';
+import {userLocale} from '@date-vir/duration';
 import {type FullDate} from '../full-date/full-date-shape.js';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
-import {userLocale} from '../locales.js';
 
 /**
  * Chromium has a weird behavior where the "NARROW NO-BREAK SPACE" character (code 8239) is used

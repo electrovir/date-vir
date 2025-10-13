@@ -1,15 +1,21 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
+import {type DurationUnitSelection} from '@date-vir/duration';
 import {convertDuration, roundDuration} from './convert-duration.js';
 import {selectAllDurationUnits} from './duration-selection.js';
 import {type AnyDuration, type AtLeastOneDuration} from './duration.js';
 
 describe(convertDuration.name, () => {
-    it('has proper types', () => {
+    it('preserves selected units', () => {
         assert.tsType(convertDuration({days: 54.35}, {minutes: true, hours: true})).equals<{
             hours: number;
             minutes: number;
         }>();
+    });
+    it('falls back to any duration', () => {
+        assert
+            .tsType(convertDuration({days: 54.35}, {} as DurationUnitSelection))
+            .equals<AnyDuration>();
     });
 
     itCases(convertDuration, [
@@ -33,7 +39,6 @@ describe(convertDuration.name, () => {
             ],
             expect: {
                 years: 0,
-                quarters: 0,
                 months: -2,
                 weeks: 0,
                 days: 0,
@@ -51,12 +56,11 @@ describe(convertDuration.name, () => {
                 },
                 selectAllDurationUnits,
                 {
-                    roundToDigits: 1,
+                    decimalCount: 1,
                 },
             ],
             expect: {
                 years: 0,
-                quarters: 0,
                 months: -1,
                 weeks: 0,
                 days: 0,
@@ -157,7 +161,7 @@ describe(convertDuration.name, () => {
 
 describe(roundDuration.name, () => {
     it('has correct types', () => {
-        assert.tsType(roundDuration({days: 5}, {roundToDigits: 4})).equals<{days: number}>();
+        assert.tsType(roundDuration({days: 5}, {decimalCount: 4})).equals<{days: number}>();
     });
 
     const durationWithDecimals: AnyDuration = {
@@ -171,7 +175,7 @@ describe(roundDuration.name, () => {
             it: 'rounds to zero decimal places',
             inputs: [
                 durationWithDecimals,
-                {roundToDigits: 0},
+                {decimalCount: 0},
             ],
             expect: {
                 days: 5,
@@ -183,7 +187,7 @@ describe(roundDuration.name, () => {
             it: 'rounds to 3 decimal places',
             inputs: [
                 durationWithDecimals,
-                {roundToDigits: 3},
+                {decimalCount: 3},
             ],
             expect: {
                 days: 5.342,

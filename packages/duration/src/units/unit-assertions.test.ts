@@ -7,7 +7,6 @@ import {
     assertWrapMillisecond,
     assertWrapMinute,
     assertWrapMonthNumber,
-    assertWrapQuarter,
     assertWrapSecond,
     isValidDayOfMonth,
     isValidDayOfWeekIndex,
@@ -15,63 +14,8 @@ import {
     isValidMillisecond,
     isValidMinute,
     isValidMonthNumber,
-    isValidQuarter,
     isValidSecond,
 } from './unit-assertions.js';
-
-const quarterTestCases = [
-    {
-        it: 'accepts the min quarter number',
-        inputs: [1],
-        expect: 1,
-    },
-    {
-        it: 'accepts the max quarter number',
-        inputs: [4],
-        expect: 4,
-    },
-    {
-        it: 'rejects below the min quarter number',
-        inputs: [0],
-        throws: {
-            matchConstructor: AssertionError,
-            matchMessage: 'not a valid date quarter number',
-        },
-    },
-    {
-        it: 'rejects a non-integer',
-        inputs: [2.5],
-        throws: {
-            matchConstructor: AssertionError,
-            matchMessage: 'not a valid date quarter number',
-        },
-    },
-    {
-        it: 'rejects above the max quarter number',
-        inputs: [5],
-        throws: {
-            matchConstructor: AssertionError,
-            matchMessage: 'not a valid date quarter number',
-        },
-    },
-] as const satisfies ReadonlyArray<FunctionTestCase<NoInfer<typeof assertWrapQuarter>>>;
-
-describe(isValidQuarter.name, () => {
-    itCases(
-        isValidQuarter,
-        quarterTestCases.map((testCase) => {
-            return {
-                it: testCase.it,
-                input: testCase.inputs[0],
-                expect: 'expect' in testCase,
-            };
-        }),
-    );
-});
-
-describe(assertWrapQuarter.name, () => {
-    itCases(assertWrapQuarter, quarterTestCases);
-});
 
 const monthTestCases = [
     {

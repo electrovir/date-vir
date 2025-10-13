@@ -18,7 +18,7 @@ import {type FullDate} from './full-date-shape.js';
  *
  * @category Internal
  */
-export function toLuxonDateTime(fullDateInput: Readonly<FullDate>): DateTime {
+export function toLuxonDateTime(fullDateInput: Readonly<FullDate>): DateTime<true> {
     const dateTime: DateTime = DateTime.fromObject(omitObjectKeys(fullDateInput, ['timezone']), {
         zone: fullDateInput.timezone,
     });

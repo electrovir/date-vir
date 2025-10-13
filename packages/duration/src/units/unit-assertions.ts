@@ -1,32 +1,15 @@
 import {AssertionError} from '@augment-vir/assert';
-import {type Quarter} from './date-unit.js';
-import {type DayOfWeekIndex, dayOfWeekIndexBounds} from './day-of-week.js';
-import {type DayOfMonth, type MonthNumber, dayOfMonthBounds, monthNumberBounds} from './month.js';
 import {
     type Hour,
-    type Minute,
-    type Second,
     hourBounds,
     millisecondsBounds,
+    type Minute,
     minuteBounds,
+    type Second,
     secondBounds,
-} from './time-units.js';
-
-/**
- * Checks if input is a valid quarter number.
- *
- * @category Assertion
- */
-export function isValidQuarter(input: number): input is Quarter {
-    return (
-        [
-            1,
-            2,
-            3,
-            4,
-        ] satisfies Quarter[] as number[]
-    ).includes(input);
-}
+} from './date-unit.js';
+import {type DayOfWeekIndex, dayOfWeekIndexBounds} from './day-of-week.js';
+import {type DayOfMonth, dayOfMonthBounds, type MonthNumber, monthNumberBounds} from './month.js';
 
 /**
  * Checks if input is a valid month number.
@@ -101,21 +84,6 @@ export function isValidMillisecond(input: number) {
         millisecondsBounds.min <= input &&
         input <= millisecondsBounds.max
     );
-}
-
-/**
- * Asserts that the input is a valid quarter number.
- *
- * @category Assertion
- * @returns The input if the assertion succeeds.
- * @throws `AssertionError` If the assertion fails.
- */
-export function assertWrapQuarter(input: number, failureMessage?: string | undefined): Quarter {
-    if (!isValidQuarter(input)) {
-        throw new AssertionError(`${input} is not a valid date quarter number.`, failureMessage);
-    }
-
-    return input;
 }
 
 /**

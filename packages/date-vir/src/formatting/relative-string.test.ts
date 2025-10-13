@@ -16,6 +16,9 @@ describe(toRelativeString.name, () => {
                     end: calculateRelativeDate(exampleFullDateUtc, {months: -2}),
                 },
                 selectAllDurationUnits,
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: '2 months ago',
         },
@@ -27,6 +30,9 @@ describe(toRelativeString.name, () => {
                     end: calculateRelativeDate(exampleFullDateUtc, {months: 2}),
                 },
                 selectAllDurationUnits,
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: 'in 2 months',
         },
@@ -38,6 +44,9 @@ describe(toRelativeString.name, () => {
                     end: calculateRelativeDate(exampleFullDateUtc, {days: -2}),
                 },
                 selectAllDurationUnits,
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: '2 days ago',
         },
@@ -47,7 +56,12 @@ describe(toRelativeString.name, () => {
                 {
                     days: 1.6,
                 },
-                {days: true},
+                {
+                    days: true,
+                },
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: 'in 2 days',
         },
@@ -57,7 +71,30 @@ describe(toRelativeString.name, () => {
                 {
                     days: 1.9,
                 },
-                {days: true, hours: true},
+                {
+                    days: true,
+                    hours: true,
+                },
+                {
+                    decimalCount: 0,
+                },
+            ],
+            expect: 'in 1 day, 22 hours',
+        },
+        {
+            it: 'rounds largest unit',
+            inputs: [
+                {
+                    days: 1.9,
+                },
+                {
+                    days: true,
+                    hours: true,
+                },
+                {
+                    useOnlyLargestUnit: true,
+                    decimalCount: 0,
+                },
             ],
             expect: 'in 2 days',
         },
@@ -67,7 +104,13 @@ describe(toRelativeString.name, () => {
                 {
                     days: 1.6,
                 },
-                {days: true, hours: true},
+                {
+                    days: true,
+                    hours: true,
+                },
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: 'in 1 day, 14 hours',
         },
@@ -80,6 +123,7 @@ describe(toRelativeString.name, () => {
                 selectAllDurationUnits,
                 {
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: 'in 2 days',
@@ -95,8 +139,29 @@ describe(toRelativeString.name, () => {
                     weeks: true,
                     hours: true,
                 },
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: '48 hours ago',
+        },
+        {
+            it: 'abbreviates',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {days: -2}),
+                },
+                {
+                    weeks: true,
+                    hours: true,
+                },
+                {
+                    abbreviate: true,
+                    decimalCount: 0,
+                },
+            ],
+            expect: '48 hr ago',
         },
         {
             it: 'handles exact time without just now',
@@ -113,9 +178,31 @@ describe(toRelativeString.name, () => {
                 {
                     blockJustNow: true,
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
-            expect: '',
+            expect: '0 seconds ago',
+        },
+        {
+            it: 'handles exact time without just now in the future',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: exampleFullDateUtc,
+                },
+                {
+                    weeks: true,
+                    hours: true,
+                    seconds: true,
+                },
+                {
+                    blockJustNow: true,
+                    useOnlyLargestUnit: true,
+                    useFutureWhenNothing: true,
+                    decimalCount: 0,
+                },
+            ],
+            expect: 'in 0 seconds',
         },
         {
             it: 'uses custom minutes just now thresholds',
@@ -126,16 +213,12 @@ describe(toRelativeString.name, () => {
                 },
                 {
                     minutes: true,
-                    seconds: true,
-                    milliseconds: true,
                 },
                 {
-                    useOnlyLargestUnit: true,
                     justNowThresholds: {
                         minutes: 10,
-                        seconds: 100,
-                        milliseconds: 10_000,
                     },
+                    decimalCount: 0,
                 },
             ],
             expect: 'just now',
@@ -149,11 +232,9 @@ describe(toRelativeString.name, () => {
                 },
                 {
                     minutes: true,
-                    seconds: true,
-                    milliseconds: true,
                 },
                 {
-                    useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: 'just now',
@@ -172,6 +253,7 @@ describe(toRelativeString.name, () => {
                 },
                 {
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: 'in 50 minutes',
@@ -185,18 +267,37 @@ describe(toRelativeString.name, () => {
                 },
                 {
                     seconds: true,
-                    milliseconds: true,
                 },
                 {
-                    useOnlyLargestUnit: true,
                     justNowThresholds: {
                         minutes: 10,
                         seconds: 100,
-                        milliseconds: 10_000,
                     },
+                    decimalCount: 0,
                 },
             ],
             expect: 'just now',
+        },
+        {
+            it: 'does not use just now if smaller units are selected',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {seconds: 50}),
+                },
+                {
+                    seconds: true,
+                    milliseconds: true,
+                },
+                {
+                    justNowThresholds: {
+                        minutes: 10,
+                        seconds: 100,
+                    },
+                    decimalCount: 0,
+                },
+            ],
+            expect: 'in 50 seconds',
         },
         {
             it: 'uses default seconds just now thresholds',
@@ -207,10 +308,9 @@ describe(toRelativeString.name, () => {
                 },
                 {
                     seconds: true,
-                    milliseconds: true,
                 },
                 {
-                    useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: 'just now',
@@ -228,6 +328,7 @@ describe(toRelativeString.name, () => {
                 },
                 {
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: 'in 100 seconds',
@@ -249,6 +350,7 @@ describe(toRelativeString.name, () => {
                         seconds: 100,
                         milliseconds: 10_000,
                     },
+                    decimalCount: 0,
                 },
             ],
             expect: 'just now',
@@ -265,6 +367,7 @@ describe(toRelativeString.name, () => {
                 },
                 {
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: 'just now',
@@ -280,10 +383,10 @@ describe(toRelativeString.name, () => {
                     milliseconds: true,
                 },
                 {
-                    useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
-            expect: 'in 5000 milliseconds',
+            expect: 'in 5,000 milliseconds',
         },
         {
             it: 'blocks future days',
@@ -296,6 +399,9 @@ describe(toRelativeString.name, () => {
                     weeks: true,
                     hours: true,
                 },
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: 'in 48 hours',
         },
@@ -307,6 +413,9 @@ describe(toRelativeString.name, () => {
                     end: calculateRelativeDate(exampleFullDateUtc, {days: -8}),
                 },
                 selectAllDurationUnits,
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: '1 week, 1 day ago',
         },
@@ -320,6 +429,7 @@ describe(toRelativeString.name, () => {
                 selectAllDurationUnits,
                 {
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: '1 week ago',
@@ -332,6 +442,9 @@ describe(toRelativeString.name, () => {
                     end: calculateRelativeDate(exampleFullDateUtc, {days: 8}),
                 },
                 selectAllDurationUnits,
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: 'in 1 week, 1 day',
         },
@@ -345,20 +458,26 @@ describe(toRelativeString.name, () => {
                 selectAllDurationUnits,
                 {
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: 'in 1 week',
         },
         {
-            it: 'returns empty string if no units selected',
+            it: 'errors if no units selected',
             inputs: [
                 {
                     start: exampleFullDateUtc,
                     end: calculateRelativeDate(exampleFullDateUtc, {days: -8}),
                 },
                 {},
+                {
+                    decimalCount: 0,
+                },
             ],
-            expect: '',
+            throws: {
+                matchMessage: 'No units selected',
+            },
         },
         {
             it: 'returns just now for close seconds',
@@ -371,6 +490,9 @@ describe(toRelativeString.name, () => {
                     ...selectAllDurationUnits,
                     milliseconds: false,
                 },
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: 'just now',
         },
@@ -382,6 +504,9 @@ describe(toRelativeString.name, () => {
                     end: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 200}),
                 },
                 selectAllDurationUnits,
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: 'just now',
         },
@@ -395,6 +520,10 @@ describe(toRelativeString.name, () => {
                 {
                     ...selectAllDurationUnits,
                     seconds: false,
+                    milliseconds: false,
+                },
+                {
+                    decimalCount: 0,
                 },
             ],
             expect: 'just now',
@@ -410,6 +539,9 @@ describe(toRelativeString.name, () => {
                     ...selectAllDurationUnits,
                     milliseconds: false,
                 },
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: 'just now',
         },
@@ -418,15 +550,34 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {seconds: 12_345}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        seconds: 12_345,
+                    }),
                 },
                 selectAllDurationUnits,
                 {
-                    allowedDecimals: 1,
+                    decimalCount: 1,
                     useOnlyLargestUnit: true,
                 },
             ],
-            expect: 'in 3.4 hours',
+            expect: 'in 0.1 days',
+        },
+        {
+            it: 'rounds to a decimal point in singular values',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        seconds: 12_345,
+                    }),
+                },
+                selectAllDurationUnits,
+                {
+                    useOnlyLargestUnit: true,
+                    decimalCount: 0,
+                },
+            ],
+            expect: 'in 3 hours',
         },
         {
             it: 'blocks "just now"',
@@ -438,6 +589,7 @@ describe(toRelativeString.name, () => {
                 selectAllDurationUnits,
                 {
                     blockJustNow: true,
+                    decimalCount: 0,
                 },
             ],
             expect: 'in 200 milliseconds',
@@ -470,6 +622,7 @@ describe(toRelativeString.name, () => {
                 selectAllDurationUnits,
                 {
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: 'in 1 month',
@@ -484,6 +637,7 @@ describe(toRelativeString.name, () => {
                 selectAllDurationUnits,
                 {
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: '3 years ago',
@@ -517,11 +671,11 @@ describe(toRelativeString.name, () => {
                 {
                     ...selectAllDurationUnits,
                     milliseconds: false,
-                    quarters: false,
                 },
                 {
                     blockJustNow: true,
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: '1 minute ago',
@@ -534,6 +688,9 @@ describe(toRelativeString.name, () => {
                     start: createFullDate(1_234_567_891_011, Timezone['Africa/Banjul']),
                 },
                 selectAllDurationUnits,
+                {
+                    decimalCount: 0,
+                },
             ],
             expect: 'just now',
         },
@@ -565,6 +722,7 @@ describe(toRelativeString.name, () => {
                 selectAllDurationUnits,
                 {
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: 'in 1 month',
@@ -587,6 +745,7 @@ describe(toRelativeString.name, () => {
                 {
                     blockJustNow: true,
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: '4 months ago',
@@ -609,9 +768,33 @@ describe(toRelativeString.name, () => {
                 {
                     blockJustNow: true,
                     useOnlyLargestUnit: true,
+                    decimalCount: 0,
                 },
             ],
             expect: '3 months ago',
+        },
+        {
+            it: 'works on short time period empty string',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {seconds: 0}),
+                },
+                {
+                    years: true,
+                    months: true,
+                    days: true,
+                    hours: true,
+                    minutes: true,
+                    seconds: true,
+                },
+                {
+                    blockJustNow: true,
+                    useOnlyLargestUnit: true,
+                    decimalCount: 0,
+                },
+            ],
+            expect: '0 seconds ago',
         },
     ]);
 });

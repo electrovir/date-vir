@@ -5,11 +5,8 @@
  */
 export type RoundOptions = {
     /**
-     * Set the numbers of decimal digits to round to.
-     *
-     * Set to `0` to round off all decimal digits.
-     *
-     * Omit or set to `undefined` to turn off all rounding.
+     * The number of decimals to allow for each duration unit's value. Rounding is used to reach
+     * this number. If omitted or set to `undefined`, no rounding takes place.
      */
-    roundToDigits?: number | undefined;
+    decimalCount?: number | undefined;
 };

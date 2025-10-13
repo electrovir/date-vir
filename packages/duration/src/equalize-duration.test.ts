@@ -17,10 +17,15 @@ describe(equalizeDuration.name, () => {
                     seconds: true,
                 },
                 {
-                    roundToDigits: 0,
+                    decimalCount: 0,
                 },
             ],
-            expect: {seconds: 5_356_800, hours: 1488, weeks: 9, months: 2},
+            expect: {
+                seconds: 5_356_800,
+                hours: 1488,
+                weeks: 9,
+                months: 2,
+            },
         },
     ]);
 });

@@ -1,4 +1,5 @@
-import {type AllDurations, type Duration} from './duration.js';
+import {type IsEmptyObject} from 'type-fest';
+import {type AllDurations, type AnyDuration, type Duration} from './duration.js';
 import {type DurationUnit, orderedDurationUnits} from './units/duration-unit.js';
 
 /**
@@ -24,7 +25,9 @@ export type DurationUnitSelection = Partial<Record<DurationUnit, boolean | undef
  *
  * @category Internal
  */
-export function flattenUnitSelection(units: Readonly<DurationUnitSelection>): DurationUnit[] {
+export function flattenUnitsSmallestToLargest(
+    units: Readonly<DurationUnitSelection>,
+): DurationUnit[] {
     return orderedDurationUnits.filter((durationUnit) => units[durationUnit]);
 }
 
@@ -44,12 +47,16 @@ export type DurationBySelection<SelectedUnits extends Readonly<DurationUnitSelec
     undefined extends SelectedUnits
         ? AllDurations
         : {
-              [Unit in keyof AllDurations as Unit extends keyof SelectedUnits
-                  ? SelectedUnits[Unit] extends true
-                      ? Unit
-                      : never
-                  : never]: AllDurations[Unit];
-          };
+                [Unit in keyof AllDurations as Unit extends keyof SelectedUnits
+                    ? SelectedUnits[Unit] extends true
+                        ? Unit
+                        : never
+                    : never]: AllDurations[Unit];
+            } extends infer Value
+          ? IsEmptyObject<Value> extends true
+              ? AnyDuration
+              : Value
+          : never;
 
 /**
  * An {@link DurationUnitSelection} instance that sets all duration units to `true`.
@@ -58,7 +65,6 @@ export type DurationBySelection<SelectedUnits extends Readonly<DurationUnitSelec
  */
 export const selectAllDurationUnits = {
     years: true,
-    quarters: true,
     months: true,
     weeks: true,
     days: true,

@@ -54,7 +54,6 @@ export type Duration<DurationKeys extends DurationUnit | true> = UnionToIntersec
  */
 export const zeroDuration = {
     years: 0,
-    quarters: 0,
     months: 0,
     weeks: 0,
     days: 0,

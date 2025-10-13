@@ -1,6 +1,6 @@
 import {
     DurationUnit,
-    flattenUnitSelection,
+    flattenUnitsSmallestToLargest,
     roundDuration,
     type DurationBySelection,
     type DurationUnitSelection,
@@ -12,7 +12,6 @@ import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
 
 const conversionAccuracies: Readonly<Record<DurationUnit, ConversionAccuracy>> = {
     [DurationUnit.Years]: 'longterm',
-    [DurationUnit.Quarters]: 'longterm',
     [DurationUnit.Months]: 'longterm',
 
     [DurationUnit.Weeks]: 'casual',
@@ -38,8 +37,8 @@ function getHighestPriorityConversionAccuracy(
  * provided with the `units` input property, an array is returned with the full diff duration
  * contained in each entry in the requested unit.
  *
- * Note: when years, quarters, or months are used for the unit, "long term" durations are used to
- * calculate the diff. See more details here:
+ * Note: when years or months are used for the unit, "long term" durations are used to calculate the
+ * diff. See more details here:
  * https://moment.github.io/luxon/#/math?id=casual-vs-longterm-conversion-accuracy
  *
  * @category Calculation
@@ -94,7 +93,7 @@ export function diffDates<const SelectedUnits extends Readonly<DurationUnitSelec
     const luxonDateStart = toLuxonDateTime(start);
     const luxonDateEnd = toLuxonDateTime(end);
 
-    const selectedUnits: DurationUnit[] = flattenUnitSelection(units);
+    const selectedUnits: DurationUnit[] = flattenUnitsSmallestToLargest(units);
 
     const conversionAccuracy = getHighestPriorityConversionAccuracy(selectedUnits);
 

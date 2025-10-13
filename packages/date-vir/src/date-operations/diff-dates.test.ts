@@ -134,7 +134,6 @@ describe(diffDates.name, () => {
             ],
             expect: {
                 years: 0,
-                quarters: 0,
                 months: -2,
                 weeks: 0,
                 days: 0,
@@ -179,7 +178,12 @@ describe(diffDates.name, () => {
                         seconds: /* half a day in seconds */ 43_200,
                     }),
                 },
-                {days: true},
+                {
+                    days: true,
+                },
+                {
+                    decimalCount: 1,
+                },
             ],
             expect: {
                 days: 0.5,

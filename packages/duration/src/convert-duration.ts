@@ -1,6 +1,6 @@
 import {Duration as LuxonDuration} from 'luxon';
 import {
-    flattenUnitSelection,
+    flattenUnitsSmallestToLargest,
     type DurationBySelection,
     type DurationUnitSelection,
 } from './duration-selection.js';
@@ -13,18 +13,18 @@ import {DurationUnit} from './units/duration-unit.js';
  * need to depend on any `@augment-vir/*` packages as that would cause a circular dependency inside
  * of the `@augment-vir/*` packages.
  */
-function round(value: number, {roundToDigits}: RoundOptions): number {
-    if (roundToDigits == undefined) {
+function round(value: number, {decimalCount}: RoundOptions): number {
+    if (decimalCount == undefined) {
         return value;
     }
 
-    const digitFactor = Math.pow(10, roundToDigits);
+    const digitFactor = Math.pow(10, decimalCount);
     const multiplied = value * digitFactor;
-    return Number((Math.round(multiplied) / digitFactor).toFixed(roundToDigits));
+    return Number((Math.round(multiplied) / digitFactor).toFixed(decimalCount));
 }
 /** Round up only if the decimal is >=.9 */
 function roundNarrow(value: number): number {
-    return round(Math.max(value - 0.4, 0), {roundToDigits: 0});
+    return round(Math.max(value - 0.4, 0), {decimalCount: 0});
 }
 
 function getSign(value: number): number {
@@ -56,17 +56,17 @@ export function convertDuration<const SelectedUnits extends Readonly<DurationUni
 ): DurationBySelection<SelectedUnits> {
     const finalDuration: AnyDuration = {};
     const options: Required<RoundOptions> = {
-        roundToDigits:
-            rawOptions.roundToDigits == undefined
+        decimalCount:
+            rawOptions.decimalCount == undefined
                 ? undefined
-                : Math.round(Math.abs(rawOptions.roundToDigits)),
+                : Math.round(Math.abs(rawOptions.decimalCount)),
     };
 
     /** Handle infinite units. */
     const hasInfinity = Object.values(duration).includes(Infinity);
     const hasNegativeInfinity = Object.values(duration).includes(-Infinity);
 
-    const selectedUnits = flattenUnitSelection(units).reverse();
+    const selectedUnits = flattenUnitsSmallestToLargest(units).reverse();
 
     if (hasInfinity || hasNegativeInfinity) {
         selectedUnits.forEach((unit) => {
@@ -98,7 +98,7 @@ export function convertDuration<const SelectedUnits extends Readonly<DurationUni
             const absoluteRoundedUnitQuantity = isLastUnit
                 ? round(absoluteQuantity, options)
                 : Math.floor(
-                      options.roundToDigits == undefined
+                      options.decimalCount == undefined
                           ? absoluteQuantity
                           : roundNarrow(absoluteQuantity),
                   );
