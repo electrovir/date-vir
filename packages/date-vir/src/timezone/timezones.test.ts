@@ -11,14 +11,12 @@ describe('timezoneName object', () => {
     });
 
     it('has values equalling the keys', () => {
-        Object.entries(Timezone).forEach(
-            ([
-                key,
-                value,
-            ]) => {
-                assert.strictEquals(key, value);
-            },
-        );
+        Object.entries(Timezone).forEach(([
+            key,
+            value,
+        ]) => {
+            assert.strictEquals(key, value);
+        });
     });
 
     it('has type safety', () => {

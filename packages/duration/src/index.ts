@@ -3,6 +3,7 @@ export * from './duration-selection.js';
 export * from './duration.js';
 export * from './equalize-duration.js';
 export * from './locale.js';
+export * from './negate-duration.js';
 export * from './round-options.js';
 export * from './units/date-unit.js';
 export * from './units/day-of-week.js';
