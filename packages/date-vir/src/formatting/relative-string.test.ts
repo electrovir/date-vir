@@ -1,4 +1,5 @@
-import {describe, itCases} from '@augment-vir/test';
+import {assert} from '@augment-vir/assert';
+import {describe, it, itCases} from '@augment-vir/test';
 import {selectAllDurationUnits} from '@date-vir/duration';
 import {calculateRelativeDate} from '../date-operations/calculate-relative-date.js';
 import {createFullDate} from '../full-date/create-full-date.js';
@@ -7,6 +8,29 @@ import {Timezone, utcTimezone} from '../timezone/timezones.js';
 import {toRelativeString} from './relative-string.js';
 
 describe(toRelativeString.name, () => {
+    it('abbreviates', () => {
+        const result = toRelativeString(
+            {
+                start: exampleFullDateUtc,
+                end: calculateRelativeDate(exampleFullDateUtc, {days: -2}),
+            },
+            {
+                weeks: true,
+                hours: true,
+            },
+            {
+                abbreviate: true,
+                decimalCount: 0,
+            },
+        );
+        assert.isIn(result, [
+            /** Safari and Chrome */
+            '48 hr ago',
+            /** Firefox */
+            '48 hrs ago',
+        ]);
+    });
+
     itCases(toRelativeString, [
         {
             it: 'calculates past months',
@@ -144,24 +168,6 @@ describe(toRelativeString.name, () => {
                 },
             ],
             expect: '48 hours ago',
-        },
-        {
-            it: 'abbreviates',
-            inputs: [
-                {
-                    start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: -2}),
-                },
-                {
-                    weeks: true,
-                    hours: true,
-                },
-                {
-                    abbreviate: true,
-                    decimalCount: 0,
-                },
-            ],
-            expect: '48 hr ago',
         },
         {
             it: 'handles exact time without just now',

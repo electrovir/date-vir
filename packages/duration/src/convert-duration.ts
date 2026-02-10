@@ -144,14 +144,16 @@ export function roundDuration<InputDuration extends AnyDuration>(
     options: RoundOptions,
 ): InputDuration {
     return Object.fromEntries(
-        Object.entries(duration).map(([
-            durationUnit,
-            quantity,
-        ]): [DurationUnit, number] => {
-            return [
-                durationUnit as DurationUnit,
-                round(quantity, options),
-            ];
-        }),
+        Object.entries(duration).map(
+            ([
+                durationUnit,
+                quantity,
+            ]): [DurationUnit, number] => {
+                return [
+                    durationUnit as DurationUnit,
+                    round(quantity, options),
+                ];
+            },
+        ),
     ) as InputDuration;
 }

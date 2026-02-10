@@ -17,12 +17,14 @@ export function negateDuration<const Duration extends Readonly<AnyDuration>>(
     duration: Duration,
 ): Duration {
     return Object.fromEntries(
-        Object.entries(duration).map(([
-            key,
-            value,
-        ]) => [
-            key,
-            value == undefined ? undefined : value * -1,
-        ]),
+        Object.entries(duration).map(
+            ([
+                key,
+                value,
+            ]) => [
+                key,
+                value == undefined ? undefined : value * -1,
+            ],
+        ),
     ) as Duration;
 }
