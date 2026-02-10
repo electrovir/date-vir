@@ -35,10 +35,10 @@
     "dependencies": {
         "@types/luxon": "^3.7.1",
         "luxon": "^3.7.2",
+        "@augment-vir/assert": "^31.54.3",
         "type-fest": "^5.3.1"
     },
     "devDependencies": {
-        "@augment-vir/assert": "^31.54.3",
         "@augment-vir/test": "^31.54.3",
         "@web/dev-server-esbuild": "^1.0.4",
         "@web/test-runner": "^0.20.2",
