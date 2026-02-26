@@ -1,3 +1,5 @@
+import {DateUnit} from './date-unit.js';
+
 /**
  * All duration units supported by date-vir.
  *
@@ -49,4 +51,35 @@ export const maxDurations: Readonly<Record<DurationUnit, number>> = {
     [DurationUnit.Weeks]: 4,
     [DurationUnit.Months]: 12,
     [DurationUnit.Years]: Infinity,
+};
+
+/**
+ * A mapping from {@link DurationUnit} to {@link DateUnit}.
+ *
+ * @category Unit
+ */
+export const durationUnitToDateUnit: Readonly<Record<DurationUnit, DateUnit>> = {
+    [DurationUnit.Years]: DateUnit.Year,
+    [DurationUnit.Months]: DateUnit.Month,
+    [DurationUnit.Weeks]: DateUnit.Week,
+    [DurationUnit.Days]: DateUnit.Day,
+    [DurationUnit.Hours]: DateUnit.Hour,
+    [DurationUnit.Minutes]: DateUnit.Minute,
+    [DurationUnit.Seconds]: DateUnit.Second,
+    [DurationUnit.Milliseconds]: DateUnit.Millisecond,
+};
+/**
+ * A mapping from {@link DateUnit} to {@link DurationUnit}.
+ *
+ * @category Unit
+ */
+export const dateUnitToDurationUnit: Readonly<Record<DateUnit, DurationUnit>> = {
+    [DateUnit.Year]: DurationUnit.Years,
+    [DateUnit.Month]: DurationUnit.Months,
+    [DateUnit.Week]: DurationUnit.Weeks,
+    [DateUnit.Day]: DurationUnit.Days,
+    [DateUnit.Hour]: DurationUnit.Hours,
+    [DateUnit.Minute]: DurationUnit.Minutes,
+    [DateUnit.Second]: DurationUnit.Seconds,
+    [DateUnit.Millisecond]: DurationUnit.Milliseconds,
 };
