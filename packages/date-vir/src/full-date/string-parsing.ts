@@ -49,7 +49,9 @@ const knownStringFormats: ReadonlyArray<string> = [
  * @category Internal
  */
 export function parseDateString(dateString: string, timezone: Timezone): DateTime | undefined {
-    const isoAttempt = DateTime.fromISO(dateString, {zone: timezone});
+    const isoAttempt = DateTime.fromISO(dateString, {
+        zone: timezone,
+    });
 
     if (isoAttempt.isValid) {
         return isoAttempt;
@@ -58,7 +60,9 @@ export function parseDateString(dateString: string, timezone: Timezone): DateTim
     let finalizedDateTime: DateTime | undefined;
 
     knownStringFormats.some((format) => {
-        const dateTimeAttempt = DateTime.fromFormat(dateString.trim(), format, {zone: timezone});
+        const dateTimeAttempt = DateTime.fromFormat(dateString.trim(), format, {
+            zone: timezone,
+        });
 
         if (!dateTimeAttempt.isValid) {
             return false;

@@ -167,7 +167,10 @@ export function toRelativeString(
     });
 
     const unitCounts: Partial<Record<DurationUnit, number>> = {};
-    const isDiffPositive = convertDuration(diff, {milliseconds: true}).milliseconds >= 0;
+    const isDiffPositive =
+        convertDuration(diff, {
+            milliseconds: true,
+        }).milliseconds >= 0;
 
     largestToSmallestSelectedUnit.forEach((unit) => {
         if (options.useOnlyLargestUnit && Object.keys(unitCounts).length) {
@@ -181,7 +184,11 @@ export function toRelativeString(
         }
     });
 
-    const shouldUseJustNow = determineShouldUseJustNow({options, smallestSelectedUnit, unitCounts});
+    const shouldUseJustNow = determineShouldUseJustNow({
+        options,
+        smallestSelectedUnit,
+        unitCounts,
+    });
 
     const i18n: typeof defaultRelativeStringI18n = {
         ...defaultRelativeStringI18n,
@@ -253,9 +260,19 @@ function getRelativeStringDiff({
     >;
 }): AnyDuration {
     if (options.useOnlyLargestUnit) {
-        return findLargestDiff({datesOrDuration, largestToSmallestSelectedUnit, options});
+        return findLargestDiff({
+            datesOrDuration,
+            largestToSmallestSelectedUnit,
+            options,
+        });
     } else {
-        return createDiff(datesOrDuration, {decimalCount: undefined}, units);
+        return createDiff(
+            datesOrDuration,
+            {
+                decimalCount: undefined,
+            },
+            units,
+        );
     }
 }
 
@@ -331,9 +348,7 @@ function determineShouldUseJustNow({
 
     if (!(smallestSelectedUnit in thresholds) || Object.keys(unitCounts).length > 1) {
         return false;
-    }
-
-    if (!Object.keys(unitCounts).length || smallestSelectedUnit in unitCounts) {
+    } else if (!Object.keys(unitCounts).length || smallestSelectedUnit in unitCounts) {
         /* node:coverage disable: these fallbacks aren't required at runtime but are required for type safety. */
         /**
          * We've already verify that `smallestSelectedUnit` is in `thresholds` so the `|| 0`

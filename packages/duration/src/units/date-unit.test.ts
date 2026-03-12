@@ -13,7 +13,10 @@ describe(getDateUnitString.name, () => {
 
         assert.strictEquals(
             getDateUnitString(baseParams),
-            getDateUnitString({...baseParams, locale: userLocale}),
+            getDateUnitString({
+                ...baseParams,
+                locale: userLocale,
+            }),
         );
     });
 

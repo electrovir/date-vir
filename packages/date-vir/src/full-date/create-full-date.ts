@@ -144,7 +144,9 @@ function convertDateLikeToLuxonDateTime(
     if (DateTime.isDateTime(dateLike)) {
         return dateLike.setZone(timezone);
     } else if (check.isNumber(dateLike)) {
-        return DateTime.fromMillis(dateLike, {zone: utcTimezone}).setZone(timezone);
+        return DateTime.fromMillis(dateLike, {
+            zone: utcTimezone,
+        }).setZone(timezone);
     } else if (check.isString(dateLike)) {
         const parsedStringDate = parseDateString(dateLike, timezone);
         if (parsedStringDate) {

@@ -29,7 +29,9 @@ export function equalizeDuration<const SelectedUnits extends Readonly<DurationUn
         if (units[durationUnit]) {
             equalizedDurations[durationUnit] = convertDuration(
                 duration,
-                {[durationUnit]: true},
+                {
+                    [durationUnit]: true,
+                },
                 options,
             )[durationUnit];
         }

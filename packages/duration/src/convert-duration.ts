@@ -24,7 +24,9 @@ function round(value: number, {decimalCount}: RoundOptions): number {
 }
 /** Round up only if the decimal is >=.9 */
 function roundNarrow(value: number): number {
-    return round(Math.max(value - 0.4, 0), {decimalCount: 0});
+    return round(Math.max(value - 0.4, 0), {
+        decimalCount: 0,
+    });
 }
 
 function getSign(value: number): number {
@@ -88,9 +90,9 @@ export function convertDuration<const SelectedUnits extends Readonly<DurationUni
         if (durationUnit === DurationUnit.Milliseconds) {
             finalDuration.milliseconds = round(millisecondsRemaining, options);
         } else {
-            const rawQuantity = LuxonDuration.fromObject({milliseconds: millisecondsRemaining}).as(
-                durationUnit,
-            );
+            const rawQuantity = LuxonDuration.fromObject({
+                milliseconds: millisecondsRemaining,
+            }).as(durationUnit);
             // positive or negative
             const signModifier = Math.sign(rawQuantity);
             const absoluteQuantity = Math.abs(rawQuantity);

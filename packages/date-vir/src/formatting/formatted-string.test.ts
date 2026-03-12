@@ -12,7 +12,9 @@ describe(toLocaleString.name, () => {
             it: 'formats a string with the given locale',
             inputs: [
                 exampleFullDateUtc,
-                {locale: 'fr'},
+                {
+                    locale: 'fr',
+                },
             ],
             expect: '05/06/2023',
         },

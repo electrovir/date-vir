@@ -85,7 +85,9 @@ export function toFormattedString(
     format: string,
     localeOverride: string = userLocale,
 ): string {
-    const formattedString = toLuxonDateTime(fullDate).toFormat(format, {locale: localeOverride});
+    const formattedString = toLuxonDateTime(fullDate).toFormat(format, {
+        locale: localeOverride,
+    });
 
     return fixChromiumSpace(formattedString);
 }

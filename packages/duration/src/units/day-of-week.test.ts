@@ -5,7 +5,12 @@ import {DayOfWeekName, getDayOfTheWeekNames} from './day-of-week.js';
 
 describe(getDayOfTheWeekNames.name, () => {
     it("uses the user's locale", () => {
-        assert.deepEquals(getDayOfTheWeekNames(), getDayOfTheWeekNames({locale: userLocale}));
+        assert.deepEquals(
+            getDayOfTheWeekNames(),
+            getDayOfTheWeekNames({
+                locale: userLocale,
+            }),
+        );
     });
 
     itCases(getDayOfTheWeekNames, [

@@ -22,7 +22,9 @@ const exampleDate = {
 
 describe(calculateDatePosition.name, () => {
     function testCalculateDatePosition(...args: Parameters<typeof calculateDatePosition>) {
-        return round(calculateDatePosition(...args), {digits: 2});
+        return round(calculateDatePosition(...args), {
+            digits: 2,
+        });
     }
 
     itCases(testCalculateDatePosition, [

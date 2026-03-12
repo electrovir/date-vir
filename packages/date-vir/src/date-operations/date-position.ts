@@ -82,7 +82,11 @@ export function getStartDate<const SpecificTimezone extends Timezone>(
     if (unit === DateUnit.Week) {
         return calculateRelativeDate(
             createFullDate(
-                toLuxonDateTime(calculateRelativeDate(date, {days: 1})).startOf(unit),
+                toLuxonDateTime(
+                    calculateRelativeDate(date, {
+                        days: 1,
+                    }),
+                ).startOf(unit),
                 date.timezone,
             ),
             {
@@ -131,7 +135,11 @@ export function getEndDate<const SpecificTimezone extends Timezone>(
     if (unit === DateUnit.Week) {
         return calculateRelativeDate(
             createFullDate(
-                toLuxonDateTime(calculateRelativeDate(date, {days: 1})).endOf(unit),
+                toLuxonDateTime(
+                    calculateRelativeDate(date, {
+                        days: 1,
+                    }),
+                ).endOf(unit),
                 date.timezone,
             ),
             {
@@ -290,7 +298,10 @@ export function calculateDatePosition(
 
     const diffUnit: `${DateUnit}s` = `${calculation.get}s`;
     const diff = diffDates(
-        {start: startWithOffset, end: date},
+        {
+            start: startWithOffset,
+            end: date,
+        },
         {
             [diffUnit]: true,
         },

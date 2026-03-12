@@ -23,13 +23,25 @@ import {Timezone, utcTimezone} from '../timezone/timezones.js';
  */
 export const timePartShape = defineShape({
     /** Hour of the day in 24 time: 0-23 */
-    hour: rangeShape<Hour>({...hourBounds, default: hourBounds.min}),
+    hour: rangeShape<Hour>({
+        ...hourBounds,
+        default: hourBounds.min,
+    }),
     /** Minute of the hour: 0-59 */
-    minute: rangeShape<Minute>({...minuteBounds, default: minuteBounds.min}),
+    minute: rangeShape<Minute>({
+        ...minuteBounds,
+        default: minuteBounds.min,
+    }),
     /** Second of the minute: 0-59 */
-    second: rangeShape<Second>({...secondBounds, default: secondBounds.min}),
+    second: rangeShape<Second>({
+        ...secondBounds,
+        default: secondBounds.min,
+    }),
     /** Millisecond of the second: 0-999 */
-    millisecond: rangeShape({...millisecondsBounds, default: millisecondsBounds.min}),
+    millisecond: rangeShape({
+        ...millisecondsBounds,
+        default: millisecondsBounds.min,
+    }),
     /** The timezone that this date/time is meant for / originated from. */
     timezone: enumShape(Timezone, utcTimezone),
 });
@@ -57,9 +69,15 @@ export const datePartShape = defineShape({
      */
     year: 2023,
     /** A month of the year: 1-12 */
-    month: rangeShape<MonthNumber>({...monthNumberBounds, default: monthNumberBounds.min}),
+    month: rangeShape<MonthNumber>({
+        ...monthNumberBounds,
+        default: monthNumberBounds.min,
+    }),
     /** A day of the month: 1-31 depending on the month */
-    day: rangeShape<DayOfMonth>({...dayOfMonthBounds, default: dayOfMonthBounds.min}),
+    day: rangeShape<DayOfMonth>({
+        ...dayOfMonthBounds,
+        default: dayOfMonthBounds.min,
+    }),
     /** The timezone that this date/time is meant for / originated from. */
     timezone: enumShape(Timezone, utcTimezone),
 });

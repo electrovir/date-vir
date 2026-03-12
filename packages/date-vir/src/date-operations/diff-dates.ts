@@ -156,7 +156,9 @@ export function isDateAfter({
                 start: relativeTo,
                 end: fullDate,
             },
-            {milliseconds: true},
+            {
+                milliseconds: true,
+            },
         ).milliseconds > 0
     );
 }

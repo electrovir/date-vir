@@ -12,7 +12,9 @@ describe(toRelativeString.name, () => {
         const result = toRelativeString(
             {
                 start: exampleFullDateUtc,
-                end: calculateRelativeDate(exampleFullDateUtc, {days: -2}),
+                end: calculateRelativeDate(exampleFullDateUtc, {
+                    days: -2,
+                }),
             },
             {
                 weeks: true,
@@ -37,7 +39,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {months: -2}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        months: -2,
+                    }),
                 },
                 selectAllDurationUnits,
                 {
@@ -51,7 +55,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {months: 2}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        months: 2,
+                    }),
                 },
                 selectAllDurationUnits,
                 {
@@ -65,7 +71,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: -2}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: -2,
+                    }),
                 },
                 selectAllDurationUnits,
                 {
@@ -157,7 +165,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: -2}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: -2,
+                    }),
                 },
                 {
                     weeks: true,
@@ -215,7 +225,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {minutes: 5}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        minutes: 5,
+                    }),
                 },
                 {
                     minutes: true,
@@ -234,7 +246,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {minutes: 1}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        minutes: 1,
+                    }),
                 },
                 {
                     minutes: true,
@@ -250,7 +264,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {minutes: 50}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        minutes: 50,
+                    }),
                 },
                 {
                     minutes: true,
@@ -269,7 +285,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {seconds: 50}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        seconds: 50,
+                    }),
                 },
                 {
                     seconds: true,
@@ -289,7 +307,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {seconds: 50}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        seconds: 50,
+                    }),
                 },
                 {
                     seconds: true,
@@ -310,7 +330,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {seconds: 1}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        seconds: 1,
+                    }),
                 },
                 {
                     seconds: true,
@@ -326,7 +348,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {seconds: 100}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        seconds: 100,
+                    }),
                 },
                 {
                     seconds: true,
@@ -344,7 +368,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 5000}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        milliseconds: 5000,
+                    }),
                 },
                 {
                     milliseconds: true,
@@ -366,7 +392,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 50}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        milliseconds: 50,
+                    }),
                 },
                 {
                     milliseconds: true,
@@ -383,7 +411,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 5000}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        milliseconds: 5000,
+                    }),
                 },
                 {
                     milliseconds: true,
@@ -399,7 +429,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: 2}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: 2,
+                    }),
                 },
                 {
                     weeks: true,
@@ -416,7 +448,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: -8}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: -8,
+                    }),
                 },
                 selectAllDurationUnits,
                 {
@@ -430,7 +464,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: -8}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: -8,
+                    }),
                 },
                 selectAllDurationUnits,
                 {
@@ -445,7 +481,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: 8}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: 8,
+                    }),
                 },
                 selectAllDurationUnits,
                 {
@@ -459,7 +497,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: 8}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: 8,
+                    }),
                 },
                 selectAllDurationUnits,
                 {
@@ -474,7 +514,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: -8}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: -8,
+                    }),
                 },
                 {},
                 {
@@ -490,7 +532,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {seconds: 2}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        seconds: 2,
+                    }),
                 },
                 {
                     ...selectAllDurationUnits,
@@ -507,7 +551,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 200}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        milliseconds: 200,
+                    }),
                 },
                 selectAllDurationUnits,
                 {
@@ -521,7 +567,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {minutes: 1}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        minutes: 1,
+                    }),
                 },
                 {
                     ...selectAllDurationUnits,
@@ -539,7 +587,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 1}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        milliseconds: 1,
+                    }),
                 },
                 {
                     ...selectAllDurationUnits,
@@ -590,7 +640,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {milliseconds: 200}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        milliseconds: 200,
+                    }),
                 },
                 selectAllDurationUnits,
                 {
@@ -738,7 +790,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: -108}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: -108,
+                    }),
                 },
                 {
                     years: true,
@@ -761,7 +815,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: -84}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: -84,
+                    }),
                 },
                 {
                     years: true,
@@ -784,7 +840,9 @@ describe(toRelativeString.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {seconds: 0}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        seconds: 0,
+                    }),
                 },
                 {
                     years: true,

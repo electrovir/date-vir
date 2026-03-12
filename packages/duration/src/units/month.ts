@@ -132,7 +132,9 @@ function getAbbreviatedMonthNames(
     abbreviation: 'long' | 'short' | 'narrow',
     options: Readonly<LocaleOptions>,
 ) {
-    const formatter = new Intl.DateTimeFormat(options.locale || userLocale, {month: abbreviation});
+    const formatter = new Intl.DateTimeFormat(options.locale || userLocale, {
+        month: abbreviation,
+    });
 
     const numbered: Record<MonthNumber, string> = {} as Record<MonthNumber, string>;
     const keyed: Record<MonthName, string> = {} as Record<MonthName, string>;

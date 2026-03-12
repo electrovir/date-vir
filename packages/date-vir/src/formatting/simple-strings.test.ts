@@ -9,7 +9,10 @@ describe(toSimpleString.name, () => {
             it: 'creates most basic string',
             inputs: [
                 exampleFullDateUtc,
-                {includeSeconds: false, includeTimezone: false},
+                {
+                    includeSeconds: false,
+                    includeTimezone: false,
+                },
             ],
             expect: '2023-06-05 14:19',
         },
@@ -17,7 +20,10 @@ describe(toSimpleString.name, () => {
             it: 'includes seconds',
             inputs: [
                 exampleFullDateUtc,
-                {includeSeconds: true, includeTimezone: false},
+                {
+                    includeSeconds: true,
+                    includeTimezone: false,
+                },
             ],
             expect: '2023-06-05 14:19:07',
         },
@@ -25,7 +31,10 @@ describe(toSimpleString.name, () => {
             it: 'includes timezone',
             inputs: [
                 exampleFullDateUtc,
-                {includeSeconds: true, includeTimezone: true},
+                {
+                    includeSeconds: true,
+                    includeTimezone: true,
+                },
             ],
             expect: '2023-06-05 14:19:07 (UTC)',
         },
@@ -41,7 +50,10 @@ describe(toSimpleString.name, () => {
                     second: 6,
                     timezone: utcTimezone,
                 },
-                {includeSeconds: true, includeTimezone: true},
+                {
+                    includeSeconds: true,
+                    includeTimezone: true,
+                },
             ],
             expect: '0001-02-03 04:05:06 (UTC)',
         },
@@ -63,7 +75,9 @@ describe(toDatePartStrings.name, () => {
                     millisecond: 123,
                     timezone: utcTimezone,
                 },
-                {includeSeconds: true},
+                {
+                    includeSeconds: true,
+                },
             ],
             expect: {
                 date: '2024-04-24',
@@ -84,7 +98,9 @@ describe(toDatePartStrings.name, () => {
                     millisecond: 123,
                     timezone: utcTimezone,
                 },
-                {includeSeconds: false},
+                {
+                    includeSeconds: false,
+                },
             ],
             expect: {
                 date: '2024-04-24',

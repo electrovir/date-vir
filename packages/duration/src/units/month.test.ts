@@ -5,13 +5,20 @@ import {getMonthNames, MonthName} from './month.js';
 
 describe(getMonthNames.name, () => {
     it("uses the user's locale", () => {
-        assert.deepEquals(getMonthNames(), getMonthNames({locale: userLocale}));
+        assert.deepEquals(
+            getMonthNames(),
+            getMonthNames({
+                locale: userLocale,
+            }),
+        );
     });
 
     itCases(getMonthNames, [
         {
             it: 'gets English names',
-            input: {locale: 'en'},
+            input: {
+                locale: 'en',
+            },
             expect: {
                 long: {
                     numbered: {
@@ -149,7 +156,9 @@ describe(getMonthNames.name, () => {
         },
         {
             it: 'gets Spanish names',
-            input: {locale: 'es'},
+            input: {
+                locale: 'es',
+            },
             // cspell:disable
             expect: {
                 long: {

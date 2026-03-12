@@ -122,12 +122,9 @@ export function combineDateParts<const SpecificTimezone extends Timezone>(
             ...timePart,
             ...datePart,
         };
-    }
-
-    if (timePart) {
+    } else if (timePart) {
         return timePart;
-    }
-    if (datePart) {
+    } else if (datePart) {
         return datePart;
     }
 

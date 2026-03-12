@@ -8,8 +8,13 @@ import {utcTimezone} from '../timezone/timezones.js';
 import {calculateRelativeDate} from './calculate-relative-date.js';
 import {diffDates, isDateAfter} from './diff-dates.js';
 
-const secondsDiff = randomInteger({min: 1, max: 100_000_000});
-const exampleFullDateOffset = calculateRelativeDate(exampleFullDateUtc, {seconds: secondsDiff});
+const secondsDiff = randomInteger({
+    min: 1,
+    max: 100_000_000,
+});
+const exampleFullDateOffset = calculateRelativeDate(exampleFullDateUtc, {
+    seconds: secondsDiff,
+});
 
 describe(isDateAfter.name, () => {
     const mockDate: FullDate = {
@@ -46,7 +51,9 @@ describe(isDateAfter.name, () => {
             it: 'works with mock dates a day apart',
             input: {
                 fullDate: mockDate,
-                relativeTo: calculateRelativeDate(mockDate, {days: -1}),
+                relativeTo: calculateRelativeDate(mockDate, {
+                    days: -1,
+                }),
             },
             expect: true,
         },
@@ -54,7 +61,9 @@ describe(isDateAfter.name, () => {
             it: 'works with mock dates two days apart',
             input: {
                 fullDate: mockDate,
-                relativeTo: calculateRelativeDate(mockDate, {days: -2}),
+                relativeTo: calculateRelativeDate(mockDate, {
+                    days: -2,
+                }),
             },
             expect: true,
         },
@@ -103,7 +112,9 @@ describe(diffDates.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: -108}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: -108,
+                    }),
                 },
                 {
                     years: true,
@@ -128,7 +139,9 @@ describe(diffDates.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {months: -2}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        months: -2,
+                    }),
                 },
                 selectAllDurationUnits,
             ],
@@ -150,7 +163,9 @@ describe(diffDates.name, () => {
                     start: exampleFullDateUtc,
                     end: exampleFullDateOffset,
                 },
-                {seconds: true},
+                {
+                    seconds: true,
+                },
             ],
             expect: {
                 seconds: secondsDiff,
@@ -163,7 +178,9 @@ describe(diffDates.name, () => {
                     start: exampleFullDateOffset,
                     end: exampleFullDateUtc,
                 },
-                {seconds: true},
+                {
+                    seconds: true,
+                },
             ],
             expect: {
                 seconds: secondsDiff * -1,
@@ -212,9 +229,14 @@ describe(diffDates.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: 1.1}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: 1.1,
+                    }),
                 },
-                {hours: true, minutes: true},
+                {
+                    hours: true,
+                    minutes: true,
+                },
             ],
             expect: {
                 hours: 26,
@@ -226,9 +248,14 @@ describe(diffDates.name, () => {
             inputs: [
                 {
                     start: exampleFullDateUtc,
-                    end: calculateRelativeDate(exampleFullDateUtc, {days: 492}),
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        days: 492,
+                    }),
                 },
-                {years: true, days: true},
+                {
+                    years: true,
+                    days: true,
+                },
             ],
             expect: {
                 years: 1,
@@ -239,7 +266,9 @@ describe(diffDates.name, () => {
             it: 'calculates inverse hours and minutes diff',
             inputs: [
                 {
-                    start: calculateRelativeDate(exampleFullDateUtc, {days: 1.1}),
+                    start: calculateRelativeDate(exampleFullDateUtc, {
+                        days: 1.1,
+                    }),
                     end: exampleFullDateUtc,
                 },
                 {
@@ -262,7 +291,9 @@ describe(diffDates.name, () => {
                         start: exampleFullDateOffset,
                         end: exampleFullDateUtc,
                     },
-                    {years: true},
+                    {
+                        years: true,
+                    },
                 ),
             )
             .equals<{years: number}>();
@@ -273,7 +304,9 @@ describe(diffDates.name, () => {
                         start: exampleFullDateOffset,
                         end: exampleFullDateUtc,
                     },
-                    {seconds: true},
+                    {
+                        seconds: true,
+                    },
                 ),
             )
             .equals<{seconds: number}>();
@@ -287,7 +320,10 @@ describe(diffDates.name, () => {
                         start: exampleFullDateOffset,
                         end: exampleFullDateUtc,
                     },
-                    {days: true, hours: true},
+                    {
+                        days: true,
+                        hours: true,
+                    },
                 ),
             )
             .equals<{[DurationUnit.Days]: number; [DurationUnit.Hours]: number}>();

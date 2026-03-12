@@ -33,7 +33,9 @@ describe(getNowInIsoString.name, () => {
                 start: testFullDate,
                 end: compareFullDate,
             },
-            {seconds: true},
+            {
+                seconds: true,
+            },
         );
 
         /** Allow large diff for slow CI action runners. */
@@ -52,7 +54,9 @@ describe(getNowInUserTimezone.name, () => {
                 start: shortVersion,
                 end: longVersion,
             },
-            {minutes: true},
+            {
+                minutes: true,
+            },
         );
 
         assert.isBelow(diff.minutes, 1);
@@ -70,7 +74,9 @@ describe(getNowInUtcTimezone.name, () => {
                 start: shortVersion,
                 end: longVersion,
             },
-            {minutes: true},
+            {
+                minutes: true,
+            },
         );
 
         assert.isBelow(diff.minutes, 1);
