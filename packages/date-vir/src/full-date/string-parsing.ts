@@ -36,6 +36,10 @@ const knownStringFormats: ReadonlyArray<string> = [
     // padded hour
     // Sat, 01 Jun 2025 6:23:21 +0000
     'ccc, d LLL y HH:mm:ss ZZZ',
+    // 3/11 | 3:01pm
+    "L/d '|' h:mma",
+    // 03/11 | 03:01pm
+    "LL/dd '|' hh:mma",
 ];
 
 /**

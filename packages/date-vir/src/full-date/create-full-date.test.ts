@@ -190,6 +190,23 @@ describe(createFullDate.name, () => {
             },
         },
         {
+            it: 'handles month/day | time format',
+            inputs: [
+                '3/11 | 3:01pm',
+                utcTimezone,
+            ],
+            expect: {
+                year: 2026,
+                month: 3,
+                day: 11,
+                hour: 15,
+                minute: 1,
+                second: 0,
+                millisecond: 0,
+                timezone: utcTimezone,
+            },
+        },
+        {
             it: 'handles a full ISO string with Z for a different time zone',
             inputs: [
                 exampleIsoString,
