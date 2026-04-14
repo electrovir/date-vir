@@ -58,7 +58,14 @@ export function formatDuration(
         }
 
         const count = duration[unit];
-        if (count != undefined) {
+        if (count) {
+            if (options?.onlyLargestUnit) {
+                const decimalMultiplier = 10 ** (options.decimalCount || 0);
+                const roundedCount = Math.round(count * decimalMultiplier) / decimalMultiplier;
+                if (!roundedCount) {
+                    return;
+                }
+            }
             unitStrings.push(
                 getDateUnitString({
                     count,

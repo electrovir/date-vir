@@ -52,14 +52,14 @@ describe(formatDuration.name, () => {
             expect: '1 day and 2 hours',
         },
         {
-            it: 'includes zero values when explicitly defined',
+            it: 'omits zero values when explicitly defined',
             inputs: [
                 {
                     minutes: 5,
                     seconds: 0,
                 },
             ],
-            expect: '5 minutes 0 seconds',
+            expect: '5 minutes',
         },
         {
             it: 'skips undefined values',
@@ -100,6 +100,34 @@ describe(formatDuration.name, () => {
                 },
             ],
             expect: '3 hours',
+        },
+        {
+            it: 'returns the largest existing unit',
+            inputs: [
+                {
+                    hours: 0,
+                    minutes: 0,
+                    seconds: 15,
+                },
+                {
+                    onlyLargestUnit: true,
+                },
+            ],
+            expect: '15 seconds',
+        },
+        {
+            it: 'returns the largest rounded unit',
+            inputs: [
+                {
+                    hours: 0.1,
+                    minutes: 0,
+                    seconds: 15,
+                },
+                {
+                    onlyLargestUnit: true,
+                },
+            ],
+            expect: '15 seconds',
         },
         {
             it: 'returns the single unit with onlyLargestUnit',
