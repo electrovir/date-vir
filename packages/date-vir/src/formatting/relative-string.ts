@@ -311,10 +311,40 @@ function findLargestDiff({
         const innerDiff: AnyDuration = createDiff(datesOrDuration, options, {
             [unit]: true,
         });
+        /* node:coverage disable: the `|| 0` fallback isn't reachable since we always request `unit`. */
+        const roundedValue = Math.abs(innerDiff[unit] || 0);
+        /* node:coverage enable */
 
-        if (innerDiff[unit]) {
-            return innerDiff;
+        if (!roundedValue) {
+            continue;
         }
+
+        /**
+         * When rounding pushes a fractional value (< 1) up to an integer >= 1 it inflates the
+         * displayed unit (e.g. 0.67 years becomes "1 year" for an 8-month duration). Require the
+         * unrounded value to be close enough to the integer (>= 0.9, matching `roundNarrow`) before
+         * accepting the promotion. Values that already round below 1 (like 0.1 days with
+         * `decimalCount: 1`) still qualify.
+         */
+        if (roundedValue >= 1) {
+            const unroundedDiff = createDiff(
+                datesOrDuration,
+                {
+                    decimalCount: undefined,
+                },
+                {
+                    [unit]: true,
+                },
+            );
+            /* node:coverage disable: the `|| 0` fallback isn't reachable since we always request `unit`. */
+            const unroundedValue = Math.abs(unroundedDiff[unit] || 0);
+            /* node:coverage enable */
+            if (unroundedValue < 0.9) {
+                continue;
+            }
+        }
+
+        return innerDiff;
     }
 
     return {};

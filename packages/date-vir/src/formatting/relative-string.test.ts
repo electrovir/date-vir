@@ -653,6 +653,23 @@ describe(toRelativeString.name, () => {
             expect: 'in 200 milliseconds',
         },
         {
+            it: 'does not inflate a fractional unit across the integer boundary',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        months: 8,
+                    }),
+                },
+                selectAllDurationUnits,
+                {
+                    useOnlyLargestUnit: true,
+                    decimalCount: 0,
+                },
+            ],
+            expect: 'in 8 months',
+        },
+        {
             it: 'calculates one month away correctly',
             inputs: [
                 {
