@@ -107,8 +107,7 @@ describe(toHtmlInputString.name, () => {
                 {
                     year: 2023,
                     month: 10,
-                } as SetOptional<DatePart,
-                    'timezone'>,
+                } as SetOptional<DatePart, 'timezone'>,
                 FullDatePart.Date,
             ],
             throws: {
@@ -121,8 +120,7 @@ describe(toHtmlInputString.name, () => {
                 {
                     year: 2023,
                     day: 24,
-                } as SetOptional<DatePart,
-                    'timezone'>,
+                } as SetOptional<DatePart, 'timezone'>,
                 FullDatePart.Date,
             ],
             throws: {
@@ -135,8 +133,7 @@ describe(toHtmlInputString.name, () => {
                 {
                     month: 10,
                     day: 24,
-                } as SetOptional<DatePart,
-                    'timezone'>,
+                } as SetOptional<DatePart, 'timezone'>,
                 FullDatePart.Date,
             ],
             throws: {
@@ -149,12 +146,7 @@ describe(toHtmlInputString.name, () => {
                 {
                     hour: 12,
                     minute: 53,
-                } as SetRequired<
-                    Partial<FullDate>,
-                    | 'hour'
-                    | 'minute'
-                    | 'second'
-                >,
+                } as SetRequired<Partial<FullDate>, 'hour' | 'minute' | 'second'>,
                 FullDatePart.Time,
                 true,
             ],
@@ -167,11 +159,7 @@ describe(toHtmlInputString.name, () => {
             inputs: [
                 {
                     hour: 12,
-                } as SetRequired<
-                    Partial<FullDate>,
-                    | 'hour'
-                    | 'minute'
-                >,
+                } as SetRequired<Partial<FullDate>, 'hour' | 'minute'>,
                 FullDatePart.Time,
             ],
             throws: {
@@ -183,11 +171,7 @@ describe(toHtmlInputString.name, () => {
             inputs: [
                 {
                     minute: 53,
-                } as SetRequired<
-                    Partial<FullDate>,
-                    | 'hour'
-                    | 'minute'
-                >,
+                } as SetRequired<Partial<FullDate>, 'hour' | 'minute'>,
                 FullDatePart.Time,
             ],
             throws: {

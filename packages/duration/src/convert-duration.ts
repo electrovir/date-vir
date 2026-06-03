@@ -150,7 +150,10 @@ export function roundDuration<InputDuration extends AnyDuration>(
             ([
                 durationUnit,
                 quantity,
-            ]): [DurationUnit, number] => {
+            ]): [
+                DurationUnit,
+                number,
+            ] => {
                 return [
                     durationUnit as DurationUnit,
                     round(quantity, options),
