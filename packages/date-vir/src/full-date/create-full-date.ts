@@ -23,6 +23,8 @@ import {parseDateString} from './string-parsing.js';
  * createFullDateInUserTimezone(new Date());
  * createFullDateInUserTimezone(112300120);
  * ```
+ *
+ * @throws Error: if a valid date cannot be created.
  */
 export function createFullDateInUserTimezone(dateLike: Readonly<DateLike>): FullDate {
     return createFullDate(dateLike, userTimezone);
@@ -42,6 +44,8 @@ export function createFullDateInUserTimezone(dateLike: Readonly<DateLike>): Full
  * createUtcFullDate(new Date());
  * createUtcFullDate(112300120);
  * ```
+ *
+ * @throws Error: if a valid date cannot be created.
  */
 export function createUtcFullDate(dateLike: Readonly<DateLike>): FullDate<UtcTimezone> {
     return createFullDate(dateLike, utcTimezone);
@@ -61,6 +65,8 @@ export function createUtcFullDate(dateLike: Readonly<DateLike>): FullDate<UtcTim
  * createFullDate(new Date(), timezones['Australia/Brisbane']);
  * createFullDate(112300120, timezones['Etc/GMT-11']);
  * ```
+ *
+ * @throws Error: if a valid date cannot be created.
  */
 export function createFullDate<const SpecificTimezone extends Timezone>(
     /** The original date representation to be converted into a FullDate. */
