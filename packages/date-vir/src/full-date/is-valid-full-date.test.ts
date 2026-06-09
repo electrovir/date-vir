@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
 import {ShapeMismatchError} from 'object-shape-tester';
-import {type Timezone, type UtcTimezone, utcTimezone} from '../timezone/timezones.js';
+import {type UtcTimezone, utcTimezone} from '../timezone/timezones.js';
 import {type FullDate, fullDateShape} from './full-date-shape.js';
 import {exampleFullDateUtc, nonUtcTimezone} from './full-date.mock.js';
 import {assertValidFullDate, hasTimezone} from './is-valid-full-date.js';
@@ -20,17 +20,26 @@ describe(assertValidFullDate.name, () => {
                 it: 'rejects an invalid timezone',
                 input: {
                     ...fullDateShape.default,
-                    timezone: 'not a real timezone' as Timezone,
+                    timezone: 'not a real timezone',
                 },
                 throws: {
-                    matchMessage: '/timezone: Expected union value',
+                    matchConstructor: ShapeMismatchError,
                 },
+            },
+            {
+                it: 'accepts a legacy IANA timezone alias',
+                input: {
+                    ...fullDateShape.default,
+                    timezone: 'America/Indianapolis',
+                },
+                throws: undefined,
             },
             {
                 it: 'rejects a missing timezone object',
                 input: {
                     ...fullDateShape.default,
-                    timezone: undefined as unknown as Timezone,
+                    // @ts-expect-error: intentionally incorrect timezone, this should only allow strings
+                    timezone: undefined,
                 },
                 throws: {
                     matchConstructor: ShapeMismatchError,

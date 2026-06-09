@@ -1,5 +1,4 @@
 import {type DateTime} from 'luxon';
-import {type Timezone} from '../timezone/timezones.js';
 import {type FullDate} from './full-date-shape.js';
 
 /**
@@ -7,7 +6,7 @@ import {type FullDate} from './full-date-shape.js';
  *
  * @category Internal
  */
-export type DateLike<SpecificTimezone extends Timezone = Timezone> =
+export type DateLike<SpecificTimezone extends string = string> =
     | string
     | Date
     | number

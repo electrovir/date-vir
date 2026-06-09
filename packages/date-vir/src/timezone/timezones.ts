@@ -39,7 +39,7 @@ export const Timezone: Readonly<{
  *
  * @category Timezone
  */
-export const userTimezone = Settings.defaultZone.name as Timezone;
+export const userTimezone: string = Settings.defaultZone.name;
 /**
  * The UTC timezone.
  *

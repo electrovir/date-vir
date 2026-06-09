@@ -12,9 +12,9 @@ import {
     type MonthNumber,
     type Second,
 } from '@date-vir/duration';
-import {defineShape, enumShape, intersectShape, rangeShape} from 'object-shape-tester';
+import {defineShape, intersectShape, rangeShape} from 'object-shape-tester';
 import {type Simplify} from 'type-fest';
-import {Timezone, utcTimezone} from '../timezone/timezones.js';
+import {timezoneShape} from '../timezone/timezone-shape.js';
 
 /**
  * Time part of {@link FullDate} represented in a shape definition.
@@ -43,7 +43,7 @@ export const timePartShape = defineShape({
         default: millisecondsBounds.min,
     }),
     /** The timezone that this date/time is meant for / originated from. */
-    timezone: enumShape(Timezone, utcTimezone),
+    timezone: timezoneShape(),
 });
 
 /**
@@ -51,7 +51,7 @@ export const timePartShape = defineShape({
  *
  * @category Internal
  */
-export type TimePart<SpecificTimezone extends Timezone = Timezone> = SetRequired<
+export type TimePart<SpecificTimezone extends string = string> = SetRequired<
     Partial<FullDate<SpecificTimezone>>,
     keyof (typeof timePartShape)['runtimeType']
 >;
@@ -79,7 +79,7 @@ export const datePartShape = defineShape({
         default: dayOfMonthBounds.min,
     }),
     /** The timezone that this date/time is meant for / originated from. */
-    timezone: enumShape(Timezone, utcTimezone),
+    timezone: timezoneShape(),
 });
 
 /**
@@ -87,7 +87,7 @@ export const datePartShape = defineShape({
  *
  * @category Internal
  */
-export type DatePart<SpecificTimezone extends Timezone = Timezone> = SetRequired<
+export type DatePart<SpecificTimezone extends string = string> = SetRequired<
     Partial<FullDate<SpecificTimezone>>,
     keyof (typeof datePartShape)['runtimeType']
 >;
@@ -124,7 +124,7 @@ export const fullDateShape = defineShape(intersectShape(datePartShape, timePartS
  * };
  * ```
  */
-export type FullDate<SpecificTimezone extends Timezone = Timezone> = Simplify<
+export type FullDate<SpecificTimezone extends string = string> = Simplify<
     Overwrite<
         (typeof fullDateShape)['runtimeType'],
         {

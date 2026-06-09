@@ -1,5 +1,4 @@
 import {describe, itCases} from '@augment-vir/test';
-import {type Timezone} from '../timezone/timezones.js';
 import {fullDateShape} from './full-date-shape.js';
 import {toLuxonDateTime} from './luxon-date-time-conversion.js';
 
@@ -9,7 +8,7 @@ describe(toLuxonDateTime.name, () => {
             it: 'fails on invalid timezone',
             input: {
                 ...fullDateShape.default,
-                timezone: 'not a real time zone' as Timezone,
+                timezone: 'not a real time zone',
             },
             throws: {
                 matchConstructor: Error,
