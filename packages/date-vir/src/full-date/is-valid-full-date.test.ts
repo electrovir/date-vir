@@ -23,8 +23,17 @@ describe(assertValidFullDate.name, () => {
                     timezone: 'not a real timezone' as Timezone,
                 },
                 throws: {
-                    matchMessage: '/timezone: Expected union value',
+                    matchConstructor: ShapeMismatchError,
                 },
+            },
+            {
+                it: 'accepts a legacy IANA timezone alias',
+                input: {
+                    ...fullDateShape.default,
+                    /** Some environments (e.g. Safari) still report this legacy alias from `Intl`. */
+                    timezone: 'America/Indianapolis' as Timezone,
+                },
+                throws: undefined,
             },
             {
                 it: 'rejects a missing timezone object',

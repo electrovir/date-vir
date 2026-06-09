@@ -26,6 +26,7 @@ export * from './full-date/maybe-create-date.js';
 export * from './full-date/parsing.js';
 export * from './timezone/timezone-checks.js';
 export * from './timezone/timezone-names.js';
+export * from './timezone/timezone-shape.js';
 export * from './timezone/timezones.js';
 
 export * from '@date-vir/duration';
