@@ -8,7 +8,6 @@ import {
     assertWrapSecond,
 } from '@date-vir/duration';
 import {DateTime} from 'luxon';
-import {type Timezone} from '../timezone/timezones.js';
 import {type FullDate} from './full-date-shape.js';
 
 /**
@@ -39,7 +38,7 @@ export function toLuxonDateTime(fullDateInput: Readonly<FullDate>): DateTime<tru
  *
  * @category Internal
  */
-export function parseLuxonDateTime<const SpecificTimezone extends Timezone>(
+export function parseLuxonDateTime<const SpecificTimezone extends string>(
     dateTimeInput: Readonly<DateTime>,
     forcedTimezone?: SpecificTimezone,
 ): FullDate<SpecificTimezone> {

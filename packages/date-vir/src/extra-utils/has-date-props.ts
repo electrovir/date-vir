@@ -1,6 +1,5 @@
 import {type PartialWithUndefined, type SetRequiredAndNotNull} from '@augment-vir/common';
 import {type FullDate} from '../full-date/full-date-shape.js';
-import {type Timezone} from '../timezone/timezones.js';
 
 /**
  * Checks that the input has all the requested {@link FullDate} keys.
@@ -16,7 +15,7 @@ import {type Timezone} from '../timezone/timezones.js';
  * ```
  */
 export function hasFullDateKeys<
-    SpecificTimezone extends Timezone,
+    SpecificTimezone extends string,
     PartialFullDate extends PartialWithUndefined<FullDate<SpecificTimezone>>,
     /** A union of strings. */
     RequiredKeys extends keyof FullDate<SpecificTimezone>,
@@ -46,7 +45,7 @@ export function hasFullDateKeys<
  * ```
  */
 export function assertHasFullDateKeys<
-    SpecificTimezone extends Timezone,
+    SpecificTimezone extends string,
     PartialFullDate extends PartialWithUndefined<FullDate<SpecificTimezone>>,
     /** A union of strings. */
     RequiredKeys extends keyof FullDate<SpecificTimezone>,
