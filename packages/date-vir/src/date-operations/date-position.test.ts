@@ -4,7 +4,7 @@ import {DateUnit} from '@date-vir/duration';
 import {endTime} from '../extra-utils/end.js';
 import {zeroDate} from '../extra-utils/zero.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
-import {utcTimezone} from '../timezone/timezones.js';
+import {Timezone, utcTimezone} from '../timezone/timezones.js';
 import {calculateDatePosition, getDateUnit, getEndDate, getStartDate} from './date-position.js';
 
 const exampleDate = {
@@ -146,6 +146,45 @@ describe(getStartDate.name, () => {
                 year: exampleDate.year,
                 month: exampleDate.month,
                 timezone: exampleDate.timezone,
+            },
+        },
+        {
+            it: 'gets the start of a UTC day',
+            inputs: [
+                exampleDate,
+                DateUnit.Day,
+            ],
+            expect: {
+                ...zeroDate,
+                year: exampleDate.year,
+                month: exampleDate.month,
+                day: exampleDate.day,
+                timezone: exampleDate.timezone,
+            },
+        },
+        {
+            it: 'gets the start of a non-UTC day',
+            inputs: [
+                {
+                    year: 2024,
+                    month: 6,
+                    day: 15,
+
+                    hour: 8,
+                    minute: 30,
+                    second: 45,
+                    millisecond: 500,
+
+                    timezone: Timezone['America/New_York'],
+                },
+                DateUnit.Day,
+            ],
+            expect: {
+                ...zeroDate,
+                year: 2024,
+                month: 6,
+                day: 15,
+                timezone: Timezone['America/New_York'],
             },
         },
         {
