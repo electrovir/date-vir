@@ -83,18 +83,18 @@ describe(toHttpDateString.name, () => {
         ];
 
         for (const instant of instants) {
-            assert.strictEquals(
-                toHttpDateString(createUtcFullDate(instant)),
-                new Date(instant).toUTCString(),
-            );
+            const httpDateString: string = toHttpDateString(createUtcFullDate(instant));
+            assert.strictEquals(httpDateString, new Date(instant).toUTCString());
         }
     });
 
     it('contrasts with the ISO 8601 string for the same instant', () => {
         // The two formatters describe the same instant but in different, non-interchangeable formats.
-        assert.strictEquals(toHttpDateString(exampleFullDateUtc), 'Mon, 05 Jun 2023 14:19:07 GMT');
+        const httpDateString = toHttpDateString(exampleFullDateUtc);
+        assert.strictEquals(httpDateString, 'Mon, 05 Jun 2023 14:19:07 GMT');
         assert.strictEquals(toUtcIsoString(exampleFullDateUtc), exampleIsoString);
         assert.strictEquals(exampleIsoString, '2023-06-05T14:19:07.877Z');
+        assert.notStrictEquals(httpDateString, exampleIsoString);
     });
 });
 

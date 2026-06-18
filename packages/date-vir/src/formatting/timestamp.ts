@@ -1,7 +1,7 @@
 import {type FullDate} from '../full-date/full-date-shape.js';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
 import {utcTimezone} from '../timezone/timezones.js';
-import {type UtcIsoString} from './string-format-types.js';
+import {type HttpDateString, type UtcIsoString} from './string-format-types.js';
 
 /**
  * Convert a FullDate into a unix timestamp with milliseconds.
@@ -105,6 +105,6 @@ export function toUtcIsoString(fullDate: FullDate): UtcIsoString {
  *
  * @see {@link toUtcIsoString} for the ISO 8601 format.
  */
-export function toHttpDateString(fullDate: FullDate): string {
-    return toLuxonDateTime(fullDate).toHTTP();
+export function toHttpDateString(fullDate: FullDate): HttpDateString {
+    return toLuxonDateTime(fullDate).toHTTP() as HttpDateString;
 }
