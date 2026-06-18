@@ -5,6 +5,7 @@ import {checkValidShape, defineShape, exactShape, unionShape} from 'object-shape
 import {createFullDate} from '../full-date/create-full-date.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
+import {utcTimezone} from '../timezone/timezones.js';
 import {calculateRelativeDate} from './calculate-relative-date.js';
 import {diffDates} from './diff-dates.js';
 
@@ -92,6 +93,23 @@ export function getStartDate<const SpecificTimezone extends string>(
                 days: -1,
             },
         );
+    } else if (unit === DateUnit.Day && date.timezone === utcTimezone) {
+        /**
+         * Fast path for UTC: UTC never observes DST, so midnight always exists and the start of the
+         * day is simply the same calendar date with all time fields zeroed. This avoids a
+         * comparatively expensive Luxon round-trip.
+         *
+         * Non-UTC zones fall through to the Luxon path below because a few zones have had DST
+         * transitions at midnight (e.g. `America/Asuncion` on 2020-10-04, where midnight did not
+         * exist and `startOf('day')` is 01:00, not 00:00).
+         */
+        return {
+            ...date,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            millisecond: 0,
+        };
     } else {
         return createFullDate(toLuxonDateTime(date).startOf(unit), date.timezone);
     }
