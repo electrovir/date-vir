@@ -26,15 +26,15 @@
         "init": "tsx node_modules/@augment-vir/node/src/scripts/fix-ts-bin.script.ts",
         "lint": "virmator lint fix",
         "publish": "virmator publish npm run test:all",
-        "test": "mono-vir for-each-async npm run test",
+        "test": "mono-vir for-each npm run test",
         "test:all": "npm run compile && runstorm --names tests,spelling,format,docs,deps,lint \"npm run test:coverage\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:deps\" \"npm run test:lint\"",
-        "test:coverage": "mono-vir for-each-async npm run test:coverage",
+        "test:coverage": "mono-vir for-each npm run test:coverage",
         "test:deps": "virmator deps check",
         "test:docs": "NODE_OPTIONS=\"--import tsx\" virmator docs check",
         "test:format": "virmator format check",
         "test:lint": "virmator lint",
         "test:spelling": "virmator spellcheck",
-        "test:update": "mono-vir for-each-async npm run test:update"
+        "test:update": "mono-vir for-each npm run test:update"
     },
     "overrides": {
         "@playwright/test": "1.60.0",
