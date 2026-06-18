@@ -1,12 +1,6 @@
 import {assertWrap, check} from '@augment-vir/assert';
 import {stringify} from '@augment-vir/common';
-import {
-    DateUnit,
-    type Hour,
-    type Minute,
-    type Second,
-    oneIndexedDateUnits,
-} from '@date-vir/duration';
+import {DateUnit, oneIndexedDateUnits} from '@date-vir/duration';
 import {checkValidShape, defineShape, exactShape, unionShape} from 'object-shape-tester';
 import {createFullDate} from '../full-date/create-full-date.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
@@ -111,9 +105,9 @@ export function getStartDate<const SpecificTimezone extends string>(
          */
         return {
             ...date,
-            hour: 0 as Hour,
-            minute: 0 as Minute,
-            second: 0 as Second,
+            hour: 0,
+            minute: 0,
+            second: 0,
             millisecond: 0,
         };
     } else {
