@@ -1,0 +1,40 @@
+{
+    "name": "scripts",
+    "version": "8.5.1",
+    "private": true,
+    "homepage": "https://github.com/electrovir/date-vir",
+    "bugs": {
+        "url": "https://github.com/electrovir/date-vir/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/date-vir.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "sideEffects": false,
+    "type": "module",
+    "scripts": {
+        "compile": "virmator compile",
+        "test": "virmator test node",
+        "test:coverage": "npm run test"
+    },
+    "dependencies": {
+        "@augment-vir/assert": "^31.73.1",
+        "date-vir": "^8.5.1"
+    },
+    "devDependencies": {
+        "@augment-vir/test": "^31.73.1",
+        "@types/node": "^25.9.3",
+        "c8": "^11.0.0",
+        "istanbul-smart-text-reporter": "^1.1.5",
+        "tsx": "^4.22.4",
+        "typescript": "^6.0.3"
+    },
+    "engines": {
+        "node": ">=22"
+    }
+}

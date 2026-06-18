@@ -254,9 +254,9 @@ describe(roundDuration.name, () => {
     });
 
     const durationWithDecimals: AnyDuration = {
-        days: 5.342_132_1,
-        hours: 3.124_134_5,
-        milliseconds: 9.758_923,
+        days: 5.3421321,
+        hours: 3.1241345,
+        milliseconds: 9.758923,
     };
 
     itCases(roundDuration, [

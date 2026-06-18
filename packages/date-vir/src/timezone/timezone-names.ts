@@ -1,8 +1,8 @@
 /**
  * All valid timezone names.
  *
- * The list of timezone names was generated from Firefox 106.0.2 (which gave me the longest list out
- * of all the browsers I had available to me) with the following code:
+ * The list of timezone names was originally generated from Firefox 106.0.2 (which gave me the
+ * longest list out of all the browsers I had available to me) with the following code:
  *
  * ```ts
  * Intl.supportedValuesOf('timeZone')
@@ -335,11 +335,7 @@ export const allTimezoneNames = [
     'Australia/Melbourne',
     'Australia/Perth',
     'Australia/Sydney',
-    'CET',
-    'CST6CDT',
-    'EET',
     'EST',
-    'EST5EDT',
     'Etc/GMT+1',
     'Etc/GMT+10',
     'Etc/GMT+11',
@@ -434,10 +430,7 @@ export const allTimezoneNames = [
     'Indian/Mauritius',
     'Indian/Mayotte',
     'Indian/Reunion',
-    'MET',
     'MST',
-    'MST7MDT',
-    'PST8PDT',
     'Pacific/Apia',
     'Pacific/Auckland',
     'Pacific/Bougainville',
@@ -479,5 +472,4 @@ export const allTimezoneNames = [
     'Pacific/Wake',
     'Pacific/Wallis',
     'UTC',
-    'WET',
 ] as const;
