@@ -8,7 +8,7 @@ import {
     nonUtcTimezone,
 } from '../full-date/full-date.mock.js';
 import {utcTimezone} from '../timezone/timezones.js';
-import {toHttpDateString, toTimestamp, toUtcIsoString} from './timestamp.js';
+import {createUtcIsoString, toHttpDateString, toTimestamp, toUtcIsoString} from './timestamp.js';
 
 describe(toUtcIsoString.name, () => {
     itCases(toUtcIsoString, [
@@ -35,6 +35,43 @@ describe(toUtcIsoString.name, () => {
                 timezone: utcTimezone,
             },
             expect: '2024-01-05T01:01:01.001Z',
+        },
+    ]);
+});
+
+describe(createUtcIsoString.name, () => {
+    itCases(createUtcIsoString, [
+        {
+            it: 'creates a UTC ISO string from a UTC FullDate',
+            inputs: [
+                exampleFullDateUtc,
+                utcTimezone,
+            ],
+            expect: exampleIsoString,
+        },
+        {
+            it: 'creates the same ISO string regardless of the input timezone',
+            inputs: [
+                exampleTimestamp,
+                nonUtcTimezone,
+            ],
+            expect: exampleIsoString,
+        },
+        {
+            it: 'works on the example',
+            inputs: [
+                'June 1, 2024',
+                utcTimezone,
+            ],
+            expect: '2024-06-01T00:00:00.000Z',
+        },
+        {
+            it: 'returns an already-UTC ISO string unchanged',
+            inputs: [
+                exampleIsoString,
+                utcTimezone,
+            ],
+            expect: exampleIsoString,
         },
     ]);
 });
