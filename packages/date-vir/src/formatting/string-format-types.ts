@@ -81,3 +81,74 @@ export function isValidIsoString(input: unknown): input is UtcIsoString {
     const datetime = DateTime.fromISO(input as any);
     return datetime.toUTC().toISO() === input;
 }
+
+/**
+ * The abbreviated day-of-week names used by the RFC 1123 / HTTP-date format.
+ *
+ * @category Internal
+ */
+export type HttpDateDayName = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
+// cspell:ignore Thu
+/**
+ * The abbreviated month names used by the RFC 1123 / HTTP-date format.
+ *
+ * @category Internal
+ */
+export type HttpDateMonthName =
+    | 'Jan'
+    | 'Feb'
+    | 'Mar'
+    | 'Apr'
+    | 'May'
+    | 'Jun'
+    | 'Jul'
+    | 'Aug'
+    | 'Sep'
+    | 'Oct'
+    | 'Nov'
+    | 'Dec';
+
+/**
+ * A full RFC 1123 / HTTP-date string in GMT: `Wed, 21 Oct 2015 07:28:00 GMT`. This is the format
+ * used by HTTP headers (per RFC 9110) and produced by `Date.prototype.toUTCString()`. It is the RFC
+ * 1123 counterpart to {@link UtcIsoString}.
+ *
+ * @category Formatting
+ * @see
+ * - https://www.rfc-editor.org/rfc/rfc9110#section-5.6.7
+ * - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toUTCString
+ */
+export type HttpDateString =
+    `${HttpDateDayName}, ${number} ${HttpDateMonthName} ${number} ${JustTimeWithSecondsString} GMT`;
+
+/**
+ * A shape definition for {@link HttpDateString}.
+ *
+ * @category Formatting
+ */
+export const httpDateStringShape = createCustomShape<HttpDateString>({
+    default: new Date().toUTCString() as HttpDateString,
+    name: 'HttpDateString',
+    checkValue(value) {
+        return isValidHttpDateString(value);
+    },
+});
+
+/**
+ * Checks if the input is a valid RFC 1123 / HTTP-date string and type guards the input.
+ *
+ * @category Formatting
+ * @category Assertion
+ * @example
+ *
+ * ```ts
+ * import {isValidHttpDateString} from 'date-vir';
+ *
+ * isValidHttpDateString('no'); // `false`
+ * isValidHttpDateString('Wed, 21 Oct 2015 07:28:00 GMT'); // `true`
+ * ```
+ */
+export function isValidHttpDateString(input: unknown): input is HttpDateString {
+    const datetime = DateTime.fromHTTP(input as any);
+    return datetime.toUTC().toHTTP() === input;
+}
