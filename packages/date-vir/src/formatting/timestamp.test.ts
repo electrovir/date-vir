@@ -43,34 +43,22 @@ describe(createUtcIsoString.name, () => {
     itCases(createUtcIsoString, [
         {
             it: 'creates a UTC ISO string from a UTC FullDate',
-            inputs: [
-                exampleFullDateUtc,
-                utcTimezone,
-            ],
+            input: exampleFullDateUtc,
             expect: exampleIsoString,
         },
         {
-            it: 'creates the same ISO string regardless of the input timezone',
-            inputs: [
-                exampleTimestamp,
-                nonUtcTimezone,
-            ],
+            it: 'creates a UTC ISO string from a numeric timestamp',
+            input: exampleTimestamp,
             expect: exampleIsoString,
         },
         {
-            it: 'works on the example',
-            inputs: [
-                'June 1, 2024',
-                utcTimezone,
-            ],
+            it: 'interprets a bare date string as UTC',
+            input: 'June 1, 2024',
             expect: '2024-06-01T00:00:00.000Z',
         },
         {
             it: 'returns an already-UTC ISO string unchanged',
-            inputs: [
-                exampleIsoString,
-                utcTimezone,
-            ],
+            input: exampleIsoString,
             expect: exampleIsoString,
         },
     ]);

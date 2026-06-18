@@ -1,8 +1,8 @@
-import {createFullDate} from '../full-date/create-full-date.js';
+import {createUtcFullDate} from '../full-date/create-full-date.js';
 import {type DateLike} from '../full-date/date-like.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
-import {userTimezone, utcTimezone} from '../timezone/timezones.js';
+import {utcTimezone} from '../timezone/timezones.js';
 import {type HttpDateString, type UtcIsoString} from './string-format-types.js';
 
 /**
@@ -75,18 +75,18 @@ export function toUtcIsoString(fullDate: FullDate): UtcIsoString {
 }
 
 /**
- * Parse the given {@link DateLike} (interpreted in the given timezone) and convert it directly into
- * a UTC ISO 8601 string, always ending in Z (for example `'2024-01-05T01:01:01.001Z'`). This is a
- * shorthand for `toUtcIsoString(createFullDate(dateLike, timezone))`.
+ * Parse the given {@link DateLike} and convert it directly into a UTC ISO 8601 string, always ending
+ * in Z (for example `'2024-01-05T01:01:01.001Z'`). The input is always interpreted as UTC time.
+ * This is a shorthand for `toUtcIsoString(createUtcFullDate(dateLike))`.
  *
  * @category ISO
  * @category Formatting
  * @example
  *
  * ```ts
- * import {createUtcIsoString, utcTimezone} from 'date-vir';
+ * import {createUtcIsoString} from 'date-vir';
  *
- * createUtcIsoString('June 1, 2024', utcTimezone);
+ * createUtcIsoString('June 1, 2024');
  * createUtcIsoString(new Date());
  * ```
  *
@@ -96,10 +96,8 @@ export function toUtcIsoString(fullDate: FullDate): UtcIsoString {
 export function createUtcIsoString(
     /** The original date representation to be converted into a UTC ISO string. */
     dateLike: Readonly<DateLike>,
-    /** The timezone that this date/time is meant for / originated from. */
-    timezone: string = userTimezone,
 ): UtcIsoString {
-    return toUtcIsoString(createFullDate(dateLike, timezone));
+    return toUtcIsoString(createUtcFullDate(dateLike));
 }
 
 /**
