@@ -1,3 +1,5 @@
+/* eslint-disable @virmator/prefer-params-object */
+
 import {type PartialWithUndefined} from '@augment-vir/common';
 import {userLocale} from '@date-vir/duration';
 import {type FullDate} from '../full-date/full-date-shape.js';

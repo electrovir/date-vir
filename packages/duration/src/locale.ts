@@ -3,7 +3,7 @@
  *
  * @category Util
  */
-export const userLocale = Intl.DateTimeFormat().resolvedOptions().locale;
+export const userLocale = new Intl.DateTimeFormat().resolvedOptions().locale;
 
 /**
  * Options for setting locale for string formatting purposes.

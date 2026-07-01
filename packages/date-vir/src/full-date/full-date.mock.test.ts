@@ -12,13 +12,13 @@ import {
 } from './full-date.mock.js';
 
 describe('nonUserTimezone', () => {
-    it('should not be the user time zone', () => {
+    it('is not the user time zone', () => {
         assert.notStrictEquals(nonUserTimezone, userTimezone);
     });
 });
 
 describe('nonUtcTimezone', () => {
-    it('should not be the utc time zone', () => {
+    it('is not the utc time zone', () => {
         assert.notStrictEquals(nonUtcTimezone, utcTimezone);
     });
 });
@@ -30,7 +30,7 @@ describe('exampleUtcFullDate', () => {
 });
 
 describe('example dates', () => {
-    it('should all be equal', () => {
+    it('are all equal', () => {
         const fromString = createFullDate(exampleIsoString, fullDateShape.default.timezone);
         const fromTimestamp = createFullDate(exampleTimestamp, fullDateShape.default.timezone);
 

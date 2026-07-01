@@ -11,7 +11,7 @@ import {type Timezone} from './timezones.js';
  */
 function isConstructableInEnvironment(timezoneName: string): boolean {
     try {
-        Intl.DateTimeFormat('en-US', {
+        new Intl.DateTimeFormat('en-US', {
             timeZone: timezoneName,
             timeZoneName: 'longOffset',
         });

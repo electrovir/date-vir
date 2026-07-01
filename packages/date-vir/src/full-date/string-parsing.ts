@@ -1,3 +1,5 @@
+/* eslint-disable @virmator/prefer-params-object */
+
 import {DateTime} from 'luxon';
 
 /**

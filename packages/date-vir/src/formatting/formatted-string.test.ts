@@ -50,7 +50,7 @@ describe(toLocaleString.name, () => {
 describe(toFormattedString.name, () => {
     itCases(toFormattedString, [
         {
-            it: 'should produce a string of arbitrary formatting',
+            it: 'produces a string of arbitrary formatting',
             inputs: [
                 exampleFullDateUtc,
                 'MMM-yyyy',

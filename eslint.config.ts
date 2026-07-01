@@ -17,6 +17,17 @@ export default [
              * Turn off or on specific rules. See {@link defineEslintConfig} for which plugins are
              * already enabled.
              */
+            '@virmator/no-raw-date': 'off',
+            '@virmator/assertions-in-tests': [
+                'error',
+                {
+                    additionalAssertionNames: [
+                        'assertValidTimezone',
+                        'assertValidFullDate',
+                        'assertHasFullDateKeys',
+                    ],
+                },
+            ],
         },
     },
 ];

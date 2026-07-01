@@ -9,7 +9,7 @@ import {allTimezoneNames} from 'date-vir';
  */
 function isConstructableInEnvironment(timezoneName: string): boolean {
     try {
-        Intl.DateTimeFormat('en-US', {
+        new Intl.DateTimeFormat('en-US', {
             timeZone: timezoneName,
             timeZoneName: 'longOffset',
         });
