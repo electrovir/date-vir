@@ -18,16 +18,6 @@ export default [
              * already enabled.
              */
             '@virmator/no-raw-date': 'off',
-            '@virmator/assertions-in-tests': [
-                'error',
-                {
-                    additionalAssertionNames: [
-                        'assertValidTimezone',
-                        'assertValidFullDate',
-                        'assertHasFullDateKeys',
-                    ],
-                },
-            ],
         },
     },
 ];
