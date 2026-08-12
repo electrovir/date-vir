@@ -5,7 +5,7 @@ import {checkValidShape, defineShape, exactShape, unionShape} from 'object-shape
 import {createFullDate} from '../full-date/create-full-date.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
 import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
-import {utcTimezone} from '../timezone/timezones.js';
+import {utcTimezone, type Timezone} from '../timezone/timezones.js';
 import {calculateRelativeDate} from './calculate-relative-date.js';
 import {diffDates} from './diff-dates.js';
 
@@ -71,7 +71,7 @@ export function getDateUnit(date: Readonly<FullDate>, unit: DateUnit): number {
  * ); // outputs {year: 2024, month: 11, day: 1, hour: 0, minute: 0, second: 0, millisecond: 0, timezone: utcTimezone}
  * ```
  */
-export function getStartDate<const SpecificTimezone extends string>(
+export function getStartDate<const SpecificTimezone extends Timezone>(
     date: Readonly<FullDate<SpecificTimezone>>,
     unit: DateUnit,
 ): FullDate<SpecificTimezone> {
@@ -141,7 +141,7 @@ export function getStartDate<const SpecificTimezone extends string>(
  * ); // outputs {year: 2024, month: 11, day: 30, hour: 23, minute: 59, second: 59, millisecond: 999, timezone: utcTimezone}
  * ```
  */
-export function getEndDate<const SpecificTimezone extends string>(
+export function getEndDate<const SpecificTimezone extends Timezone>(
     date: Readonly<FullDate<SpecificTimezone>>,
     unit: DateUnit,
 ): FullDate<SpecificTimezone> {
