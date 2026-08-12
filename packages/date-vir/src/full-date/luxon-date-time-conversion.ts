@@ -1,4 +1,4 @@
-import {omitObjectKeys} from '@augment-vir/common';
+import {applyBrand, omitObjectKeys} from '@augment-vir/common';
 import {
     assertWrapDayOfMonth,
     assertWrapHour,
@@ -8,6 +8,7 @@ import {
     assertWrapSecond,
 } from '@date-vir/duration';
 import {DateTime} from 'luxon';
+import {type Timezone, type TimezoneString} from '../timezone/timezones.js';
 import {type FullDate} from './full-date-shape.js';
 
 /**
@@ -38,13 +39,19 @@ export function toLuxonDateTime(fullDateInput: Readonly<FullDate>): DateTime<tru
  *
  * @category Internal
  */
-export function parseLuxonDateTime<const SpecificTimezone extends string>(
+export function parseLuxonDateTime<const SpecificTimezone extends Timezone>(
     dateTimeInput: Readonly<DateTime>,
     forcedTimezone?: SpecificTimezone,
 ): FullDate<SpecificTimezone> {
     if (!dateTimeInput.isValid) {
         throw new Error(`Invalid input: '${dateTimeInput.toISO()}'`);
     }
+
+    const zoneName = dateTimeInput.zoneName;
+    if (zoneName == undefined) {
+        throw new Error('Valid Luxon dates must have a timezone.');
+    }
+    const brandedZoneName = applyBrand<TimezoneString>(zoneName);
 
     return {
         day: assertWrapDayOfMonth(dateTimeInput.day),
@@ -54,6 +61,6 @@ export function parseLuxonDateTime<const SpecificTimezone extends string>(
         minute: assertWrapMinute(dateTimeInput.minute),
         second: assertWrapSecond(dateTimeInput.second),
         millisecond: assertWrapMillisecond(dateTimeInput.millisecond),
-        timezone: forcedTimezone ?? (dateTimeInput.zoneName as SpecificTimezone),
+        timezone: forcedTimezone ?? (brandedZoneName as SpecificTimezone),
     };
 }

@@ -82,7 +82,7 @@ describe(toDatePartStrings.name, () => {
             expect: {
                 date: '2024-04-24',
                 time: '06:04:09',
-                timezone: 'UTC',
+                timezone: utcTimezone,
             },
         },
         {
@@ -105,7 +105,7 @@ describe(toDatePartStrings.name, () => {
             expect: {
                 date: '2024-04-24',
                 time: '06:04',
-                timezone: 'UTC',
+                timezone: utcTimezone,
             },
         },
     ]);

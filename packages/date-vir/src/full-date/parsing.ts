@@ -1,5 +1,6 @@
 import {check} from '@augment-vir/assert';
 import {DateTime} from 'luxon';
+import {type Timezone} from '../timezone/timezones.js';
 import {createFullDate} from './create-full-date.js';
 import {type FullDate} from './full-date-shape.js';
 import {parseLuxonDateTime} from './luxon-date-time-conversion.js';
@@ -16,7 +17,7 @@ import {parseLuxonDateTime} from './luxon-date-time-conversion.js';
  *
  * @category FullDate
  */
-export function parseDateStringWithPattern<const SpecificTimezone extends string>({
+export function parseDateStringWithPattern<const SpecificTimezone extends Timezone>({
     dateString,
     formatString,
     timezone,
@@ -50,7 +51,7 @@ export function parseDateStringWithPattern<const SpecificTimezone extends string
  * @category FullDate
  * @category HTML
  */
-export function parseInputElementValue<const SpecificTimezone extends string>(
+export function parseInputElementValue<const SpecificTimezone extends Timezone>(
     elementOrValue: Readonly<Pick<HTMLInputElement, 'value'>> | string | null | undefined,
     timezone: SpecificTimezone,
 ): FullDate<SpecificTimezone> | undefined {

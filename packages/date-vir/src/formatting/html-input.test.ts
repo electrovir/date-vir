@@ -5,7 +5,7 @@ import {createFullDate, toNewTimezone} from '../full-date/create-full-date.js';
 import {FullDatePart} from '../full-date/full-date-parts.js';
 import {type DatePart, type FullDate} from '../full-date/full-date-shape.js';
 import {exampleFullDateUtc} from '../full-date/full-date.mock.js';
-import {Timezone, utcTimezone} from '../timezone/timezones.js';
+import {TimezoneName, utcTimezone} from '../timezone/timezones.js';
 import {toHtmlInputString} from './html-input.js';
 import {
     type DateTimeString,
@@ -28,7 +28,7 @@ describe(toHtmlInputString.name, () => {
         {
             it: 'creates date strings in shifted timezones',
             inputs: [
-                toNewTimezone(exampleFullDateUtc, Timezone['America/Chicago']),
+                toNewTimezone(exampleFullDateUtc, TimezoneName['America/Chicago']),
                 FullDatePart.Date,
             ],
             expect: '2023-06-05',
@@ -39,7 +39,7 @@ describe(toHtmlInputString.name, () => {
                 createFullDate(
                     '2023-06-05T14:19:00.870Z',
                     // this timezone will create a date that is a day later
-                    Timezone['Etc/GMT-11'],
+                    TimezoneName['Etc/GMT-11'],
                 ),
                 FullDatePart.Date,
             ],
@@ -203,7 +203,7 @@ describe(toHtmlInputString.name, () => {
                 createFullDate(
                     '2023-06-05T14:19:03.870Z',
                     // this timezone will create a date that is a day later
-                    Timezone['Etc/GMT-11'],
+                    TimezoneName['Etc/GMT-11'],
                 ),
                 FullDatePart.Time,
                 true,

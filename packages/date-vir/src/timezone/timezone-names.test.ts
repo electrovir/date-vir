@@ -2,14 +2,14 @@ import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {Info} from 'luxon';
 import {allTimezoneNames} from './timezone-names.js';
-import {type Timezone} from './timezones.js';
+import {type Timezone, type TimezoneName} from './timezones.js';
 
 /**
  * Probes the current JS environment (here: the test browser) for whether it accepts the given
  * timezone. `Intl.DateTimeFormat` throws a `RangeError` for any timezone the environment doesn't
  * recognize, so a successful construction means the environment considers it valid.
  */
-function isConstructableInEnvironment(timezoneName: string): boolean {
+function isConstructableInEnvironment(timezoneName: Timezone): boolean {
     try {
         new Intl.DateTimeFormat('en-US', {
             timeZone: timezoneName,
@@ -24,7 +24,7 @@ function isConstructableInEnvironment(timezoneName: string): boolean {
 describe('allTimezoneNames', () => {
     it('has all valid time zone names', () => {
         allTimezoneNames.forEach((timezoneName) => {
-            assert.tsType(timezoneName).equals<Timezone>;
+            assert.tsType(timezoneName).equals<TimezoneName>;
             if (!Info.isValidIANAZone(timezoneName)) {
                 throw new Error(`'${timezoneName}' is not a valid time zone`);
             }

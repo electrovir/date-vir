@@ -84,7 +84,7 @@ describe(diffDates.name, () => {
                         minute: 1,
                         second: 1,
                         millisecond: 1,
-                        timezone: 'UTC',
+                        timezone: utcTimezone,
                     },
                     end: {
                         year: 2024,
@@ -94,7 +94,7 @@ describe(diffDates.name, () => {
                         minute: 1,
                         second: 1,
                         millisecond: 1,
-                        timezone: 'UTC',
+                        timezone: utcTimezone,
                     },
                 },
                 {

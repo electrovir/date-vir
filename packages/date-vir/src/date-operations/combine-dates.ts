@@ -7,13 +7,14 @@ import {
     datePartShape,
     timePartShape,
 } from '../full-date/full-date-shape.js';
+import {type Timezone} from '../timezone/timezones.js';
 
 /**
  * An object containing date and/or time parts or neither. Used for {@link combineDateParts}
  *
  * @category Internal
  */
-export type MaybeDateParts<SpecificTimezone extends string> = Partial<{
+export type MaybeDateParts<SpecificTimezone extends Timezone> = Partial<{
     [FullDatePart.Date]:
         | DatePart<SpecificTimezone>
         | undefined
@@ -29,14 +30,14 @@ export type MaybeDateParts<SpecificTimezone extends string> = Partial<{
  *
  * @category Internal
  */
-export type MaybeDatePart<SpecificTimezone extends string> =
+export type MaybeDatePart<SpecificTimezone extends Timezone> =
     | FullDate<SpecificTimezone>
     | Partial<FullDate<SpecificTimezone>>
     | DatePart<SpecificTimezone>
     | TimePart<SpecificTimezone>
     | undefined;
 
-export function combineDateParts<const SpecificTimezone extends string>(maybeDateParts: {
+export function combineDateParts<const SpecificTimezone extends Timezone>(maybeDateParts: {
     [FullDatePart.Date]: DatePart<SpecificTimezone>;
     [FullDatePart.Time]: TimePart<SpecificTimezone>;
 }): FullDate<SpecificTimezone>;
@@ -44,29 +45,29 @@ export function combineDateParts(maybeDateParts: {
     [FullDatePart.Date]?: undefined;
     [FullDatePart.Time]?: undefined;
 }): undefined;
-export function combineDateParts<const SpecificTimezone extends string>(maybeDateParts: {
+export function combineDateParts<const SpecificTimezone extends Timezone>(maybeDateParts: {
     [FullDatePart.Date]: DatePart<SpecificTimezone>;
     [FullDatePart.Time]?: undefined;
 }): DatePart<SpecificTimezone>;
-export function combineDateParts<const SpecificTimezone extends string>(maybeDateParts: {
+export function combineDateParts<const SpecificTimezone extends Timezone>(maybeDateParts: {
     [FullDatePart.Date]: DatePart<SpecificTimezone>;
     [FullDatePart.Time]?:
         | TimePart<SpecificTimezone>
         | undefined
         | Partial<FullDate<SpecificTimezone>>;
 }): FullDate<SpecificTimezone> | DatePart<SpecificTimezone>;
-export function combineDateParts<const SpecificTimezone extends string>(maybeDateParts: {
+export function combineDateParts<const SpecificTimezone extends Timezone>(maybeDateParts: {
     [FullDatePart.Date]?: undefined;
     [FullDatePart.Time]: TimePart<SpecificTimezone>;
 }): TimePart<SpecificTimezone>;
-export function combineDateParts<const SpecificTimezone extends string>(maybeDateParts: {
+export function combineDateParts<const SpecificTimezone extends Timezone>(maybeDateParts: {
     [FullDatePart.Date]?:
         | DatePart<SpecificTimezone>
         | undefined
         | Partial<FullDate<SpecificTimezone>>;
     [FullDatePart.Time]: TimePart<SpecificTimezone>;
 }): FullDate<SpecificTimezone> | TimePart<SpecificTimezone>;
-export function combineDateParts<const SpecificTimezone extends string>(
+export function combineDateParts<const SpecificTimezone extends Timezone>(
     maybeDateParts: MaybeDateParts<SpecificTimezone>,
 ): MaybeDatePart<SpecificTimezone>;
 /**
@@ -76,7 +77,7 @@ export function combineDateParts<const SpecificTimezone extends string>(
  *
  * @category Util
  */
-export function combineDateParts<const SpecificTimezone extends string>(
+export function combineDateParts<const SpecificTimezone extends Timezone>(
     maybeDateParts: MaybeDateParts<SpecificTimezone>,
 ): MaybeDatePart<SpecificTimezone> {
     const timePart: TimePart<SpecificTimezone> | undefined = checkValidShape(
