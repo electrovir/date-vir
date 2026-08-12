@@ -1,3 +1,4 @@
+import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {assertValidShape, defineShape, exactShape} from 'object-shape-tester';
 import {type ReadonlyDeep} from 'type-fest';
@@ -70,6 +71,7 @@ describe('FullDate', () => {
         function acceptDate(date: ReadonlyDeep<FullDate>) {}
 
         acceptDate(myShape.default.gitBranch.commitDate);
+        assert.tsType(myShape.default.gitBranch.commitDate).matches<ReadonlyDeep<FullDate>>();
     });
 
     it('is composable', () => {

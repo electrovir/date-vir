@@ -33,8 +33,9 @@ describe(combineDateParts.name, () => {
                 getObjectTypedKeys(datePartShape.default).filter(
                     (
                         key,
-                    ): key is Exclude<keyof (typeof datePartShape)['runtimeType'], 'timezone'> =>
-                        key !== 'timezone',
+                    ): key is Exclude<keyof (typeof datePartShape)['runtimeType'], 'timezone'> => {
+                        return key !== 'timezone';
+                    },
                 ),
             ),
         },
@@ -48,8 +49,9 @@ describe(combineDateParts.name, () => {
                 getObjectTypedKeys(timePartShape.default).filter(
                     (
                         key,
-                    ): key is Exclude<keyof (typeof timePartShape)['runtimeType'], 'timezone'> =>
-                        key !== 'timezone',
+                    ): key is Exclude<keyof (typeof timePartShape)['runtimeType'], 'timezone'> => {
+                        return key !== 'timezone';
+                    },
                 ),
             ),
         },

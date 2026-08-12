@@ -125,7 +125,7 @@ export function combineDateParts<const SpecificTimezone extends string>(
         return timePart;
     } else if (datePart) {
         return datePart;
+    } else {
+        return undefined;
     }
-
-    return undefined;
 }

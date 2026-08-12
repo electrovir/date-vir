@@ -393,7 +393,7 @@ function determineShouldUseJustNow({
         /* node:coverage enable */
 
         return unitValue <= unitThreshold;
+    } else {
+        return false;
     }
-
-    return false;
 }

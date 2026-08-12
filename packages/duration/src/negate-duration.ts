@@ -21,10 +21,12 @@ export function negateDuration<const Duration extends Readonly<AnyDuration>>(
             ([
                 key,
                 value,
-            ]) => [
-                key,
-                value == undefined ? undefined : value * -1,
-            ],
+            ]) => {
+                return [
+                    key,
+                    value == undefined ? undefined : value * -1,
+                ];
+            },
         ),
     ) as Duration;
 }

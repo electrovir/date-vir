@@ -1,6 +1,6 @@
 {
     "name": "@date-vir/duration",
-    "version": "8.6.2",
+    "version": "8.6.3",
     "description": "Durations units an utils for date-vir.",
     "keywords": [
         "duration",
@@ -34,7 +34,7 @@
     },
     "dependencies": {
         "@augment-vir/assert": "^32.2.1",
-        "@types/luxon": "^3.7.2",
+        "@types/luxon": "^3.7.3",
         "luxon": "^3.7.2",
         "type-fest": "^5.8.0"
     },
