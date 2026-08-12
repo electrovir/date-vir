@@ -1,7 +1,6 @@
 import {type AnyDuration} from '@date-vir/duration';
 import {type FullDate} from '../full-date/full-date-shape.js';
 import {parseLuxonDateTime, toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
-import {type Timezone} from '../timezone/timezones.js';
 
 /**
  * Calculates a new date starting at the given fullDate and adding the given offsets. Offsets can be
@@ -16,7 +15,7 @@ import {type Timezone} from '../timezone/timezones.js';
  * calculateRelativeDate(getNowInUserTimezone(), {days: 2});
  * ```
  */
-export function calculateRelativeDate<const SpecificTimezone extends Timezone>(
+export function calculateRelativeDate<const SpecificTimezone extends string>(
     fullDate: Readonly<FullDate<SpecificTimezone>>,
     offset: Readonly<AnyDuration>,
 ): FullDate<SpecificTimezone> {

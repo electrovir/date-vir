@@ -1,34 +1,6 @@
-import {AssertionError, check} from '@augment-vir/assert';
-import {applyBrand} from '@augment-vir/common';
+import {check} from '@augment-vir/assert';
 import {describe, type FunctionTestCase, itCases} from '@augment-vir/test';
-import {
-    assertValidTimezone,
-    assertWrapValidTimezone,
-    checkWrapValidTimezone,
-    isValidTimezone,
-} from './timezone-checks.js';
-import {type TimezoneString} from './timezones.js';
-
-const validTimezoneTestCases = [
-    {
-        it: 'wraps a valid timezone name string',
-        inputs: ['Australia/Melbourne'],
-        expect: 'Australia/Melbourne',
-    },
-    {
-        it: 'wraps a valid legacy timezone alias',
-        inputs: ['America/Indianapolis'],
-        expect: applyBrand<TimezoneString>('America/Indianapolis'),
-    },
-    {
-        it: 'rejects an invalid timezone',
-        inputs: ['not a timezone'],
-        throws: {
-            matchConstructor: AssertionError,
-            matchMessage: 'not a valid time zone',
-        },
-    },
-] as const satisfies ReadonlyArray<FunctionTestCase<NoInfer<typeof assertWrapValidTimezone>>>;
+import {assertValidTimezone, isValidTimezone} from './timezone-checks.js';
 
 const testCases: ReadonlyArray<FunctionTestCase<typeof assertValidTimezone>> = [
     {
@@ -52,23 +24,6 @@ const testCases: ReadonlyArray<FunctionTestCase<typeof assertValidTimezone>> = [
 
 describe(assertValidTimezone.name, () => {
     itCases(assertValidTimezone, testCases);
-});
-
-describe(assertWrapValidTimezone.name, () => {
-    itCases(assertWrapValidTimezone, validTimezoneTestCases);
-});
-
-describe(checkWrapValidTimezone.name, () => {
-    itCases(
-        checkWrapValidTimezone,
-        validTimezoneTestCases.map((testCase) => {
-            return {
-                it: testCase.it,
-                input: testCase.inputs[0],
-                expect: 'expect' in testCase ? testCase.expect : undefined,
-            };
-        }),
-    );
 });
 
 describe(isValidTimezone.name, () => {

@@ -1,7 +1,6 @@
 import {check} from '@augment-vir/assert';
 import {type SetOptionalAndNullable} from '@augment-vir/common';
 import {type FullDate} from '../full-date/full-date-shape.js';
-import {type Timezone} from '../timezone/timezones.js';
 import {
     type JustDateString,
     type JustTimeString,
@@ -95,7 +94,7 @@ export type FullDateForParts = SetOptionalAndNullable<FullDate, 'millisecond'>;
  * result = {
  *     date: '2024-04-24',
  *     time: '06:04:09',
- *     timezone: utcTimezone,
+ *     timezone: 'UTC',
  * };
  * ```
  */
@@ -107,7 +106,7 @@ export function toDatePartStrings(
 ): {
     date: JustDateString;
     time: JustTimeWithSecondsString;
-    timezone: Timezone;
+    timezone: string;
 };
 /**
  * Splits a FullDate up into multiple formatted string representations.
@@ -139,7 +138,7 @@ export function toDatePartStrings(
  * result = {
  *     date: '2024-04-24',
  *     time: '06:04:09',
- *     timezone: utcTimezone,
+ *     timezone: 'UTC',
  * };
  * ```
  */
@@ -151,7 +150,7 @@ export function toDatePartStrings(
 ): {
     date: JustDateString;
     time: JustTimeString;
-    timezone: Timezone;
+    timezone: string;
 };
 /**
  * Splits a FullDate up into multiple formatted string representations.
@@ -183,7 +182,7 @@ export function toDatePartStrings(
  * result = {
  *     date: '2024-04-24',
  *     time: '06:04:09',
- *     timezone: utcTimezone,
+ *     timezone: 'UTC',
  * };
  * ```
  */
@@ -195,7 +194,7 @@ export function toDatePartStrings(
 ): {
     date: JustDateString;
     time: JustTimeWithSecondsString | JustTimeString;
-    timezone: Timezone;
+    timezone: string;
 };
 /**
  * Splits a FullDate up into multiple formatted string representations.
@@ -227,7 +226,7 @@ export function toDatePartStrings(
  * result = {
  *     date: '2024-04-24',
  *     time: '06:04:09',
- *     timezone: utcTimezone,
+ *     timezone: 'UTC',
  * };
  * ```
  */
@@ -237,7 +236,7 @@ export function toDatePartStrings(
 ): {
     date: JustDateString;
     time: JustTimeWithSecondsString | JustTimeString;
-    timezone: Timezone;
+    timezone: string;
 } {
     return {
         date: toSimpleDatePartString(fullDate),

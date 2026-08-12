@@ -15,7 +15,6 @@ import {
 import {defineShape, intersectShape, rangeShape} from 'object-shape-tester';
 import {type Simplify} from 'type-fest';
 import {timezoneShape} from '../timezone/timezone-shape.js';
-import {type Timezone} from '../timezone/timezones.js';
 
 /**
  * Time part of {@link FullDate} represented in a shape definition.
@@ -52,7 +51,7 @@ export const timePartShape = defineShape({
  *
  * @category Internal
  */
-export type TimePart<SpecificTimezone extends Timezone = Timezone> = SetRequired<
+export type TimePart<SpecificTimezone extends string = string> = SetRequired<
     Partial<FullDate<SpecificTimezone>>,
     keyof (typeof timePartShape)['runtimeType']
 >;
@@ -88,7 +87,7 @@ export const datePartShape = defineShape({
  *
  * @category Internal
  */
-export type DatePart<SpecificTimezone extends Timezone = Timezone> = SetRequired<
+export type DatePart<SpecificTimezone extends string = string> = SetRequired<
     Partial<FullDate<SpecificTimezone>>,
     keyof (typeof datePartShape)['runtimeType']
 >;
@@ -109,7 +108,7 @@ export const fullDateShape = defineShape(intersectShape(datePartShape, timePartS
  * @example
  *
  * ```ts
- * import {FullDate, TimezoneName} from 'date-vir';
+ * import {FullDate, timezones} from 'date-vir';
  *
  * const myDate: FullDate = {
  *     year: 2024,
@@ -121,11 +120,11 @@ export const fullDateShape = defineShape(intersectShape(datePartShape, timePartS
  *     second: 12,
  *
  *     milliseconds: 94,
- *     timezone: TimezoneName['Australia/Brisbane'],
+ *     timezone: timezones['Australia/Brisbane'],
  * };
  * ```
  */
-export type FullDate<SpecificTimezone extends Timezone = Timezone> = Simplify<
+export type FullDate<SpecificTimezone extends string = string> = Simplify<
     Overwrite<
         (typeof fullDateShape)['runtimeType'],
         {

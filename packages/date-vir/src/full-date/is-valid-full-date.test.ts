@@ -1,8 +1,7 @@
 import {assert} from '@augment-vir/assert';
-import {applyBrand} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
 import {ShapeMismatchError} from 'object-shape-tester';
-import {type TimezoneString, type UtcTimezone, utcTimezone} from '../timezone/timezones.js';
+import {type UtcTimezone, utcTimezone} from '../timezone/timezones.js';
 import {type FullDate, fullDateShape} from './full-date-shape.js';
 import {exampleFullDateUtc, nonUtcTimezone} from './full-date.mock.js';
 import {assertValidFullDate, hasTimezone} from './is-valid-full-date.js';
@@ -21,7 +20,7 @@ describe(assertValidFullDate.name, () => {
                 it: 'rejects an invalid timezone',
                 input: {
                     ...fullDateShape.default,
-                    timezone: applyBrand<TimezoneString>('not a real timezone'),
+                    timezone: 'not a real timezone',
                 },
                 throws: {
                     matchConstructor: ShapeMismatchError,
@@ -31,7 +30,7 @@ describe(assertValidFullDate.name, () => {
                 it: 'accepts a legacy IANA timezone alias',
                 input: {
                     ...fullDateShape.default,
-                    timezone: applyBrand<TimezoneString>('America/Indianapolis'),
+                    timezone: 'America/Indianapolis',
                 },
                 throws: undefined,
             },
@@ -39,7 +38,7 @@ describe(assertValidFullDate.name, () => {
                 it: 'rejects a missing timezone object',
                 input: {
                     ...fullDateShape.default,
-                    // @ts-expect-error: intentionally missing timezone
+                    // @ts-expect-error: intentionally incorrect timezone, this should only allow strings
                     timezone: undefined,
                 },
                 throws: {

@@ -37,24 +37,24 @@ import {
     getNowFullDate,
     parseDateStringWithPattern,
     parseInputElementValue,
-    TimezoneName,
+    Timezone,
 } from 'date-vir';
 
 /**
  * Creates a FullDate from a wide range of possible inputs. See TypeScript types for full details on
  * available inputs.
  */
-createFullDate('2023-06-05', TimezoneName['Europe/Rome']);
+createFullDate('2023-06-05', Timezone['Europe/Rome']);
 
 /** Get the current date and time right now in the given timezone. */
-getNowFullDate(TimezoneName['America/Argentina/Buenos_Aires']);
+getNowFullDate(Timezone['America/Argentina/Buenos_Aires']);
 
 /**
  * Parsed the value of an <input> element directly from the element itself. This is intended to be
  * used for type="date" or type="time" <input> elements, but any input element with a valid date or
  * time string will work.
  */
-parseInputElementValue(document.querySelector('input'), TimezoneName['Asia/Tokyo']);
+parseInputElementValue(document.querySelector('input'), Timezone['Asia/Tokyo']);
 
 /**
  * If you have a really oddly formatted date/time string and createFullDate does not suffice, you
@@ -65,7 +65,7 @@ parseInputElementValue(document.querySelector('input'), TimezoneName['Asia/Tokyo
 parseDateStringWithPattern({
     dateString: '870-0-14-19 5 2023 6',
     formatString: 'S-s-h-m d yyyy M',
-    timezone: TimezoneName['America/Cancun'],
+    timezone: Timezone['America/Cancun'],
 });
 ```
 
@@ -80,14 +80,14 @@ import {
     createFullDate,
     formatPresets,
     FullDatePart,
-    TimezoneName,
+    Timezone,
     toHtmlInputString,
     toLocaleString,
     toTimestamp,
     toUtcIsoString,
 } from 'date-vir';
 
-const myFullDate = createFullDate('2023-06-05T14:19:00.870Z', TimezoneName['America/Chicago']);
+const myFullDate = createFullDate('2023-06-05T14:19:00.870Z', Timezone['America/Chicago']);
 
 /**
  * Converts the given FullDate into a UTC unix timestamp with milliseconds. Since the output is a
@@ -123,11 +123,11 @@ toHtmlInputString(myFullDate, FullDatePart.Date); // returns '2023-06-05'
 <!-- example-link: src/readme-examples/timezones.example.ts -->
 
 ```TypeScript
-import {TimezoneName, userTimezone, utcTimezone} from 'date-vir';
+import {Timezone, userTimezone, utcTimezone} from 'date-vir';
 
-TimezoneName['Africa/Abidjan'];
-TimezoneName['America/Los_Angeles'];
-TimezoneName['Etc/GMT+1'];
+Timezone['Africa/Abidjan'];
+Timezone['America/Los_Angeles'];
+Timezone['Etc/GMT+1'];
 
 utcTimezone;
 userTimezone;
@@ -142,9 +142,9 @@ The parsing and timezone conversions in `date-vir` utilize the [`luxon`](https:/
 <!-- example-link: src/readme-examples/luxon-conversion.example.ts -->
 
 ```TypeScript
-import {createFullDate, TimezoneName, toLuxonDateTime} from 'date-vir';
+import {createFullDate, Timezone, toLuxonDateTime} from 'date-vir';
 
-const myFullDate = createFullDate('2023-06-05T14:19:00.870Z', TimezoneName['America/Chicago']);
+const myFullDate = createFullDate('2023-06-05T14:19:00.870Z', Timezone['America/Chicago']);
 
 toLuxonDateTime(myFullDate);
 ```

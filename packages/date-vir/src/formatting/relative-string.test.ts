@@ -4,7 +4,7 @@ import {selectAllDurationUnits} from '@date-vir/duration';
 import {calculateRelativeDate} from '../date-operations/calculate-relative-date.js';
 import {createFullDate} from '../full-date/create-full-date.js';
 import {exampleFullDateUtc} from '../full-date/full-date.mock.js';
-import {TimezoneName, utcTimezone} from '../timezone/timezones.js';
+import {Timezone, utcTimezone} from '../timezone/timezones.js';
 import {toRelativeString} from './relative-string.js';
 
 describe(toRelativeString.name, () => {
@@ -706,8 +706,8 @@ describe(toRelativeString.name, () => {
             it: 'calculates years from a long time ago',
             inputs: [
                 {
-                    end: createFullDate(1_134_567_891_011, TimezoneName['Africa/Banjul']),
-                    start: createFullDate(1_234_567_891_011, TimezoneName['Africa/Banjul']),
+                    end: createFullDate(1_134_567_891_011, Timezone['Africa/Banjul']),
+                    start: createFullDate(1_234_567_891_011, Timezone['Africa/Banjul']),
                 },
                 selectAllDurationUnits,
                 {
@@ -759,8 +759,8 @@ describe(toRelativeString.name, () => {
             it: 'returns just now for identical inputs',
             inputs: [
                 {
-                    end: createFullDate(1_234_567_891_011, TimezoneName['Africa/Banjul']),
-                    start: createFullDate(1_234_567_891_011, TimezoneName['Africa/Banjul']),
+                    end: createFullDate(1_234_567_891_011, Timezone['Africa/Banjul']),
+                    start: createFullDate(1_234_567_891_011, Timezone['Africa/Banjul']),
                 },
                 selectAllDurationUnits,
                 {

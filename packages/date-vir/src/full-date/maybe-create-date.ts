@@ -1,4 +1,3 @@
-import {type Timezone} from '../timezone/timezones.js';
 import {createFullDate} from './create-full-date.js';
 import {type DateLike} from './date-like.js';
 import {type FullDate} from './full-date-shape.js';
@@ -8,7 +7,7 @@ import {type FullDate} from './full-date-shape.js';
  * timezone. If the conversion fails or the input {@link DateLike} is empty, `undefined` is
  * returned.
  */
-export function maybeCreateFullDate<const SpecificTimezone extends Timezone>(
+export function maybeCreateFullDate<const SpecificTimezone extends string>(
     /** The original date representation to be converted into a FullDate. */
     dateLike: Readonly<DateLike> | undefined | null,
     /** The timezone that this date/time is meant for / originated from. */

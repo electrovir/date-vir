@@ -2,7 +2,7 @@ import {DateTime} from 'luxon';
 
 import {check} from '@augment-vir/assert';
 import {stringify} from '@augment-vir/common';
-import {type Timezone, type UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
+import {type UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
 import {type DateLike} from './date-like.js';
 import {type FullDate} from './full-date-shape.js';
 import {isValidFullDate} from './is-valid-full-date.js';
@@ -59,16 +59,16 @@ export function createUtcFullDate(dateLike: Readonly<DateLike>): FullDate<UtcTim
  * @example
  *
  * ```ts
- * import {createFullDate, TimezoneName, utcTimezone} from 'date-vir';
+ * import {createFullDate, timezones, utcTimezone} from 'date-vir';
  *
  * createFullDate('June 1, 2024', utcTimezone);
- * createFullDate(new Date(), TimezoneName['Australia/Brisbane']);
- * createFullDate(112300120, TimezoneName['Etc/GMT-11']);
+ * createFullDate(new Date(), timezones['Australia/Brisbane']);
+ * createFullDate(112300120, timezones['Etc/GMT-11']);
  * ```
  *
  * @throws Error: if a valid date cannot be created.
  */
-export function createFullDate<const SpecificTimezone extends Timezone>(
+export function createFullDate<const SpecificTimezone extends string>(
     /** The original date representation to be converted into a FullDate. */
     dateLike: Readonly<DateLike>,
     /** The timezone that this date/time is meant for / originated from. */
@@ -91,7 +91,7 @@ export function createFullDate<const SpecificTimezone extends Timezone>(
  * @example
  *
  * ```ts
- * import {toNewTimezone, TimezoneName, utcTimezone} from 'date-vir';
+ * import {toNewTimezone} from 'date-vir';
  *
  * const exampleDate: FullDate = {
  *     year: 2024,
@@ -101,10 +101,10 @@ export function createFullDate<const SpecificTimezone extends Timezone>(
  *     minute: 1,
  *     second: 1,
  *     millisecond: 1,
- *     timezone: utcTimezone,
+ *     timezone: 'UTC',
  * };
  *
- * let result = toNewTimezone(exampleDate, TimezoneName['Australia/Brisbane']);
+ * let result = toNewTimezone(exampleDate, timezones['Australia/Brisbane']);
  * // output:
  * result = {
  *     year: 2024,
@@ -114,11 +114,11 @@ export function createFullDate<const SpecificTimezone extends Timezone>(
  *     minute: 1,
  *     second: 1,
  *     millisecond: 1,
- *     timezone: TimezoneName['Australia/Brisbane'],
+ *     timezone: timezones['Australia/Brisbane'],
  * };
  * ```
  */
-export function toNewTimezone<const SpecificTimezone extends Timezone>(
+export function toNewTimezone<const SpecificTimezone extends string>(
     fullDate: Readonly<FullDate>,
     timezone: SpecificTimezone,
 ): FullDate<SpecificTimezone> {
@@ -141,7 +141,7 @@ function lastDitchConversion(dateLike: Readonly<DateLike>): DateTime | undefined
 
 function convertDateLikeToLuxonDateTime(
     dateLike: Readonly<DateLike>,
-    timezone: Timezone,
+    timezone: string,
 ): DateTime | undefined {
     if (isValidFullDate(dateLike)) {
         dateLike = toLuxonDateTime(dateLike).toMillis();

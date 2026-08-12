@@ -4,7 +4,7 @@ import {DateUnit} from '@date-vir/duration';
 import {endTime} from '../extra-utils/end.js';
 import {zeroDate} from '../extra-utils/zero.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
-import {TimezoneName, utcTimezone} from '../timezone/timezones.js';
+import {Timezone, utcTimezone} from '../timezone/timezones.js';
 import {calculateDatePosition, getDateUnit, getEndDate, getStartDate} from './date-position.js';
 
 const exampleDate = {
@@ -175,7 +175,7 @@ describe(getStartDate.name, () => {
                     second: 45,
                     millisecond: 500,
 
-                    timezone: TimezoneName['America/New_York'],
+                    timezone: Timezone['America/New_York'],
                 },
                 DateUnit.Day,
             ],
@@ -184,7 +184,7 @@ describe(getStartDate.name, () => {
                 year: 2024,
                 month: 6,
                 day: 15,
-                timezone: TimezoneName['America/New_York'],
+                timezone: Timezone['America/New_York'],
             },
         },
         {

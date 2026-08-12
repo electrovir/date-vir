@@ -1,6 +1,6 @@
 /**
  * Benchmark comparing FullDate shape validation using the old enum-based timezone check
- * (`enumShape(TimezoneName, utcTimezone)`) versus the new IANA-based check (`isValidTimezone` via
+ * (`enumShape(Timezone, utcTimezone)`) versus the new IANA-based check (`isValidTimezone` via
  * `createCustomShape`).
  *
  * Run with: npx tsx test-files/timezone-validation.benchmark.script.ts
@@ -25,12 +25,12 @@ import {
     rangeShape,
 } from 'object-shape-tester';
 import {isValidTimezone} from '../src/timezone/timezone-checks.js';
-import {TimezoneName, utcTimezone} from '../src/timezone/timezones.js';
+import {Timezone, utcTimezone} from '../src/timezone/timezones.js';
 
 /** Factory producing a fresh timezone shape part, mirroring how the real shapes consume it. */
 type TimezonePartFactory = () => ReturnType<typeof enumShape>;
 
-const oldTimezonePart: TimezonePartFactory = () => enumShape(TimezoneName, utcTimezone);
+const oldTimezonePart: TimezonePartFactory = () => enumShape(Timezone, utcTimezone);
 
 const newTimezonePart: TimezonePartFactory = () =>
     createCustomShape<string>({
@@ -76,7 +76,7 @@ const validFullDate = {
 };
 
 /** A spread of real timezones to defeat any single-zone caching in the engine. */
-const allTimezones = Object.values(TimezoneName);
+const allTimezones = Object.values(Timezone);
 const variedFullDates = allTimezones.map((timezone) => {
     return {
         ...validFullDate,

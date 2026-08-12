@@ -1,7 +1,6 @@
 import {getEnumValues, pickObjectKeys, typedObjectFromEntries} from '@augment-vir/common';
 import {TimeKey} from '../full-date/full-date-parts.js';
 import {type FullDate, type TimePart} from '../full-date/full-date-shape.js';
-import {type Timezone} from '../timezone/timezones.js';
 import {overrideDateParts} from './override-date.js';
 
 /**
@@ -42,7 +41,7 @@ export const zeroTime = pickObjectKeys(zeroDate, getEnumValues(TimeKey));
  * @example
  *
  * ```ts
- * import {clearTime, type FullDate, utcTimezone} from 'date-vir';
+ * import {clearTime, type FullDate} from 'date-vir';
  *
  * const exampleDate: Readonly<FullDate> = {
  *     year: 2024,
@@ -52,14 +51,14 @@ export const zeroTime = pickObjectKeys(zeroDate, getEnumValues(TimeKey));
  *     minute: 1,
  *     second: 1,
  *     millisecond: 1,
- *     timezone: utcTimezone,
+ *     timezone: 'UTC',
  * };
  *
  * clearTime(exampleDate);
- * // `{year: 2024, month: 1, day: 5, hour: 0, minute: 0, second: 0, millisecond: 0, timezone: utcTimezone}`
+ * // `{year: 2024, month: 1, day: 5, hour: 0, minute: 0, second: 0, millisecond: 0, timezone: 'UTC'}`
  * ```
  */
-export function clearTime<const SpecificTimezone extends Timezone>(
+export function clearTime<const SpecificTimezone extends string>(
     inputFullDate: Readonly<FullDate<SpecificTimezone>>,
 ): FullDate<SpecificTimezone> {
     return clearParts(inputFullDate, getEnumValues(TimeKey));
@@ -73,7 +72,7 @@ export function clearTime<const SpecificTimezone extends Timezone>(
  * @example
  *
  * ```ts
- * import {clearTime, type FullDate, utcTimezone} from 'date-vir';
+ * import {clearTime, type FullDate} from 'date-vir';
  *
  * const exampleDate: Readonly<FullDate> = {
  *     year: 2024,
@@ -83,17 +82,17 @@ export function clearTime<const SpecificTimezone extends Timezone>(
  *     minute: 1,
  *     second: 1,
  *     millisecond: 1,
- *     timezone: utcTimezone,
+ *     timezone: 'UTC',
  * };
  *
  * clearParts(exampleDate, [
  *     'year',
  *     'day',
  * ]);
- * // `{year: 0, month: 1, day: 1, hour: 1, minute: 1, second: 1, millisecond: 1, timezone: utcTimezone}`
+ * // `{year: 0, month: 1, day: 1, hour: 1, minute: 1, second: 1, millisecond: 1, timezone: 'UTC'}`
  * ```
  */
-export function clearParts<const SpecificTimezone extends Timezone>(
+export function clearParts<const SpecificTimezone extends string>(
     inputFullDate: Readonly<FullDate<SpecificTimezone>>,
     parts: ReadonlyArray<Exclude<keyof FullDate, 'timezone'>>,
 ) {

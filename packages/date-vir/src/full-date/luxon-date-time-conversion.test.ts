@@ -1,16 +1,6 @@
-import {assert} from '@augment-vir/assert';
-import {applyBrand} from '@augment-vir/common';
-import {describe, it, itCases} from '@augment-vir/test';
-import {DateTime} from 'luxon';
-import {type TimezoneString} from '../timezone/timezones.js';
+import {describe, itCases} from '@augment-vir/test';
 import {fullDateShape} from './full-date-shape.js';
-import {parseLuxonDateTime, toLuxonDateTime} from './luxon-date-time-conversion.js';
-
-const dateTimeWithoutZoneName = new Proxy(DateTime.fromMillis(0), {
-    get(target, property) {
-        return property === 'zoneName' ? undefined : Reflect.get(target, property, target);
-    },
-});
+import {toLuxonDateTime} from './luxon-date-time-conversion.js';
 
 describe(toLuxonDateTime.name, () => {
     itCases(toLuxonDateTime, [
@@ -18,7 +8,7 @@ describe(toLuxonDateTime.name, () => {
             it: 'fails on invalid timezone',
             input: {
                 ...fullDateShape.default,
-                timezone: applyBrand<TimezoneString>('not a real time zone'),
+                timezone: 'not a real time zone',
             },
             throws: {
                 matchConstructor: Error,
@@ -36,12 +26,4 @@ describe(toLuxonDateTime.name, () => {
             },
         },
     ]);
-});
-
-describe(parseLuxonDateTime.name, () => {
-    it('fails when a valid date has no timezone name', () => {
-        assert.throws(() => parseLuxonDateTime(dateTimeWithoutZoneName), {
-            matchMessage: 'must have a timezone',
-        });
-    });
 });

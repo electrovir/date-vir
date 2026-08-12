@@ -2,7 +2,7 @@ import {type UtcIsoString} from '../formatting/string-format-types.js';
 import {toUtcIsoString} from '../formatting/timestamp.js';
 import {createFullDate} from '../full-date/create-full-date.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
-import {type Timezone, type UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
+import {type UtcTimezone, userTimezone, utcTimezone} from '../timezone/timezones.js';
 
 /**
  * Get the time right now as a UTC ISO.
@@ -63,13 +63,13 @@ export function getNowInUtcTimezone(): FullDate<UtcTimezone> {
  * @example
  *
  * ```ts
- * import {getNowFullDate, TimezoneName, utcTimezone} from 'date-vir';
+ * import {getNowFullDate, utcTimezone, timezones} from 'date-vir';
  *
  * getNowFullDate(utcTimezone);
- * getNowFullDate(TimezoneName['Australia/Brisbane']);
+ * getNowFullDate(timezones['Australia/Brisbane']);
  * ```
  */
-export function getNowFullDate<const SpecificTimezone extends Timezone>(
+export function getNowFullDate<const SpecificTimezone extends string>(
     timezone: SpecificTimezone,
 ): FullDate<SpecificTimezone> {
     return createFullDate(Date.now(), timezone);

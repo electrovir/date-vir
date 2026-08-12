@@ -12,7 +12,7 @@ import {type HttpDateString, type UtcIsoString} from './string-format-types.js';
  * @example
  *
  * ```ts
- * import {toTimestamp, utcTimezone} from 'date-vir';
+ * import {toTimestamp} from 'date-vir';
  *
  * const exampleDate: FullDate = {
  *     year: 2024,
@@ -22,7 +22,7 @@ import {type HttpDateString, type UtcIsoString} from './string-format-types.js';
  *     minute: 1,
  *     second: 1,
  *     millisecond: 1,
- *     timezone: utcTimezone,
+ *     timezone: 'UTC',
  * };
  *
  * toTimestamp(exampleDate); // `1704416461001`
@@ -44,7 +44,7 @@ export function toTimestamp(fullDate: FullDate): number {
  * @example
  *
  * ```ts
- * import {toUtcIsoString, utcTimezone} from 'date-vir';
+ * import {toUtcIsoString} from 'date-vir';
  *
  * const exampleDate: FullDate = {
  *     year: 2024,
@@ -54,7 +54,7 @@ export function toTimestamp(fullDate: FullDate): number {
  *     minute: 1,
  *     second: 1,
  *     millisecond: 1,
- *     timezone: utcTimezone,
+ *     timezone: 'UTC',
  * };
  *
  * toUtcIsoString(exampleDate); // `'2024-01-05T01:01:01.001Z'`
@@ -115,7 +115,7 @@ export function createUtcIsoString(
  * @example
  *
  * ```ts
- * import {toHttpDateString, utcTimezone} from 'date-vir';
+ * import {toHttpDateString} from 'date-vir';
  *
  * const exampleDate: FullDate = {
  *     year: 2024,
@@ -125,7 +125,7 @@ export function createUtcIsoString(
  *     minute: 1,
  *     second: 1,
  *     millisecond: 1,
- *     timezone: utcTimezone,
+ *     timezone: 'UTC',
  * };
  *
  * toHttpDateString(exampleDate); // `'Fri, 05 Jan 2024 01:01:01 GMT'`

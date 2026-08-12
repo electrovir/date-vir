@@ -10,7 +10,7 @@ import {userTimezone} from '../timezone/timezones.js';
  * @example
  *
  * ```ts
- * import {toJsDate, type FullDate, utcTimezone} from 'date-vir';
+ * import {toJsDate, type FullDate} from 'date-vir';
  *
  * const exampleDate: Readonly<FullDate> = {
  *     year: 2024,
@@ -20,7 +20,7 @@ import {userTimezone} from '../timezone/timezones.js';
  *     minute: 1,
  *     second: 1,
  *     millisecond: 1,
- *     timezone: utcTimezone,
+ *     timezone: 'UTC',
  * };
  *
  * toJsDate(exampleDate);

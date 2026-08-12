@@ -1,29 +1,14 @@
-import {applyBrand, type ArrayElement, type Branded} from '@augment-vir/common';
+import {type ArrayElement} from '@augment-vir/common';
 import {Settings} from 'luxon';
 import {allTimezoneNames} from './timezone-names.js';
 
 /**
- * All known timezone names.
+ * All possible timezone names.
  *
  * @category Timezone
  * @see {@link allTimezoneNames}
  */
-export type TimezoneName = ArrayElement<typeof allTimezoneNames>;
-
-/**
- * A branded string for any timezone
- *
- * @category Timezone
- * @see {@link allTimezoneNames}
- */
-export type TimezoneString = Branded<string, 'timezone-string'>;
-
-/**
- * Any known or unknown timezone.
- *
- * @category Timezone
- */
-export type Timezone = TimezoneString | TimezoneName;
+export type Timezone = ArrayElement<typeof allTimezoneNames>;
 
 /**
  * An enum of all possible timezone names.
@@ -32,13 +17,13 @@ export type Timezone = TimezoneString | TimezoneName;
  * @example
  *
  * ```ts
- * import {TimezoneName} from 'date-vir';
+ * import {Timezone} from 'date-vir';
  *
- * TimezoneName['Africa/Bamako'];
+ * Timezone['Africa/Bamako'];
  * ```
  */
-export const TimezoneName: Readonly<{
-    [SpecificTimezoneName in TimezoneName]: SpecificTimezoneName;
+export const Timezone: Readonly<{
+    [SpecificTimezoneName in Timezone]: SpecificTimezoneName;
 }> = allTimezoneNames.reduce(
     (accum, timezoneName) => {
         accum[timezoneName] = timezoneName;
@@ -46,7 +31,7 @@ export const TimezoneName: Readonly<{
     },
     {} as Record<string, string>,
 ) as Readonly<{
-    [SpecificTimezoneName in TimezoneName]: SpecificTimezoneName;
+    [SpecificTimezoneName in Timezone]: SpecificTimezoneName;
 }>;
 
 /**
@@ -54,13 +39,13 @@ export const TimezoneName: Readonly<{
  *
  * @category Timezone
  */
-export const userTimezone = applyBrand<TimezoneString>(Settings.defaultZone.name);
+export const userTimezone: string = Settings.defaultZone.name;
 /**
  * The UTC timezone.
  *
  * @category Timezone
  */
-export const utcTimezone = TimezoneName.UTC;
+export const utcTimezone = Timezone.UTC;
 /**
  * The UTC timezone as a type.
  *

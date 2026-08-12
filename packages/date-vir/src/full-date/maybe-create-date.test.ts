@@ -1,5 +1,5 @@
 import {describe, itCases} from '@augment-vir/test';
-import {TimezoneName, utcTimezone} from '../timezone/timezones.js';
+import {Timezone, utcTimezone} from '../timezone/timezones.js';
 import {exampleFullDateUtc, exampleIsoString, exampleTimestamp} from './full-date.mock.js';
 import {maybeCreateFullDate} from './maybe-create-date.js';
 
@@ -25,13 +25,13 @@ describe(maybeCreateFullDate.name, () => {
             it: 'applies the given timezone',
             inputs: [
                 exampleIsoString,
-                TimezoneName['Australia/Brisbane'],
+                Timezone['Australia/Brisbane'],
             ],
             expect: {
                 ...exampleFullDateUtc,
                 day: 6,
                 hour: 0,
-                timezone: TimezoneName['Australia/Brisbane'],
+                timezone: Timezone['Australia/Brisbane'],
             },
         },
         {
