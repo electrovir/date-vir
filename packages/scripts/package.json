@@ -1,6 +1,6 @@
 {
     "name": "scripts",
-    "version": "8.6.4",
+    "version": "9.0.0",
     "private": true,
     "homepage": "https://github.com/electrovir/date-vir",
     "bugs": {
@@ -24,7 +24,7 @@
     },
     "dependencies": {
         "@augment-vir/assert": "^32.2.1",
-        "date-vir": "^8.6.4"
+        "date-vir": "^9.0.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^32.2.1",

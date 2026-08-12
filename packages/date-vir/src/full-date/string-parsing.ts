@@ -1,6 +1,5 @@
-/* eslint-disable @virmator/prefer-params-object */
-
 import {DateTime} from 'luxon';
+import {type Timezone} from '../timezone/timezones.js';
 
 /**
  * These formats are for luxon, documented here:
@@ -49,7 +48,7 @@ const knownStringFormats: ReadonlyArray<string> = [
  *
  * @category Internal
  */
-export function parseDateString(dateString: string, timezone: string): DateTime | undefined {
+export function parseDateString(dateString: string, timezone: Timezone): DateTime | undefined {
     const isoAttempt = DateTime.fromISO(dateString, {
         zone: timezone,
     });

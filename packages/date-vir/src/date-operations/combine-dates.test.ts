@@ -10,7 +10,7 @@ import {
     timePartShape,
 } from '../full-date/full-date-shape.js';
 import {exampleFullDateUtc, nonUserTimezone} from '../full-date/full-date.mock.js';
-import {userTimezone} from '../timezone/timezones.js';
+import {type Timezone, userTimezone} from '../timezone/timezones.js';
 import {type MaybeDatePart, combineDateParts} from './combine-dates.js';
 
 describe(combineDateParts.name, () => {
@@ -199,6 +199,6 @@ describe(combineDateParts.name, () => {
                     time: exampleFullDateUtc as FullDate | undefined,
                 }),
             )
-            .equals<MaybeDatePart<string>>();
+            .equals<MaybeDatePart<Timezone>>();
     });
 });

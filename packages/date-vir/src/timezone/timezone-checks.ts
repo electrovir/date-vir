@@ -23,18 +23,18 @@ const ianaValidityCache = new Map<string, boolean>();
  *
  * @category Assertion
  */
-export function isValidTimezone(potentialTimezone: string): boolean {
-    if (knownTimezones.has(potentialTimezone)) {
+export function isValidTimezone(raw: string): raw is Timezone {
+    if (knownTimezones.has(raw)) {
         return true;
     }
 
-    const cached = ianaValidityCache.get(potentialTimezone);
+    const cached = ianaValidityCache.get(raw);
     if (cached != undefined) {
         return cached;
     }
 
-    const isValid = Info.isValidIANAZone(potentialTimezone);
-    ianaValidityCache.set(potentialTimezone, isValid);
+    const isValid = Info.isValidIANAZone(raw);
+    ianaValidityCache.set(raw, isValid);
     return isValid;
 }
 
@@ -48,10 +48,29 @@ export function isValidTimezone(potentialTimezone: string): boolean {
  * @category Assertion
  */
 export function assertValidTimezone(
-    potentialTimezone: string,
+    raw: string,
     userMessage?: string | undefined,
-): void {
-    if (!isValidTimezone(potentialTimezone)) {
-        throw new AssertionError(`'${potentialTimezone}' is not a valid time zone`, userMessage);
+): asserts raw is Timezone {
+    if (!isValidTimezone(raw)) {
+        throw new AssertionError(`'${raw}' is not a valid time zone`, userMessage);
     }
+}
+
+/**
+ * Asserts that the given input is a valid timezone name and returns it.
+ *
+ * @category Assertion
+ */
+export function assertWrapValidTimezone(raw: string, userMessage?: string | undefined): Timezone {
+    assertValidTimezone(raw, userMessage);
+    return raw;
+}
+
+/**
+ * Checks that the given input is a valid timezone name and returns it when valid.
+ *
+ * @category Assertion
+ */
+export function checkWrapValidTimezone(raw: string): Timezone | undefined {
+    return isValidTimezone(raw) ? raw : undefined;
 }

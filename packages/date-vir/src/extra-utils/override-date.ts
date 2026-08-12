@@ -1,4 +1,5 @@
 import {type FullDate} from '../full-date/full-date-shape.js';
+import {type Timezone} from '../timezone/timezones.js';
 
 /**
  * Override the initial provided FullDate with all subsequent FullDate parts.
@@ -7,7 +8,7 @@ import {type FullDate} from '../full-date/full-date-shape.js';
  * @example
  *
  * ```ts
- * import {overrideDateParts, type FullDate} from 'date-vir';
+ * import {overrideDateParts, type FullDate, utcTimezone} from 'date-vir';
  *
  * const exampleDate: Readonly<FullDate> = {
  *     year: 2024,
@@ -17,14 +18,14 @@ import {type FullDate} from '../full-date/full-date-shape.js';
  *     minute: 1,
  *     second: 1,
  *     millisecond: 1,
- *     timezone: 'UTC',
+ *     timezone: utcTimezone,
  * };
  *
  * overrideDateParts(exampleDate, {day: 20}, {second: 10});
- * // `{year: 2024, month: 1, day: 20, hour: 1, minute: 1, second: 10, millisecond: 1, timezone: 'UTC'}`
+ * // `{year: 2024, month: 1, day: 20, hour: 1, minute: 1, second: 10, millisecond: 1, timezone: utcTimezone}`
  * ```
  */
-export function overrideDateParts<const SpecificTimezone extends string>(
+export function overrideDateParts<const SpecificTimezone extends Timezone>(
     date: FullDate<SpecificTimezone>,
     ...overrides: Partial<FullDate<SpecificTimezone>>[]
 ): FullDate<SpecificTimezone> {

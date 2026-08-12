@@ -3,7 +3,7 @@ import {describe, it, itCases} from '@augment-vir/test';
 import {toNewTimezone} from '../full-date/create-full-date.js';
 import {formatPresets} from '../full-date/format-presets.js';
 import {exampleFullDateUtc} from '../full-date/full-date.mock.js';
-import {Timezone} from '../timezone/timezones.js';
+import {TimezoneName} from '../timezone/timezones.js';
 import {toFormattedString, toLocaleString} from './formatted-string.js';
 
 describe(toLocaleString.name, () => {
@@ -29,7 +29,7 @@ describe(toLocaleString.name, () => {
 
     it('formats with some more options', () => {
         const result = toLocaleString(
-            toNewTimezone(exampleFullDateUtc, Timezone['America/Chicago']),
+            toNewTimezone(exampleFullDateUtc, TimezoneName['America/Chicago']),
             {
                 ...formatPresets.DatetimeFull,
                 locale: 'en-us',

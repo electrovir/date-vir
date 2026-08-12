@@ -45,7 +45,7 @@ function getHighestPriorityConversionAccuracy(
  * @example
  *
  * ```ts
- * import {diffDates, DurationUnit} from 'date-vir';
+ * import {diffDates, DurationUnit, utcTimezone} from 'date-vir';
  *
  * const exampleDate: FullDate = {
  *     year: 2024,
@@ -55,7 +55,7 @@ function getHighestPriorityConversionAccuracy(
  *     minute: 1,
  *     second: 1,
  *     millisecond: 1,
- *     timezone: 'UTC',
+ *     timezone: utcTimezone,
  * };
  *
  * // get the diff in days
@@ -113,7 +113,7 @@ export function diffDates<const SelectedUnits extends Readonly<DurationUnitSelec
  * @example
  *
  * ```ts
- * import {isDateAfter, type FullDate} from 'date-vir';
+ * import {isDateAfter, type FullDate, utcTimezone} from 'date-vir';
  *
  * const exampleDate: FullDate = {
  *     year: 2024,
@@ -123,7 +123,7 @@ export function diffDates<const SelectedUnits extends Readonly<DurationUnitSelec
  *     minute: 1,
  *     second: 1,
  *     millisecond: 1,
- *     timezone: 'UTC',
+ *     timezone: utcTimezone,
  * };
  *
  * isDateAfter({

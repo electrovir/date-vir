@@ -9,15 +9,15 @@ import {type Timezone, utcTimezone} from './timezones.js';
  * Unlike a strict enum check against the typed {@link Timezone} list, this validates at runtime via
  * {@link isValidTimezone} (i.e. any valid IANA zone name). It therefore accepts valid IANA names
  * that aren't in the typed list, such as legacy aliases like `'America/Indianapolis'` that some
- * environments (notably Safari) still report from `Intl`. The static type is `string` so that
- * timezone inputs are not restricted to the {@link Timezone} enum.
+ * environments (notably Safari) still report from `Intl`. The branded {@link Timezone} type allows
+ * timezone inputs that are not restricted to the {@link Timezone} list.
  *
  * @category Shape
  */
-export const timezoneShape = createCustomShape<string>({
+export const timezoneShape = createCustomShape<Timezone>({
     default: utcTimezone,
     name: 'Timezone',
-    checkValue(value): value is string {
+    checkValue(value): value is Timezone {
         return check.isString(value) && isValidTimezone(value);
     },
 });
