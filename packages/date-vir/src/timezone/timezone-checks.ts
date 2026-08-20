@@ -10,9 +10,11 @@ const knownTimezones = new Set<string>(allTimezoneNames);
  * Caches the result of the {@link Info.isValidIANAZone} fallback. That call constructs an
  * `Intl.DateTimeFormat` every time (~30µs), so memoizing it keeps repeated checks of the same
  * string (a legacy alias or an invalid value) cheap. Only strings outside the typed
- * {@link knownTimezones} set ever land here, so the cache stays small in practice.
+ * {@link knownTimezones} set ever land here. The cache is capped to keep untrusted input from
+ * growing it without bound.
  */
 const ianaValidityCache = new Map<string, boolean>();
+const maxIanaValidityCacheEntries = 1000;
 
 /**
  * Checks that the given timezone is valid.
@@ -34,6 +36,12 @@ export function isValidTimezone(raw: string): raw is Timezone {
     }
 
     const isValid = Info.isValidIANAZone(raw);
+    if (ianaValidityCache.size >= maxIanaValidityCacheEntries) {
+        const oldestEntry = ianaValidityCache.keys().next();
+        if (!oldestEntry.done) {
+            ianaValidityCache.delete(oldestEntry.value);
+        }
+    }
     ianaValidityCache.set(raw, isValid);
     return isValid;
 }
