@@ -1,6 +1,6 @@
 {
     "name": "@date-vir/duration",
-    "version": "9.1.1",
+    "version": "9.2.0",
     "description": "Durations units an utils for date-vir.",
     "keywords": [
         "duration",
@@ -33,13 +33,13 @@
         "test:docs": "virmator docs check"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.1",
-        "@types/luxon": "^3.7.3",
+        "@augment-vir/assert": "^32.3.1",
+        "@types/luxon": "^3.7.5",
         "luxon": "^3.7.2",
-        "type-fest": "^5.8.0"
+        "type-fest": "^5.10.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.2.1",
+        "@augment-vir/test": "^32.3.1",
         "@web/dev-server-esbuild": "^2.0.0",
         "@web/test-runner": "^1.0.0",
         "@web/test-runner-commands": "^1.0.1",
