@@ -392,7 +392,7 @@ function determineShouldUseJustNow({
         const unitValue: number = unitCounts[smallestSelectedUnit] || 0;
         /* node:coverage enable */
 
-        return unitValue <= unitThreshold;
+        return Math.abs(unitValue) <= unitThreshold;
     } else {
         return false;
     }

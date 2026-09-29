@@ -364,6 +364,26 @@ describe(toRelativeString.name, () => {
             expect: 'in 100 seconds',
         },
         {
+            it: 'does not use default seconds just now thresholds in the past',
+            inputs: [
+                {
+                    start: exampleFullDateUtc,
+                    end: calculateRelativeDate(exampleFullDateUtc, {
+                        seconds: -40,
+                    }),
+                },
+                {
+                    minutes: true,
+                    seconds: true,
+                },
+                {
+                    useOnlyLargestUnit: true,
+                    decimalCount: 0,
+                },
+            ],
+            expect: '40 seconds ago',
+        },
+        {
             it: 'uses custom milliseconds just now thresholds',
             inputs: [
                 {
