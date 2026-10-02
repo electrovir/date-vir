@@ -1,12 +1,9 @@
-import {assert} from '@augment-vir/assert';
-import {describe, it, itCases} from '@augment-vir/test';
-import {DayOfWeekName, dayOfWeekNameOrder, type DayOfWeekIndex} from '@date-vir/duration';
+import {describe, itCases} from '@augment-vir/test';
+import {DayOfWeekName} from '@date-vir/duration';
 import {toNewTimezone} from '../full-date/create-full-date.js';
 import {type FullDate} from '../full-date/full-date-shape.js';
 import {exampleFullDateUtc} from '../full-date/full-date.mock.js';
-import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
 import {TimezoneName, utcTimezone} from '../timezone/timezones.js';
-import {calculateRelativeDate} from './calculate-relative-date.js';
 import {getDayOfWeek} from './day-of-week.js';
 
 const lateFridayInDenver: Readonly<FullDate> = {
@@ -77,32 +74,4 @@ describe(getDayOfWeek.name, () => {
             expect: DayOfWeekName.Monday,
         },
     ]);
-
-    it('matches Luxon for every day of a week in many timezones', () => {
-        const timezones = [
-            utcTimezone,
-            TimezoneName['America/Denver'],
-            TimezoneName['Asia/Tokyo'],
-            TimezoneName['Pacific/Kiritimati'],
-            TimezoneName['Pacific/Pago_Pago'],
-        ];
-
-        timezones.forEach((timezone) => {
-            const start = {
-                ...lateFridayInDenver,
-                timezone,
-            };
-
-            dayOfWeekNameOrder.forEach((_name, dayOffset) => {
-                const date = calculateRelativeDate(start, {
-                    days: dayOffset,
-                });
-
-                assert.strictEquals(
-                    getDayOfWeek(date),
-                    dayOfWeekNameOrder[(toLuxonDateTime(date).weekday % 7) as DayOfWeekIndex],
-                );
-            });
-        });
-    });
 });

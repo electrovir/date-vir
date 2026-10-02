@@ -1,5 +1,6 @@
 import {dayOfWeekNameOrder, type DayOfWeekIndex, type DayOfWeekName} from '@date-vir/duration';
 import {type FullDate} from '../full-date/full-date-shape.js';
+import {toLuxonDateTime} from '../full-date/luxon-date-time-conversion.js';
 
 /**
  * Get the day of the week that a {@link FullDate} falls on in its own timezone. To get the day of
@@ -26,13 +27,5 @@ import {type FullDate} from '../full-date/full-date-shape.js';
  * ```
  */
 export function getDayOfWeek(date: Readonly<FullDate>): DayOfWeekName {
-    /**
-     * A FullDate's year, month, and day are already in its own timezone, so the weekday is plain
-     * calendar math. `setUTCFullYear` is used instead of `Date.UTC` so that years 0-99 aren't
-     * mapped to 1900-1999.
-     */
-    const jsDate = new Date(0);
-    jsDate.setUTCFullYear(date.year, date.month - 1, date.day);
-
-    return dayOfWeekNameOrder[jsDate.getUTCDay() as DayOfWeekIndex];
+    return dayOfWeekNameOrder[(toLuxonDateTime(date).weekday % 7) as DayOfWeekIndex];
 }
