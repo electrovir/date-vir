@@ -10,6 +10,7 @@ export * from './extra-utils/js-date-conversion.js';
 export * from './extra-utils/now.js';
 export * from './extra-utils/override-date.js';
 export * from './extra-utils/zero.js';
+export * from './formatting/date-only-iso-string.js';
 export * from './formatting/formatted-string.js';
 export * from './formatting/html-input.js';
 export * from './formatting/relative-string.js';
