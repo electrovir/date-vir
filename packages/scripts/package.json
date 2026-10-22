@@ -1,6 +1,6 @@
 {
     "name": "scripts",
-    "version": "9.4.0",
+    "version": "9.4.1",
     "private": true,
     "homepage": "https://github.com/electrovir/date-vir",
     "bugs": {
@@ -23,12 +23,12 @@
         "test:coverage": "npm run test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.5.0",
-        "date-vir": "^9.4.0"
+        "@augment-vir/assert": "^32.6.0",
+        "date-vir": "^9.4.1"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.5.0",
-        "@types/node": "^26.6.3",
+        "@augment-vir/test": "^32.6.0",
+        "@types/node": "^26.6.5",
         "c8": "^12.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",
         "tsx": "^4.23.15",

@@ -155,7 +155,7 @@ export function roundDuration<InputDuration extends AnyDuration>(
                 number,
             ] => {
                 return [
-                    durationUnit as DurationUnit,
+                    durationUnit as unknown as DurationUnit,
                     round(quantity, options),
                 ];
             },
