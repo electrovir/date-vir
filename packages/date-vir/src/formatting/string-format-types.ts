@@ -51,17 +51,27 @@ export type DateTimeString = `${JustDateString}T${JustTimeString}`;
 export type UtcIsoString = `${JustDateString}T${JustTimeWithSecondsString}.${number}Z`;
 
 /**
- * A shape definition for {@link UtcIsoString}.
- *
- * @category ISO
+ * Bundlers ignore `@__NO_SIDE_EFFECTS__` on the function `createCustomShape` returns, so
+ * {@link utcIsoStringShape} wraps this in a declaration that can carry it. That lets bundlers drop
+ * unused shapes that call {@link utcIsoStringShape}.
  */
-export const utcIsoStringShape = createCustomShape<UtcIsoString>({
+const createUtcIsoStringShape = createCustomShape<UtcIsoString>({
     default: new Date().toISOString() as UtcIsoString,
     name: 'UtcIsoString',
     checkValue(value) {
         return isValidIsoString(value);
     },
 });
+
+/**
+ * A shape definition for {@link UtcIsoString}.
+ *
+ * @category ISO
+ */
+/* @__NO_SIDE_EFFECTS__ */
+export function utcIsoStringShape(defaultValue?: UtcIsoString) {
+    return createUtcIsoStringShape(defaultValue);
+}
 
 /**
  * Checks if the input is a valid UTC ISO string and type guards the input.
